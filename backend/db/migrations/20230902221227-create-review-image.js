@@ -1,40 +1,33 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA; // define your schema in options object
 };
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('ReviewImages', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      reviewId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Reviews',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        hooks: true
+      },
+      url: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      lastName: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      username: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING(30)
-      },
-      email: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING(256)
-      },
-      hashedPassword: {
-        allowNull: false,
-        type: Sequelize.STRING.BINARY,
       },
       createdAt: {
         allowNull: false,
@@ -49,7 +42,6 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
-    return queryInterface.dropTable(options);
+    await queryInterface.dropTable('ReviewImages');
   }
 };
