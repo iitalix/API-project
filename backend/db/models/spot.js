@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId'
       })
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId'
+      })
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId'
+      })
     }
   }
   Spot.init({
@@ -43,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         notEmpty: true,
-        isAlpha: true,
       }
     },
     country: {
