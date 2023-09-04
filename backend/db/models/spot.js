@@ -62,14 +62,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DECIMAL,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        isNumeric: true
       }
     },
     lng: {
       allowNull: false,
       type: DataTypes.DECIMAL,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        isNumeric: true
       }
     },
     name: {
