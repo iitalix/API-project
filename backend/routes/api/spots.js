@@ -351,8 +351,5 @@ router.post("/:spotId/reviews", requireAuth, validateReviews, async (req, res) =
 });
 
 
-// Edit a Review
-router.put('/')
-
 
 module.exports = router;
