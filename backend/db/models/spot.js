@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId'
       })
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId'
+      })
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId'
+      })
     }
   }
   Spot.init({
@@ -43,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         notEmpty: true,
-        isAlpha: true,
       }
     },
     country: {
@@ -57,14 +62,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DECIMAL,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        isNumeric: true
       }
     },
     lng: {
       allowNull: false,
       type: DataTypes.DECIMAL,
       validate: {
-        isDecimal: true
+        isDecimal: true,
+        isNumeric: true
       }
     },
     name: {
@@ -92,12 +99,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
-    indexes: [
-      {
-        unique: true,
-        fields: ['address', 'city']
-      }
-    ]
   });
   return Spot;
 };
