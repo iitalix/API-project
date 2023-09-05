@@ -16,6 +16,7 @@ router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 
+
 // GET /api/restore-user
 // router.get("/restore-user", (req, res) => {
 //   return res.json(req.user);

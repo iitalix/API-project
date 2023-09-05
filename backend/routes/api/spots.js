@@ -5,7 +5,9 @@ const router = require("express").Router();
 const {requireAuth} = require("../../utils/auth.js");
 const {check} = require("express-validator");
 const {handleValidationErrors} = require("../../utils/validation");
-const {Spot, Review, SpotImage, User} = require("../../db/models");
+const {Spot, Review, ReviewImage, SpotImage, User} = require("../../db/models");
+
+/* -- SPOTS -- */
 
 const validateSpotEdit = [
   check("address")
@@ -115,6 +117,28 @@ router.get("/:spotId", async (req, res) => {
   });
 });
 
+// GET all spots from Current User - in progress
+router.get("/current", requireAuth, async (req, res) => {
+  const {user} = req;
+  console.log(user);
+
+  current = user.id;
+
+  const userSpots = await Spot.findAll({
+    include: [
+      {
+        model: User,
+      },
+    ],
+
+    where: {
+      ownerId: current,
+    },
+  });
+
+  return res.json(userSpots);
+});
+
 // Edit a Spot - done, with questions:
 // How precise is error-checking supposed to be?
 // How do we handle unauthorized user?
@@ -168,15 +192,6 @@ router.put("/:spotId", requireAuth, validateSpotEdit, async (req, res) => {
   return res.json(updatedSpot);
 });
 
-// GET all spots from Current User - in progress
-// router.get('/current', requireAuth, async (req, res) => {
-
-//     const userSpots = await Spot.findAll({
-
-//         where
-//     })
-// })
-
 // Create a Spot - done!
 router.post("/", requireAuth, validateSpotEdit, async (req, res) => {
   const {user} = req;
@@ -199,8 +214,14 @@ router.post("/", requireAuth, validateSpotEdit, async (req, res) => {
   return res.json(newSpot);
 });
 
-// Delete a Spot - in progress
-// Only owner can delete
+// Create and return a new image for a spot, specified by id
+// router.post('/:spotId/images', requireAuth, async (req, res) => {
+
+//     const{user} = req;
+
+// })
+
+// Delete a Spot - done!
 router.delete("/:spotId", requireAuth, async (req, res) => {
   const deleteSpot = await Spot.findByPk(req.params.spotId, {
     include: [
@@ -212,6 +233,7 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
   });
   const {user} = req;
 
+  // If Spot does NOT exist
   if (!deleteSpot) {
     res.status(404);
     return res.json({
@@ -219,6 +241,7 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
     });
   }
 
+  // Only Owner can delete
   let spotObj = deleteSpot.toJSON();
   if (user.id !== spotObj.User.id) {
     res.status(401);
@@ -234,5 +257,102 @@ router.delete("/:spotId", requireAuth, async (req, res) => {
     message: "Successfully deleted",
   });
 });
+
+/* -- REVIEWS -- */
+
+const validateReviews = [
+  check("review")
+    .exists({checkFalsy: true})
+    .withMessage("Review text is required."),
+  check("stars")
+    .exists({checkFalsy: true})
+    .isInt({min: 1})
+    .isInt({max: 5})
+    .withMessage("Stars must be an integer from 1 to 5."),
+  handleValidationErrors,
+];
+
+// Get all Reviews by a Spot's id
+router.get("/:spotId/reviews", async (req, res) => {
+  const findSpot = await Spot.findByPk(req.params.spotId);
+
+  // If Spot does not exist
+  if (!findSpot) {
+    res.status(404);
+    return res.json({
+      message: "Spot couldn't be found.",
+    });
+  }
+
+  const allReviews = await Review.findAll({
+    where: {
+      spotId: req.params.spotId,
+    },
+    include: [
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+      },
+      {
+        model: ReviewImage,
+        attributes: ["id", "url"],
+      },
+    ],
+  });
+
+  if (!allReviews.length) {
+    return res.json({
+      message: "There are no reviews for this spot.",
+    });
+  }
+
+  return res.json(allReviews);
+});
+
+// Create a Review for a Spot based on Spot id
+router.post("/:spotId/reviews", requireAuth, validateReviews, async (req, res) => {
+  const findSpot = await Spot.findByPk(req.params.spotId);
+
+  // If Spot does not exist
+  if (!findSpot) {
+    res.status(404);
+    return res.json({
+      message: "Spot couldn't be found.",
+    });
+  }
+
+  const {user} = req;
+  const {review, stars} = req.body;
+
+  const findExistReview = await Review.findOne({
+    where: {
+      userId: user.id,
+      spotId: req.params.spotId,
+    },
+  });
+
+  // If review exists for user
+  if (findExistReview) {
+    res.status(500);
+    return res.json({
+      message: "User already has a review for this spot",
+    });
+  }
+
+  const newReview = await Review.create({
+    spotId: req.params.spotId,
+    userId: user.id,
+    review,
+    stars,
+  });
+
+  res.status(201);
+  return res.json(newReview);
+});
+
+
+// Edit a Review
+router.put('/')
+
 
 module.exports = router;

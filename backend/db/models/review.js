@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Review.belongsTo(models.Spot, {
         foreignKey: 'spotId'
       })
+      Review.hasMany(models.ReviewImage, {
+        foreignKey: 'reviewId'
+      })
     }
   }
   Review.init({
@@ -31,12 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
 
-        len: [30, 500],
+        len: [20, 500],
 
         thirtyMin(value) {
 
-          if (value.length < 30) {
-            throw new Error('Review must be 30 characters or more.')
+          if (value.length < 20) {
+            throw new Error('Review must be 20 characters or more.')
           }
         }
       }
