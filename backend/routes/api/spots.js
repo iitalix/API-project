@@ -3,6 +3,7 @@ const express = require("express");
 const router = require("express").Router();
 
 const {requireAuth} = require("../../utils/auth.js");
+
 const {check} = require("express-validator");
 const {handleValidationErrors} = require("../../utils/validation");
 const {Booking, Review, ReviewImage, Spot, SpotImage, User} = require("../../db/models");
@@ -358,7 +359,10 @@ router.post(
 /* -- BOOKINGS -- */
 
 // Get all Bookings for a Spot based on the Spot's id
+// Authenticated user (XSRF-TOKEN) not working
+
 router.get("/:spotId/bookings", requireAuth, async (req, res) => {
+
   const findSpot = await Spot.findByPk(req.params.spotId);
   const {user} = req;
 
@@ -370,6 +374,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
     });
   }
 
+  // Get bookings by Spot id
   const spotBookings = await Booking.findAll({
     where: {
       spotId: req.params.spotId,
@@ -391,29 +396,25 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
     bookingsArr.push(booking.toJSON());
   });
 
-  console.log(bookingsArr);
-
-  let bookings = [];
   bookingsArr.forEach(booking => {
 
     if (user.id === booking.Spot.ownerId) {
 
-
         delete booking.Spot;
-        return res.json(bookingsArr);
     }
 
     else {
-        let bookingObj = {
-            spotId: booking.Spot.id,
-            startDate: booking.startDate,
-            endDate: booking.endDate
-        };
 
-        bookings.push(bookingObj);
-        return res.json(bookings);
+        delete booking.id;
+        delete booking.userId;
+        delete booking.createdAt;
+        delete booking.updatedAt;
+        delete booking.User;
+        delete booking.Spot;
     }
   });
+
+  return res.json(bookingsArr);
 });
 
 module.exports = router;
