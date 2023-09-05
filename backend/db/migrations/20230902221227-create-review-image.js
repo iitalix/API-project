@@ -2,6 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
+options.tableName = 'ReviewImages'
+
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA; // define your schema in options object
 };
@@ -19,8 +21,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Reviews',
-          key: 'id'
+          model: 'Reviews'
         },
         onDelete: 'CASCADE',
         hooks: true
@@ -42,6 +43,6 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ReviewImages');
+    await queryInterface.dropTable(options);
   }
 };
