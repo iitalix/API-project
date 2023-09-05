@@ -21,7 +21,7 @@ const validateReviews = [
 ];
 
 // Edit a Review
-router.put("/:revewId", requireAuth, validateReviews, async (req, res) => {
+router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
   const findReview = await Review.findByPk(req.params.revewId, {
     include: [
       {
@@ -61,6 +61,45 @@ router.put("/:revewId", requireAuth, validateReviews, async (req, res) => {
   delete updatedReview.User;
 
   return res.json(updatedReview);
+});
+
+// Delete a Review
+router.delete("/:reviewId", requireAuth, async (req, res) => {
+  const deleteReview = await Review.findByPk(req.params.reviewId, {
+    include: [
+      {
+        model: User,
+        attributes: ["id"],
+      },
+    ],
+  });
+
+  // If Review does not exist
+  if (!deleteReview) {
+    res.status(404);
+    return res.json({
+      message: "Review couldn't be found.",
+    });
+  }
+
+  const {user} = req;
+
+  // Only Owner is authorized to edit
+  let deleteRevObj = deleteReview.toJSON();
+  if (user.id !== deleteRevObj.User.id) {
+    res.status(401);
+    return res.json({
+      message: "Only the Owner of this review can delete it.",
+    });
+  }
+
+  // Delete Review
+  await deleteReview.destroy();
+
+  res.status(200);
+  return res.json({
+    message: "Successfully deleted",
+  });
 });
 
 module.exports = router;
