@@ -151,7 +151,8 @@ router.get("/current", requireAuth, async (req, res) => {
 // Add an image to a Spot based on Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const findSpot = await Spot.findByPk(req.params.spotId);
-  const {user, url, preview} = req;
+  const {user} = req;
+  const {url, preview} = req.body;
 
   // If Spot does not exist
   if (!findSpot) {
@@ -160,7 +161,6 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
       message: "Spot couldn't be found.",
     });
   }
-
 
   // Only Owner is authorized to add image
   let spotObj = findSpot.toJSON();
