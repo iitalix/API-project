@@ -22,7 +22,7 @@ const validateReviews = [
 
 // Edit a Review
 router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
-  const findReview = await Review.findByPk(req.params.revewId, {
+  const findReview = await Review.findByPk(req.params.reviewId, {
     include: [
       {
         model: User,
@@ -61,6 +61,70 @@ router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
   delete updatedReview.User;
 
   return res.json(updatedReview);
+});
+
+// Add an image to a Review based on Review's Id
+router.post("/:reviewId/images", requireAuth, async (req, res) => {
+  const findReview = await Review.findByPk(req.params.reviewId, {
+    include: [
+      {
+        model: User,
+        attributes: ["id"],
+      },
+    ],
+  });
+
+  const {user} = req;
+  const {url} = req.body;
+
+  // If Review does not exist
+  if (!findReview) {
+    res.status(404);
+    return res.json({
+      message: "Review couldn't be found.",
+    });
+  }
+
+  // Only Owner is authorized to add images
+  let reviewObj = findReview.toJSON();
+  if (user.id !== reviewObj.User.id) {
+    res.status(401);
+    return res.json({
+      message: "Only the Owner of the spot is authorized to add images.",
+    });
+  }
+
+  // Only 10 images allowed per resource
+  const getAllImages = await ReviewImage.findAll({
+    where: {
+      reviewId: req.params.reviewId,
+    },
+  });
+
+  let allImagesArr = [];
+  getAllImages.forEach(image => {
+
+    allImagesArr.push(image)
+  })
+
+  if (allImagesArr.length >= 10) {
+    res.status(403);
+    return res.json({
+      message: "Maximum number of images for this resource was reached",
+    });
+  }
+
+  const newImage = await ReviewImage.create({
+    reviewId: reviewObj.id,
+    url: url,
+  });
+
+  const newImageObj = newImage.toJSON();
+  delete newImageObj.reviewId;
+  delete newImageObj.updatedAt;
+  delete newImageObj.createdAt;
+
+  return res.json(newImageObj);
 });
 
 // Delete a Review
