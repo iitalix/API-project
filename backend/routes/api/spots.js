@@ -14,6 +14,7 @@ const {
   SpotImage,
   User,
 } = require("../../db/models");
+const { runAllChains } = require("express-validator/src/utils.js");
 
 /* -- SPOTS -- */
 
@@ -147,6 +148,40 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({Spots: userSpots});
 });
 
+// Add an image to a Spot based on Spot's id
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const findSpot = await Spot.findByPk(req.params.spotId);
+  const {user, url, preview} = req;
+
+  // If Spot does not exist
+  if (!findSpot) {
+    res.status(404);
+    return res.json({
+      message: "Spot couldn't be found.",
+    });
+  }
+
+
+  // Only Owner is authorized to add image
+  let spotObj = findSpot.toJSON();
+  console.log(spotObj)
+  if (user.id !== spotObj.ownerId) {
+    res.status(401);
+    return res.json({
+      message: "Only the Owner of the spot is authorized to edit.",
+    });
+  }
+
+  const newImage = await SpotImage.create({
+
+    spotId: spotObj.id,
+    url: url,
+    preview: preview
+  })
+
+  return res.json(newImage);
+});
+
 // Edit a Spot - done, with questions:
 // How precise is error-checking supposed to be?
 router.put("/:spotId", requireAuth, validateSpotEdit, async (req, res) => {
@@ -220,13 +255,6 @@ router.post("/", requireAuth, validateSpotEdit, async (req, res) => {
 
   return res.json(newSpot);
 });
-
-// Create and return a new image for a spot, specified by id
-// router.post('/:spotId/images', requireAuth, async (req, res) => {
-
-//     const{user} = req;
-
-// })
 
 // Delete a Spot - done!
 router.delete("/:spotId", requireAuth, async (req, res) => {
@@ -445,7 +473,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
 
   // Only non-Owner can create booking
   let spotObj = findSpot.toJSON();
-  console.log(spotObj)
+  console.log(spotObj);
   if (user.id === spotObj.User.id) {
     res.status(401);
     return res.json({
@@ -466,6 +494,5 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
 
   return res.json(newBooking);
 });
-
 
 module.exports = router;
