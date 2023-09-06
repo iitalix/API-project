@@ -1,17 +1,17 @@
-// backend/routes/api/spot-images.js
+// backend/routes/api/review-images.js
 const express = require("express");
 const router = require("express").Router();
 
 const {requireAuth} = require("../../utils/auth.js");
-const {Spot, SpotImage} = require("../../db/models");
+const {Spot, Review, ReviewImage, SpotImage, User} = require("../../db/models");
 
-// Delete a Spot Image
+// Delete a Review Image
 router.delete("/:imageId", requireAuth, async (req, res) => {
-  const findImage = await SpotImage.findByPk(req.params.imageId, {
+  const findImage = await ReviewImage.findByPk(req.params.imageId, {
     include: [
       {
-        model: Spot,
-        attributes: ["ownerId"],
+        model: Review,
+        attributes: ["userId"],
       },
     ],
   });
@@ -22,16 +22,16 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
   if (!findImage) {
     res.status(404);
     return res.json({
-      message: "Spot Image couldn't be found.",
+      message: "Review Image couldn't be found.",
     });
   }
 
   // Only Owner is authorized to edit
   let imageObj = findImage.toJSON();
-  if (user.id !== imageObj.Spot.ownerId) {
+  if (user.id !== imageObj.Review.userId) {
     res.status(401);
     return res.json({
-      message: "Only the Owner of the spot is authorized to delete.",
+      message: "Only the Owner of the review is authorized to delete.",
     });
   }
 
