@@ -114,6 +114,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
     });
   }
 
+  // Create Review Image
   const newImage = await ReviewImage.create({
     reviewId: reviewObj.id,
     url: url,
@@ -138,6 +139,8 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
     ],
   });
 
+  const {user} = req;
+
   // If Review does not exist
   if (!deleteReview) {
     res.status(404);
@@ -146,7 +149,6 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
     });
   }
 
-  const {user} = req;
 
   // Only Owner is authorized to edit
   let deleteRevObj = deleteReview.toJSON();

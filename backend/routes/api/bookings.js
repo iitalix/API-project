@@ -3,11 +3,11 @@ const express = require("express");
 const router = require("express").Router();
 
 const {requireAuth} = require("../../utils/auth.js");
-const {Booking, Review, Spot, User} = require("../../db/models");
+const {Booking, Review, Spot, SpotImage, User} = require("../../db/models");
 
 /* -- BOOKINGS -- */
 
-// Get all Current User's Bookings
+// Get all Current User's Bookings - missing previewImage field
 router.get("/current", requireAuth, async (req, res) => {
   const {user} = req;
   const userBookings = await Booking.findAll({
