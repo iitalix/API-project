@@ -127,8 +127,7 @@ router.get("/:spotId(\\d+)", async (req, res) => {
   });
 });
 
-// !! GET ALL SPOTS FROM CURRENT USER - INCOMPLETE!!
-// Validation error: "current" is not a valid integer
+// Get all Spots of Current User - done!
 router.get('/current', requireAuth, async (req, res) => {
 
   const {user} = req;
@@ -136,10 +135,51 @@ router.get('/current', requireAuth, async (req, res) => {
 
     where: {
       ownerId: user.id
+    },
+    include: [
+      {
+        model: SpotImage,
+        attributes: ['url', 'preview']
+      },
+      {
+        model: Review,
+        attributes: ['stars']
+      }
+    ]
+  });
+
+  let allSpotsUserObj = [];
+  allSpotsUser.forEach(spot => {
+    allSpotsUserObj.push(spot.toJSON());
+  });
+
+  allSpotsUserObj.forEach(spot => {
+
+    if (!spot.SpotImages.length) {
+
+      delete spot.SpotImages;
+      spot.previewImage = "No preview images for this spot."
     }
+
+    else {
+
+      delete spot.SpotImages;
+      spot.previewImage = spot.SpotImages.url
+    }
+
+    console.log(spot.Reviews)
+
+    let count = 0;
+    spot.Reviews.forEach(review => {
+
+      count+= review.stars;
+    })
+
+    spot.avgRating = count / spot.Reviews.length;
+    delete spot.Reviews;
   })
 
-  return res.json(allSpotsUser)
+  return res.json({Spots: allSpotsUserObj})
 })
 
 // Add an image to a Spot based on Spot's id - DONE!
