@@ -61,6 +61,7 @@ router.get("/", async (req, res) => {
     ],
   });
 
+  // Add Rating and Preview Image
   let spotsList = [];
   allSpots.forEach((spot) => {
     spotsList.push(spot.toJSON());
