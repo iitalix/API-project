@@ -167,8 +167,6 @@ router.get('/current', requireAuth, async (req, res) => {
       spot.previewImage = spot.SpotImages.url
     }
 
-    console.log(spot.Reviews)
-
     let count = 0;
     spot.Reviews.forEach(review => {
 

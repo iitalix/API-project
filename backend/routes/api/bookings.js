@@ -18,13 +18,38 @@ router.get("/current", requireAuth, async (req, res) => {
       {
         model: Spot,
         attributes: {
-            exclude: ['description', 'createdAt', 'updatedAt']
-        }
+          exclude: ["description", "createdAt", "updatedAt"],
+        },
+        include: [
+          {
+            model: SpotImage,
+            attributes: ["url", "preview"],
+          },
+        ],
       },
     ],
   });
 
-  return res.json({Bookings: userBookings});
+  let userBookingsArr = [];
+  userBookings.forEach((booking) => {
+    userBookingsArr.push(booking.toJSON());
+  });
+
+  userBookingsArr.forEach((booking) => {
+    if (!booking.Spot.SpotImages.length) {
+      booking.Spot.previewImage = "There are no images for this spot.";
+    } else {
+      booking.Spot.SpotImages.forEach((image) => {
+        if (image.preview) {
+          booking.Spot.previewImage = image.url;
+        }
+      });
+    }
+
+    delete booking.Spot.SpotImages;
+  });
+
+  return res.json({Bookings: userBookingsArr});
 });
 
 module.exports = router;
