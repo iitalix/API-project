@@ -14,7 +14,7 @@ const {
   SpotImage,
   User,
 } = require("../../db/models");
-// const { runAllChains } = require("express-validator/src/utils.js");
+
 
 /* -- SPOTS -- */
 
@@ -127,18 +127,19 @@ router.get("/:spotId", async (req, res) => {
 });
 
 // !! GET ALL SPOTS FROM CURRENT USER - INCOMPLETE!!
-router.get("/current", requireAuth, async (req, res) => {
-  const {user} = req;
+// Validation error: "current" is not a valid integer
+router.get('/current', requireAuth, async (req, res) => {
 
-  const userSpots = await Spot.findAll({
+  const {user} = req;
+  const allSpotsUser = await Spot.findAll({
 
     where: {
-      ownerId: user.id,
-    },
-  });
+      ownerId: user.id
+    }
+  })
 
-  return res.json({Spots: userSpots});
-});
+  return res.json(allSpotsUser)
+})
 
 // Add an image to a Spot based on Spot's id - DONE!
 router.post("/:spotId/images", requireAuth, async (req, res) => {
