@@ -86,7 +86,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET details for a Spot from an id - done!
-router.get("/:spotId", async (req, res) => {
+router.get("/:spotId(\\d+)", async (req, res) => {
   let findSpot = await Spot.findByPk(req.params.spotId, {
     include: [
       {
