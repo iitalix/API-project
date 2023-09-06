@@ -47,7 +47,7 @@ router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
   if (user.id !== reviewObj.User.id) {
     res.status(401);
     return res.json({
-      message: "Only the Owner of the spot is authorized to edit.",
+      message: "Only the author of the review is authorized to edit.",
     });
   }
 
@@ -90,7 +90,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   if (user.id !== reviewObj.User.id) {
     res.status(401);
     return res.json({
-      message: "Only the Owner of the spot is authorized to add images.",
+      message: "Only the author of the review is authorized to add images.",
     });
   }
 
@@ -121,7 +121,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   });
 
   const newImageObj = newImage.toJSON();
-  delete newImageObj.reviewId;
+
   delete newImageObj.updatedAt;
   delete newImageObj.createdAt;
 
