@@ -36,14 +36,13 @@ router.get("/current", requireAuth, async (req, res) => {
   });
 
   userBookingsArr.forEach((booking) => {
+    booking.Spot.SpotImages.forEach((image) => {
+      if (image.preview) booking.Spot.previewImage = image.url;
+      else booking.Spot.previewImage = "There are no images for this spot.";
+    });
+
     if (!booking.Spot.SpotImages.length) {
       booking.Spot.previewImage = "There are no images for this spot.";
-    } else {
-      booking.Spot.SpotImages.forEach((image) => {
-        if (image.preview) {
-          booking.Spot.previewImage = image.url;
-        }
-      });
     }
 
     delete booking.Spot.SpotImages;
