@@ -1,6 +1,7 @@
 // backend/routes/api/spots
 const express = require("express");
 const router = require("express").Router();
+const app = express();
 
 const {requireAuth} = require("../../utils/auth.js");
 
@@ -14,7 +15,6 @@ const {
   SpotImage,
   User,
 } = require("../../db/models");
-
 
 /* -- SPOTS -- */
 
@@ -128,57 +128,49 @@ router.get("/:spotId(\\d+)", async (req, res) => {
 });
 
 // Get all Spots of Current User - done!
-router.get('/current', requireAuth, async (req, res) => {
-
+router.get("/current", requireAuth, async (req, res) => {
   const {user} = req;
   const allSpotsUser = await Spot.findAll({
-
     where: {
-      ownerId: user.id
+      ownerId: user.id,
     },
     include: [
       {
         model: SpotImage,
-        attributes: ['url', 'preview']
+        attributes: ["url", "preview"],
       },
       {
         model: Review,
-        attributes: ['stars']
-      }
-    ]
+        attributes: ["stars"],
+      },
+    ],
   });
 
   let allSpotsUserObj = [];
-  allSpotsUser.forEach(spot => {
+  allSpotsUser.forEach((spot) => {
     allSpotsUserObj.push(spot.toJSON());
   });
 
-  allSpotsUserObj.forEach(spot => {
-
+  allSpotsUserObj.forEach((spot) => {
     if (!spot.SpotImages.length) {
-
       delete spot.SpotImages;
-      spot.previewImage = "No preview images for this spot."
-    }
-
-    else {
-
+      spot.previewImage = "No preview images for this spot.";
+    } else {
       delete spot.SpotImages;
-      spot.previewImage = spot.SpotImages.url
+      spot.previewImage = spot.SpotImages.url;
     }
 
     let count = 0;
-    spot.Reviews.forEach(review => {
-
-      count+= review.stars;
-    })
+    spot.Reviews.forEach((review) => {
+      count += review.stars;
+    });
 
     spot.avgRating = count / spot.Reviews.length;
     delete spot.Reviews;
-  })
+  });
 
-  return res.json({Spots: allSpotsUserObj})
-})
+  return res.json({Spots: allSpotsUserObj});
+});
 
 // Add an image to a Spot based on Spot's id - DONE!
 router.post("/:spotId/images", requireAuth, async (req, res) => {
@@ -196,7 +188,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
   // Only Owner is authorized to add image
   let spotObj = findSpot.toJSON();
-  console.log(spotObj)
+  console.log(spotObj);
   if (user.id !== spotObj.ownerId) {
     res.status(401);
     return res.json({
@@ -206,11 +198,10 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
   // Add image to Spot
   const newImage = await SpotImage.create({
-
     spotId: spotObj.id,
     url: url,
-    preview: preview
-  })
+    preview: preview,
+  });
 
   return res.json(newImage);
 });
@@ -427,8 +418,6 @@ router.post(
 /* -- BOOKINGS -- */
 
 // Get all Bookings for a Spot based on the Spot's id
-// Authenticated user (XSRF-TOKEN) not working
-
 router.get("/:spotId/bookings", requireAuth, async (req, res) => {
   const findSpot = await Spot.findByPk(req.params.spotId);
   const {user} = req;
@@ -479,7 +468,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
 });
 
 // Create a Booking from a Spot's id
-router.post("/:spotId/bookings", requireAuth, async (req, res) => {
+router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   const findSpot = await Spot.findByPk(req.params.spotId, {
     include: [
       {
@@ -506,13 +495,80 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
 
   // Only non-Owner can create booking
   let spotObj = findSpot.toJSON();
-  console.log(spotObj);
   if (user.id === spotObj.User.id) {
     res.status(401);
     return res.json({
       message: "Cannot create a booking on a spot that you own.",
     });
   }
+
+  // Get bookings by Spot id
+  const spotBookings = await Booking.findAll({
+    where: {
+      spotId: req.params.spotId,
+    },
+    include: [
+      {
+        model: Spot,
+      },
+    ],
+  });
+
+  let spotBookingsArr = [];
+  spotBookings.forEach((booking) => {
+    spotBookingsArr.push(booking.toJSON());
+  });
+
+  /* -- Booking Conflict Handler */
+  // let flag = false;
+
+  // StartDate Conversion
+  const newStartDate = new Date(startDate);
+  const requestedStart = newStartDate.getTime();
+
+  // EndDate Conversion
+  const newEndDate = new Date(endDate);
+  const requestedEnd = newEndDate.getTime();
+
+  for (let booking of spotBookingsArr) {
+    // Existing Start Date
+    const bookingStartDate = new Date(booking.startDate);
+    const reservedStartDate = bookingStartDate.getTime();
+
+    // Existing End Date
+    const bookingEndDate = new Date(booking.endDate);
+    const reservedEndDate = bookingEndDate.getTime();
+
+    // if the requested start is greater or equal to reserved start,
+    // and reqested end is greater than or equal to reserved end
+    if (
+      (requestedStart >= reservedStartDate &&
+      requestedStart <= reservedEndDate) ||
+      (requestedEnd >= reservedStartDate &&
+      requestedEnd <= reservedEndDate)
+    ) {
+      // flag = true;
+      res.status(403);
+      return res.json({
+        message: "Sorry, this spot is already booked for the specified dates",
+        errors: {
+          startDate: "Start date conflicts with an existing booking",
+          endDate: "End date conflicts with an existing booking",
+        },
+      });
+    }
+  }
+
+  // if (flag === true) {
+  //   res.status(403);
+  //   return res.json({
+  //     message: "Sorry, this spot is already booked for the specified dates",
+  //     errors: {
+  //       startDate: "Start date conflicts with an existing booking",
+  //       endDate: "End date conflicts with an existing booking",
+  //     },
+  //   });
+  // }
 
   // Create booking
   const newBooking = await Booking.create({
@@ -521,9 +577,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
     startDate: startDate,
     endDate: endDate,
   });
-
-  // If booking already exists for specified dates, respond with 403 error
-  // -- in progress --
 
   return res.json(newBooking);
 });
