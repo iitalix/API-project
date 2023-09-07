@@ -7,7 +7,7 @@ const {Booking, Review, Spot, SpotImage, User} = require("../../db/models");
 
 /* -- BOOKINGS -- */
 
-// Get all Current User's Bookings - missing previewImage field
+// Get all Current User's Bookings - done!
 router.get("/current", requireAuth, async (req, res) => {
   const {user} = req;
   const userBookings = await Booking.findAll({
@@ -50,5 +50,6 @@ router.get("/current", requireAuth, async (req, res) => {
 
   return res.json({Bookings: userBookingsArr});
 });
+
 
 module.exports = router;
