@@ -95,12 +95,10 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
 
   // EndDate Exceeded Edit Limit
   if (requestedStart > editBookingObj.endDate) {
-
     res.status(403);
     res.json({
-
-      message: "Past bookings can't be modified."
-    })
+      message: "Past bookings can't be modified.",
+    });
   }
 
   // Get bookings by Spot id
@@ -130,16 +128,21 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
     const bookingEndDate = new Date(booking.endDate);
     const reservedEndDate = bookingEndDate.getTime();
 
-    console.log("BOOKING USER ID:", booking.userId)
-    console.log("REQ USER ID", req.user.id)
+    console.log("BOOKING USER ID:", booking.userId);
+    console.log("REQ USER ID", req.user.id);
 
     // if the requested start is greater or equal to reserved start,
     // and reqested end is greater than or equal to reserved end
     if (
       (requestedStart >= reservedStartDate &&
-        requestedStart < reservedEndDate && booking.userId !== req.user.id) ||
-      (requestedEnd > reservedStartDate && requestedEnd <= reservedEndDate && booking.userId !== req.user.id) ||
-      (reservedStartDate >= requestedStart && reservedEndDate <= requestedEnd && booking.userId !== req.user.id)
+        requestedStart < reservedEndDate &&
+        booking.userId !== req.user.id) ||
+      (requestedEnd > reservedStartDate &&
+        requestedEnd <= reservedEndDate &&
+        booking.userId !== req.user.id) ||
+      (reservedStartDate >= requestedStart &&
+        reservedEndDate <= requestedEnd &&
+        booking.userId !== req.user.id)
     ) {
       res.status(403);
       return res.json({
@@ -150,14 +153,64 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
         },
       });
     }
-  };
+  }
 
   await findBooking.update({
     startDate: startDate,
-    endDate: endDate
-  })
+    endDate: endDate,
+  });
 
   return res.json(findBooking);
+});
+
+// Delete Booking
+router.delete("/:bookingId", requireAuth, async (req, res) => {
+  const findBooking = await Booking.findByPk(req.params.bookingId, {
+    include: [
+      {
+        model: Spot,
+        attributes: ["ownerId"],
+      },
+    ],
+  });
+
+  // If Booking does not exist
+  if (!findBooking) {
+    res.status(404);
+    return res.json({
+      message: "Booking couldn't be found.",
+    });
+  }
+
+  // Must be Owner of Spot/Booking
+  let deleteBooking = findBooking.toJSON();
+  if (
+    (req.user.id !== deleteBooking.userId) &&
+    (req.user.id !== deleteBooking.Spot.ownerId)
+  ) {
+
+    res.status(401);
+    return res.json({
+      message: "Only the Owner of the spot/booking can delete a booking.",
+    });
+  };
+
+  // Booking has been started
+  if (deleteBooking.updatedAt > deleteBooking.startDate) {
+
+    res.status(403);
+    res.json({
+      message: "Bookings that have been started can't be deleted"
+    })
+  };
+
+  // Delete the booking
+  await findBooking.destroy();
+
+  res.status(200);
+  return res.json({
+    message: "Successfully deleted",
+  });
 });
 
 module.exports = router;
