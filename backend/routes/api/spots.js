@@ -485,14 +485,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   const {user} = req;
   const {startDate, endDate} = req.body;
 
-  // StartDate Conversion
-  const newStartDate = new Date(startDate);
-  const reqStartDate = newStartDate.getTime();
-
-  // EndDate Conversion
-  const newEndDate = new Date(endDate);
-  const reqEndDate = newEndDate.getTime();
-
   // If Spot does not exist
   if (!findSpot) {
     res.status(404);
@@ -530,6 +522,14 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   /* -- Booking Conflict Handler */
   // let flag = false;
 
+  // StartDate Conversion
+  const newStartDate = new Date(startDate);
+  const requestedStart = newStartDate.getTime();
+
+  // EndDate Conversion
+  const newEndDate = new Date(endDate);
+  const requestedEnd = newEndDate.getTime();
+
   for (let booking of spotBookingsArr) {
     // Existing Start Date
     const bookingStartDate = new Date(booking.startDate);
@@ -540,11 +540,12 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
     const reservedEndDate = bookingEndDate.getTime();
 
     // if the requested start is greater or equal to reserved start,
-    // or reqested end is greater than or equal to reserved end
+    // and reqested end is greater than or equal to reserved end
     if (
-      reqStartDate >= reservedStartDate &&
-      reqStartDate <= reservedEndDate &&
-      reqEndDate >= reservedStartDate
+      (requestedStart >= reservedStartDate &&
+      requestedStart <= reservedEndDate) ||
+      (requestedEnd >= reservedStartDate &&
+      requestedEnd <= reservedEndDate)
     ) {
       // flag = true;
       res.status(403);
