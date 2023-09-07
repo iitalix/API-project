@@ -20,29 +20,36 @@ const {
 
 const validateSpotEdit = [
   check("address")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Street address is required."),
-  check("city").exists({checkFalsy: true}).withMessage("City is required."),
-  check("state").exists({checkFalsy: true}).withMessage("State is required."),
+  check("city").optional({value: "undefined"}).exists({checkFalsy: true}).withMessage("City is required."),
+  check("state").optional({value: "undefined"}).exists({checkFalsy: true}).withMessage("State is required."),
   check("country")
+  .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Country is required."),
   check("lat")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isDecimal({force_decimal: true})
     .withMessage("Latitude is not valid."),
   check("lng")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isDecimal({force_decimal: true})
     .withMessage("Longitude is not valid."),
   check("name")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isLength({max: 49})
     .withMessage("Name must be less than 50 characters."),
   check("description")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Description is required."),
   check("price")
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Price per day is required."),
   handleValidationErrors,
@@ -520,7 +527,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   });
 
   /* -- Booking Conflict Handler */
-  // let flag = false;
 
   // StartDate Conversion
   const newStartDate = new Date(startDate);
@@ -530,6 +536,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   const newEndDate = new Date(endDate);
   const requestedEnd = newEndDate.getTime();
 
+  // Pre-Existing Booking Conflicts
   for (let booking of spotBookingsArr) {
     // Existing Start Date
     const bookingStartDate = new Date(booking.startDate);
@@ -539,15 +546,15 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
     const bookingEndDate = new Date(booking.endDate);
     const reservedEndDate = bookingEndDate.getTime();
 
-    // if the requested start is greater or equal to reserved start,
-    // and reqested end is greater than or equal to reserved end
     if (
       (requestedStart >= reservedStartDate &&
-      requestedStart <= reservedEndDate) ||
-      (requestedEnd >= reservedStartDate &&
-      requestedEnd <= reservedEndDate)
+      requestedStart < reservedEndDate) ||
+      (requestedEnd > reservedStartDate &&
+      requestedEnd <= reservedEndDate) ||
+      (reservedStartDate >= requestedStart &&
+      reservedEndDate <= requestedEnd)
     ) {
-      // flag = true;
+
       res.status(403);
       return res.json({
         message: "Sorry, this spot is already booked for the specified dates",
@@ -556,19 +563,8 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
           endDate: "End date conflicts with an existing booking",
         },
       });
-    }
-  }
-
-  // if (flag === true) {
-  //   res.status(403);
-  //   return res.json({
-  //     message: "Sorry, this spot is already booked for the specified dates",
-  //     errors: {
-  //       startDate: "Start date conflicts with an existing booking",
-  //       endDate: "End date conflicts with an existing booking",
-  //     },
-  //   });
-  // }
+    };
+  };
 
   // Create booking
   const newBooking = await Booking.create({
