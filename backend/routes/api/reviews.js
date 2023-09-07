@@ -20,6 +20,67 @@ const validateReviews = [
   handleValidationErrors,
 ];
 
+//Get all Reviews of Current User - done!
+router.get('/current', requireAuth, async (req, res) => {
+
+  const currUserReviews = await Review.findAll({
+
+    where: {
+
+      userId: req.user.id
+    },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: Spot,
+        attributes: {
+
+          exclude: ['createdAt', 'updatedAt',]
+        },
+        include: [
+          {
+            model: SpotImage,
+            attributes: ['preview', 'url']
+          }
+        ]
+      },
+      {
+        model: ReviewImage,
+        attributes: ['id', 'url']
+      }
+    ]
+  });
+
+  let currUserRevsArr = [];
+  currUserReviews.forEach(review => {
+
+    currUserRevsArr.push(review.toJSON());
+  });
+
+  currUserRevsArr.forEach(review => {
+
+    review.Spot.SpotImages.forEach(image => {
+
+      if (image.preview) review.Spot.previewImage = image.url
+
+      else review.Spot.previewImage = "There are no images for this spot."
+    })
+
+    if (!review.Spot.SpotImages.length) {
+
+      review.Spot.previewImage = "There are no images for this spot."
+    }
+
+    delete review.Spot.SpotImages;
+  })
+
+  return res.json({Reviews: currUserRevsArr})
+
+})
+
 // Edit a Review
 router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
   const findReview = await Review.findByPk(req.params.reviewId, {
