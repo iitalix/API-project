@@ -249,6 +249,12 @@ router.get("/current", requireAuth, async (req, res) => {
     delete spot.SpotImages;
   });
 
+  if (!allSpotsUserObj.length) {
+    return res.json({
+      message: "You currently have no spots setup."
+    })
+  }
+
   return res.json({Spots: allSpotsUserObj});
 });
 
