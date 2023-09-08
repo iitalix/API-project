@@ -572,6 +572,13 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
     bookingsArr.push(booking.toJSON());
   });
 
+  if (!bookingsArr.length) {
+
+    return res.json({
+      message: "Be the first to book this spot!"
+    })
+  }
+
   bookingsArr.forEach((booking) => {
     if (user.id === booking.Spot.ownerId) {
       delete booking.Spot;
