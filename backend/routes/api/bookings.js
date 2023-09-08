@@ -197,7 +197,7 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
 
     res.status(401);
     return res.json({
-      message: "Only the Owner of the spot/booking can delete a booking.",
+      message: "Only the Owner of the spot or booking can delete a booking.",
     });
   };
 
