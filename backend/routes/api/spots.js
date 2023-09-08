@@ -4,8 +4,8 @@ const router = require("express").Router();
 const app = express();
 
 const {requireAuth} = require("../../utils/auth.js");
-
 const {check} = require("express-validator");
+const { Op } = require('sequelize');
 const {handleValidationErrors} = require("../../utils/validation");
 const {
   Booking,
@@ -17,16 +17,55 @@ const {
 } = require("../../db/models");
 
 /* -- SPOTS -- */
+const validateQueryEdit = [
+  check("minLat")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Latitude is not valid."),
+  check("maxLat")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Latitude is not valid."),
+  check("minlng")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Longitude is not valid."),
+  check("maxlng")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Longitude is not valid."),
+  check("minPrice")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Minimum price must be a decimal, and greater than or equal to 0."),
+  check("maxPrice")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .isDecimal({force_decimal: true})
+    .withMessage("Maximum price must be a decimal, and greater than or equal to 0."),
+  handleValidationErrors,
+];
 
 const validateSpotEdit = [
   check("address")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Street address is required."),
-  check("city").optional({value: "undefined"}).exists({checkFalsy: true}).withMessage("City is required."),
-  check("state").optional({value: "undefined"}).exists({checkFalsy: true}).withMessage("State is required."),
+  check("city")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .withMessage("City is required."),
+  check("state")
+    .optional({value: "undefined"})
+    .exists({checkFalsy: true})
+    .withMessage("State is required."),
   check("country")
-  .optional({value: "undefined"})
+    .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Country is required."),
   check("lat")
@@ -56,8 +95,55 @@ const validateSpotEdit = [
 ];
 
 // GET all Spots - done!
-router.get("/", async (req, res) => {
+router.get("/", validateQueryEdit, async (req, res) => {
+  let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} =
+    req.query;
+
+  page = parseInt(page);
+  size = parseInt(size);
+
+  if (Number.isNaN(page) || page < 0) page = 1;
+  if (Number.isNaN(size) || size < 0) size = 20;
+
+  let pagination = {
+    limit: size,
+    offset: size * (page - 1),
+  };
+
+  const where = {};
+
+  if (minLat || maxLat) {
+
+    where.lat = {[Op.between]: [minLat, maxLat]}
+  };
+
+  if (minLng || maxLng) {
+
+    where.lng = {[Op.between]: [minLng, maxLng]}
+  };
+
+  if (minPrice || maxPrice) {
+
+    if (minPrice < 0 || maxPrice < 0) {
+
+      res.status(400);
+      res.json({
+        message: "Bad Request",
+        errors: {
+          maxPrice: "Maximum price must be greater than or equal to 0",
+          minPrice: "Minimum price must be greater than or equal to 0",
+        }
+      });
+    }
+
+    else {
+
+      where.price = {[Op.between]: [minPrice, maxPrice]}
+    }
+  };
+
   const allSpots = await Spot.findAll({
+    where,
     include: [
       {
         model: Review,
@@ -66,6 +152,7 @@ router.get("/", async (req, res) => {
         model: SpotImage,
       },
     ],
+    ...pagination,
   });
 
   // Add Rating and Preview Image
@@ -79,7 +166,12 @@ router.get("/", async (req, res) => {
       spot.avgRating = review.stars;
     });
 
+    if (!spot.SpotImages.length) {
+      spot.previewImage = "There is no preview image for this spot."
+    }
+
     spot.SpotImages.forEach((image) => {
+
       if (image.preview === true) {
         spot.previewImage = image.url;
       }
@@ -89,7 +181,18 @@ router.get("/", async (req, res) => {
     delete spot.SpotImages;
   });
 
-  return res.json({Spots: spotsList});
+  if (!spotsList.length) {
+
+    return res.json({
+      message: "This page is empty. Please refine your query by adding missing filters, adjusting your query parameters, limiting the size of your page results, or choosing a previous page."
+    })
+  }
+
+  return res.json({
+    Spots: spotsList,
+    page: Number(page),
+    size: parseInt(size),
+  });
 });
 
 // GET details for a Spot from an id - done!
@@ -213,8 +316,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   return res.json(newImage);
 });
 
-// Edit a Spot - done, with questions:
-// How precise is error-checking supposed to be?
+// Edit a Spot
 router.put("/:spotId", requireAuth, validateSpotEdit, async (req, res) => {
   const editSpot = await Spot.findByPk(req.params.spotId, {
     include: [
@@ -548,13 +650,10 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
 
     if (
       (requestedStart >= reservedStartDate &&
-      requestedStart < reservedEndDate) ||
-      (requestedEnd > reservedStartDate &&
-      requestedEnd <= reservedEndDate) ||
-      (reservedStartDate >= requestedStart &&
-      reservedEndDate <= requestedEnd)
+        requestedStart < reservedEndDate) ||
+      (requestedEnd > reservedStartDate && requestedEnd <= reservedEndDate) ||
+      (reservedStartDate >= requestedStart && reservedEndDate <= requestedEnd)
     ) {
-
       res.status(403);
       return res.json({
         message: "Sorry, this spot is already booked for the specified dates",
@@ -563,8 +662,8 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
           endDate: "End date conflicts with an existing booking",
         },
       });
-    };
-  };
+    }
+  }
 
   // Create booking
   const newBooking = await Booking.create({
