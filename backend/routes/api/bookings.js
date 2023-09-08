@@ -48,6 +48,12 @@ router.get("/current", requireAuth, async (req, res) => {
     delete booking.Spot.SpotImages;
   });
 
+  if (!userBookingsArr.length) {
+    return res.json({
+      message: "You have no currently scheduled bookings."
+    })
+  }
+
   return res.json({Bookings: userBookingsArr});
 });
 
