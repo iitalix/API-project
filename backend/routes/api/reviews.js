@@ -77,7 +77,7 @@ router.get('/current', requireAuth, async (req, res) => {
     delete review.Spot.SpotImages;
   })
 
-  if (!currUserReviewsArr.length) {
+  if (!currUserRevsArr.length) {
 
     return res.json({
       message: "You currently have no reviews."
