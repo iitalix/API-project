@@ -195,6 +195,63 @@ router.get("/", validateQueryEdit, async (req, res) => {
   });
 });
 
+// Get all Spots of Current User - done!
+router.get("/current", requireAuth, async (req, res) => {
+  const {user} = req;
+  const allSpotsUser = await Spot.findAll({
+    where: {
+      ownerId: user.id,
+    },
+    include: [
+      {
+        model: SpotImage,
+        attributes: ["url", "preview"],
+      },
+      {
+        model: Review,
+        attributes: ["stars"],
+      },
+    ],
+  });
+
+  let allSpotsUserObj = [];
+  allSpotsUser.forEach((spot) => {
+    allSpotsUserObj.push(spot.toJSON());
+  });
+
+  allSpotsUserObj.forEach((spot) => {
+
+    spot.SpotImages.forEach((image) => {
+
+      if (image.preview === true) {
+        spot.previewImage = image.url;
+      }
+    });
+
+    if (!spot.SpotImages.length) {
+      spot.previewImage = "There is no preview image for this spot."
+    }
+
+    spot.SpotImages.forEach((image) => {
+
+      if (image.preview === true) {
+        spot.previewImage = image.url;
+      }
+    });
+
+    let count = 0;
+    spot.Reviews.forEach((review) => {
+      count += review.stars;
+    });
+
+    spot.avgRating = count / spot.Reviews.length;
+    delete spot.Reviews;
+    delete spot.SpotImages;
+  });
+
+  return res.json({Spots: allSpotsUserObj});
+});
+
 // GET details for a Spot from an id - done!
 router.get("/:spotId(\\d+)", async (req, res) => {
   let findSpot = await Spot.findByPk(req.params.spotId, {
@@ -235,51 +292,6 @@ router.get("/:spotId(\\d+)", async (req, res) => {
     avgRating,
     numReviews,
   });
-});
-
-// Get all Spots of Current User - done!
-router.get("/current", requireAuth, async (req, res) => {
-  const {user} = req;
-  const allSpotsUser = await Spot.findAll({
-    where: {
-      ownerId: user.id,
-    },
-    include: [
-      {
-        model: SpotImage,
-        attributes: ["url", "preview"],
-      },
-      {
-        model: Review,
-        attributes: ["stars"],
-      },
-    ],
-  });
-
-  let allSpotsUserObj = [];
-  allSpotsUser.forEach((spot) => {
-    allSpotsUserObj.push(spot.toJSON());
-  });
-
-  allSpotsUserObj.forEach((spot) => {
-    if (!spot.SpotImages.length) {
-      delete spot.SpotImages;
-      spot.previewImage = "No preview images for this spot.";
-    } else {
-      delete spot.SpotImages;
-      spot.previewImage = spot.SpotImages.url;
-    }
-
-    let count = 0;
-    spot.Reviews.forEach((review) => {
-      count += review.stars;
-    });
-
-    spot.avgRating = count / spot.Reviews.length;
-    delete spot.Reviews;
-  });
-
-  return res.json({Spots: allSpotsUserObj});
 });
 
 // Add an image to a Spot based on Spot's id - DONE!
