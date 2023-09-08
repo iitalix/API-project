@@ -116,17 +116,17 @@ router.get("/", validateQueryEdit, async (req, res) => {
   // Latitude
   if (minLat && !maxLat) where.lat = {[Op.gte]: minLat};
   if (maxLat && !minLat) where.lat = {[Op.lte]: maxLat};
-  if (minLat && maxLat) where.lat = {[Op.and]: [{[Op.lte]: minLat}, {[Op.gte]: maxLat}]};
+  if (minLat && maxLat) where.lat = {[Op.between]: [minLat, maxLat]};
 
   // Longitude
   if (minLng && !maxLng) where.lng = {[Op.gte]: minLng};
   if (maxLng && !minLng) where.lat = {[Op.lte]: maxLng};
-  if (minLng && maxLng) where.lat = {[Op.and]: [{[Op.lte]: minLng}, {[Op.gte]: maxLng}]};
+  if (minLng && maxLng) where.lat = {[Op.between]: [minLng, maxLng]};
 
   // Price
   if (minPrice && !maxPrice) where.price = {[Op.gte]: minPrice};
   if (maxPrice && !minPrice) where.price = {[Op.lte]: maxPrice};
-  if (minPrice && maxPrice) where.price = {[Op.and]: [{[Op.lte]: minPrice}, {[Op.gte]: maxPrice}]};
+  if (minPrice && maxPrice) where.price = {[Op.between]: [minPrice, maxPrice]};
 
   const allSpots = await Spot.findAll({
     where,
