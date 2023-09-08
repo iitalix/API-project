@@ -21,32 +21,32 @@ const validateQueryEdit = [
   check("minLat")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: -90, max: 90})
     .withMessage("Latitude is not valid."),
   check("maxLat")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: -90, max: 90})
     .withMessage("Latitude is not valid."),
   check("minlng")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: -180, max: 180})
     .withMessage("Longitude is not valid."),
   check("maxlng")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: -180, max: 180})
     .withMessage("Longitude is not valid."),
   check("minPrice")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: 0})
     .withMessage("Minimum price must be a decimal, and greater than or equal to 0."),
   check("maxPrice")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isDecimal({force_decimal: true})
+    .isFloat({min: 0})
     .withMessage("Maximum price must be a decimal, and greater than or equal to 0."),
   handleValidationErrors,
 ];
@@ -110,37 +110,23 @@ router.get("/", validateQueryEdit, async (req, res) => {
     offset: size * (page - 1),
   };
 
+  // Search Queries
   const where = {};
 
-  if (minLat || maxLat) {
+  // Latitude
+  if (minLat && !maxLat) where.lat = {[Op.gte]: minLat};
+  if (maxLat && !minLat) where.lat = {[Op.lte]: maxLat};
+  if (minLat && maxLat) where.lat = {[Op.and]: [{[Op.lte]: minLat}, {[Op.gte]: maxLat}]};
 
-    where.lat = {[Op.between]: [minLat, maxLat]}
-  };
+  // Longitude
+  if (minLng && !maxLng) where.lng = {[Op.gte]: minLng};
+  if (maxLng && !minLng) where.lat = {[Op.lte]: maxLng};
+  if (minLng && maxLng) where.lat = {[Op.and]: [{[Op.lte]: minLng}, {[Op.gte]: maxLng}]};
 
-  if (minLng || maxLng) {
-
-    where.lng = {[Op.between]: [minLng, maxLng]}
-  };
-
-  if (minPrice || maxPrice) {
-
-    if (minPrice < 0 || maxPrice < 0) {
-
-      res.status(400);
-      res.json({
-        message: "Bad Request",
-        errors: {
-          maxPrice: "Maximum price must be greater than or equal to 0",
-          minPrice: "Minimum price must be greater than or equal to 0",
-        }
-      });
-    }
-
-    else {
-
-      where.price = {[Op.between]: [minPrice, maxPrice]}
-    }
-  };
+  // Price
+  if (minPrice && !maxPrice) where.price = {[Op.gte]: minPrice};
+  if (maxPrice && !minPrice) where.price = {[Op.lte]: maxPrice};
+  if (minPrice && maxPrice) where.price = {[Op.and]: [{[Op.lte]: minPrice}, {[Op.gte]: maxPrice}]};
 
   const allSpots = await Spot.findAll({
     where,
