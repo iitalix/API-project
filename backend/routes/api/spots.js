@@ -126,7 +126,7 @@ router.get("/", validateQueryEdit, async (req, res) => {
   // Price
   if (minPrice && !maxPrice) where.price = {[Op.gte]: minPrice};
   if (maxPrice && !minPrice) where.price = {[Op.lte]: maxPrice};
-  if (minPrice && maxPrice) where.price = {[Op.between]: [minPrice, maxPrice]};
+  if (minPrice && maxPrice) where.price = {[Op.and]: [{[Op.gte]: minPrice}, {[Op.lte]: maxPrice}]};
 
   const allSpots = await Spot.findAll({
     where,
