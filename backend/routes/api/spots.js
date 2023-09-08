@@ -116,12 +116,12 @@ router.get("/", validateQueryEdit, async (req, res) => {
   // Latitude
   if (minLat && !maxLat) where.lat = {[Op.gte]: minLat};
   if (maxLat && !minLat) where.lat = {[Op.lte]: maxLat};
-  if (minLat && maxLat) where.lat = {[Op.between]: [minLat, maxLat]};
+  if (minLat && maxLat) where.lat = {[Op.and]: [{[Op.gte]: minLat}, {[Op.lte]: maxLat}]};
 
   // Longitude
   if (minLng && !maxLng) where.lng = {[Op.gte]: minLng};
-  if (maxLng && !minLng) where.lat = {[Op.lte]: maxLng};
-  if (minLng && maxLng) where.lat = {[Op.between]: [minLng, maxLng]};
+  if (maxLng && !minLng) where.lng = {[Op.lte]: maxLng};
+  if (minLng && maxLng) where.lng = {[Op.and]: [{[Op.gte]: minLng}, {[Op.lte]: maxLng}]};
 
   // Price
   if (minPrice && !maxPrice) where.price = {[Op.gte]: minPrice};
