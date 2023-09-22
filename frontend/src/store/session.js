@@ -21,7 +21,6 @@ const removeUser = () => {
   };
 };
 
-
 // THUNKS
 // handles login
 export const login = (user) => async (dispatch) => {
@@ -48,21 +47,31 @@ export const restoreUser = () => async (dispatch) => {
 
 // signup
 export const signup = (user) => async (dispatch) => {
-    const {username, firstName, lastName, email, password} = user;
-    const response = await csrfFetch("/api/users", {
-        method: "POST",
-        body: JSON.stringify({
-            username,
-            firstName,
-            lastName,
-            email,
-            password
-        })
-    });
+  const {username, firstName, lastName, email, password} = user;
+  const response = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify({
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    }),
+  });
 
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+
+// logout
+export const logout = () => async (dispatch) => {
+  const response = await csrfFetch("/api/session", {
+    method: "DELETE",
+  });
+
+  dispatch(removeUser());
+  return response;
 };
 
 // REDUCERS
