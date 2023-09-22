@@ -651,6 +651,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
 
   // Pre-Existing Booking Conflicts
   for (let booking of spotBookingsArr) {
+
     // Existing Start Date
     const bookingStartDate = new Date(booking.startDate);
     const reservedStartDate = bookingStartDate.getTime();
