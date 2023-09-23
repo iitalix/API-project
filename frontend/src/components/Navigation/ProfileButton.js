@@ -1,15 +1,15 @@
 // frontend/src/components/Navigation/ProfileButton.js
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from 'react-redux';
+import * as sessionActions from '../../store/session';
+import OpenModalMenuItem from './OpenModalMenuItem';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
 
-import React, {useState, useEffect, useRef} from "react";
-import {useDispatch} from "react-redux";
-import * as sessionActions from "../../store/session";
-
-function ProfileButton({user}) {
+function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
-
-  // controls displaying of drop-down
-  const [showMenu, setShowMenu] = useState(false); // menu is hidden
 
   const openMenu = () => {
     if (showMenu) return;
@@ -25,36 +25,50 @@ function ProfileButton({user}) {
       }
     };
 
-    document.addEventListener("click", closeMenu);
+    document.addEventListener('click', closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  // logout
+  const closeMenu = () => setShowMenu(false);
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    closeMenu();
   };
 
-  // if the showMenu state variable is false,
-  // apply className "hidden" to dropdown menu element
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
 
   return (
     <>
       <button onClick={openMenu}>
-        <i className="fa-solid fa-user"></i>
+        <i class="fa-regular fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>
-          {user.firstName} {user.lastName}
-        </li>
-        <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        {user ? (
+          <>
+            <li>{user.username}</li>
+            <li>{user.firstName} {user.lastName}</li>
+            <li>{user.email}</li>
+            <li>
+              <button onClick={logout}>Log Out</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+              modalComponent={<SignupFormModal />}
+            />
+          </>
+        )}
       </ul>
     </>
   );
