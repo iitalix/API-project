@@ -5,7 +5,6 @@ import {csrfFetch} from "./csrf";
 // TYPES
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
-const SIGNUP_USER = "session/signupUser";
 
 // ACTION CREATORS
 const setUser = (user) => {

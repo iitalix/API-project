@@ -302,7 +302,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
   // Only Owner is authorized to add image
   let spotObj = findSpot.toJSON();
-  console.log(spotObj);
+
   if (user.id !== spotObj.ownerId) {
     res.status(401);
     return res.json({
