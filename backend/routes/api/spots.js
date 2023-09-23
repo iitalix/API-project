@@ -302,7 +302,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 
   // Only Owner is authorized to add image
   let spotObj = findSpot.toJSON();
-  console.log(spotObj);
+
   if (user.id !== spotObj.ownerId) {
     res.status(401);
     return res.json({
@@ -651,6 +651,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
 
   // Pre-Existing Booking Conflicts
   for (let booking of spotBookingsArr) {
+
     // Existing Start Date
     const bookingStartDate = new Date(booking.startDate);
     const reservedStartDate = bookingStartDate.getTime();

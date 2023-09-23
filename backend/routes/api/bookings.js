@@ -134,9 +134,6 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
     const bookingEndDate = new Date(booking.endDate);
     const reservedEndDate = bookingEndDate.getTime();
 
-    console.log("BOOKING USER ID:", booking.userId);
-    console.log("REQ USER ID", req.user.id);
-
     // if the requested start is greater or equal to reserved start,
     // and reqested end is greater than or equal to reserved end
     if (
