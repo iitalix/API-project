@@ -12,10 +12,15 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const {closeModal} = useModal();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, demoUser = false) => {
     e.preventDefault();
+
+    const demoUserObj = demoUser
+      ? {credential: "DemoUser", password: "password"}
+      : {credential, password};
+
     setErrors({});
-    return dispatch(sessionActions.login({credential, password}))
+    return dispatch(sessionActions.login(demoUserObj))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -24,18 +29,6 @@ function LoginFormModal() {
         }
       });
   };
-
-  useEffect(() => {
-    if (!credential.length && !password.length) return;
-
-    if (credential.length < 4) {
-      setErrors({credential: "Username must be 4 characters or more"});
-    } else if (password.length < 6) {
-      setErrors({password: "Password must be 6 characters or more"});
-    } else {
-      setErrors({});
-    }
-  }, [credential, password]);
 
   return (
     <>
@@ -60,9 +53,14 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit" disabled={Object.keys(errors).length > 0}>
+        <button
+          type="submit"
+          disabled={credential.length < 4 || password.length < 6}
+        >
           Log In
+        </button>
+        <button onClick={(e) => handleSubmit(e, "demoUser")}>
+          Log in as Demo User
         </button>
       </form>
     </>

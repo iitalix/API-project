@@ -42,6 +42,22 @@ function SignupFormModal() {
     });
   };
 
+  const disableSubmit = () => {
+    if (
+      !email ||
+      !username ||
+      !firstName ||
+      !lastName ||
+      !password ||
+      !confirmPassword ||
+      username.length < 4 ||
+      password.length < 6 ||
+      confirmPassword.length < 6
+    ) {
+      return true;
+    }
+  };
+
   return (
     <>
       <h1>Sign Up</h1>
@@ -106,7 +122,9 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={disableSubmit()}>
+          Sign Up
+        </button>
       </form>
     </>
   );
