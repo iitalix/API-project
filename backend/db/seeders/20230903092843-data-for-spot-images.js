@@ -13,27 +13,27 @@ const { SpotImage } = require('../models');
 const validSpotImages = [
   {
     spotId: 5,
-    url: "https://i.pinimg.com/originals/d1/b1/d5/d1b1d513c78fb6a5d04df0c1a01315f8.jpg",
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155258347919003699/seedpic-1.png",
     preview: true
   },
   {
     spotId: 1,
-    url: "https://luxurylifestyleawards.com/wp-content/uploads/2021/07/03-18.jpg",
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155258348460048444/seedpic-2.png",
     preview: true
   },
   {
     spotId: 4,
-    url: "https://i.pinimg.com/736x/78/09/17/780917036923138d080077382262a019--interiordesign-decoration.jpg",
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155258348858523698/seedpic-3.png",
     preview: true
   },
   {
     spotId: 2,
-    url: "https://www.decoraid.com/wp-content/uploads/2021/04/Modern-Country-scaled.jpeg",
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155258349282152458/seedpic-4.png",
     preview: true
   },
   {
     spotId: 3,
-    url: "https://archello.s3.eu-central-1.amazonaws.com/images/2022/09/30/manna-interior-modern-classic-house-design-private-houses-archello.1664525674.874.jpg",
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155258349684801566/seedpic-5.png",
     preview: true
   }
 ];
