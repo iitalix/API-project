@@ -12,8 +12,10 @@ export default function SpotCard({spot}) {
             <div className="card-details">
                 <div>
                     <div>{spot.city}, {spot.state}</div>
-                    <div>{spot.avgRating}</div>
-                </div>
+                    <div>
+                        <i className="fa-solid fa-star"></i>
+                        {spot.avgRating}</div>
+                    </div>
                 <div>{`$${spot.price} night`}</div>
             </div>
         </div>
