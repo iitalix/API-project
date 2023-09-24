@@ -5,7 +5,7 @@ const app = express();
 
 const {requireAuth} = require("../../utils/auth.js");
 const {check} = require("express-validator");
-const { Op } = require('sequelize');
+const {Op} = require("sequelize");
 const {handleValidationErrors} = require("../../utils/validation");
 const {
   Booking,
@@ -42,12 +42,16 @@ const validateQueryEdit = [
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isFloat({min: 0})
-    .withMessage("Minimum price must be a decimal, and greater than or equal to 0."),
+    .withMessage(
+      "Minimum price must be a decimal, and greater than or equal to 0."
+    ),
   check("maxPrice")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isFloat({min: 0})
-    .withMessage("Maximum price must be a decimal, and greater than or equal to 0."),
+    .withMessage(
+      "Maximum price must be a decimal, and greater than or equal to 0."
+    ),
   handleValidationErrors,
 ];
 
@@ -116,17 +120,20 @@ router.get("/", validateQueryEdit, async (req, res) => {
   // Latitude
   if (minLat && !maxLat) where.lat = {[Op.gte]: minLat};
   if (maxLat && !minLat) where.lat = {[Op.lte]: maxLat};
-  if (minLat && maxLat) where.lat = {[Op.and]: [{[Op.gte]: minLat}, {[Op.lte]: maxLat}]};
+  if (minLat && maxLat)
+    where.lat = {[Op.and]: [{[Op.gte]: minLat}, {[Op.lte]: maxLat}]};
 
   // Longitude
   if (minLng && !maxLng) where.lng = {[Op.gte]: minLng};
   if (maxLng && !minLng) where.lng = {[Op.lte]: maxLng};
-  if (minLng && maxLng) where.lng = {[Op.and]: [{[Op.gte]: minLng}, {[Op.lte]: maxLng}]};
+  if (minLng && maxLng)
+    where.lng = {[Op.and]: [{[Op.gte]: minLng}, {[Op.lte]: maxLng}]};
 
   // Price
   if (minPrice && !maxPrice) where.price = {[Op.gte]: minPrice};
   if (maxPrice && !minPrice) where.price = {[Op.lte]: maxPrice};
-  if (minPrice && maxPrice) where.price = {[Op.and]: [{[Op.gte]: minPrice}, {[Op.lte]: maxPrice}]};
+  if (minPrice && maxPrice)
+    where.price = {[Op.and]: [{[Op.gte]: minPrice}, {[Op.lte]: maxPrice}]};
 
   const allSpots = await Spot.findAll({
     where,
@@ -148,16 +155,25 @@ router.get("/", validateQueryEdit, async (req, res) => {
   });
 
   spotsList.forEach((spot) => {
+    // spot.Reviews.forEach((review) => {
+    //   spot.avgRating = review.stars;
+    // });
+
+    // !! Start
+    let count = 0;
     spot.Reviews.forEach((review) => {
-      spot.avgRating = review.stars;
+      count += review.stars;
     });
 
+    spot.avgRating = (count / spot.Reviews.length).toFixed(1);
+
+    // !! End
+
     if (!spot.SpotImages.length) {
-      spot.previewImage = "There is no preview image for this spot."
+      spot.previewImage = "There is no preview image for this spot.";
     }
 
     spot.SpotImages.forEach((image) => {
-
       if (image.preview === true) {
         spot.previewImage = image.url;
       }
@@ -168,10 +184,10 @@ router.get("/", validateQueryEdit, async (req, res) => {
   });
 
   if (!spotsList.length) {
-
     return res.json({
-      message: "This page is empty. Please refine your query by adding missing filters, adjusting your query parameters, limiting the size of your page results, or choosing a previous page."
-    })
+      message:
+        "This page is empty. Please refine your query by adding missing filters, adjusting your query parameters, limiting the size of your page results, or choosing a previous page.",
+    });
   }
 
   return res.json({
@@ -206,39 +222,39 @@ router.get("/current", requireAuth, async (req, res) => {
   });
 
   allSpotsUserObj.forEach((spot) => {
-
     spot.SpotImages.forEach((image) => {
-
       if (image.preview === true) {
         spot.previewImage = image.url;
       }
     });
 
     if (!spot.SpotImages.length) {
-      spot.previewImage = "There is no preview image for this spot."
+      spot.previewImage = "There is no preview image for this spot.";
     }
 
     spot.SpotImages.forEach((image) => {
-
       if (image.preview === true) {
         spot.previewImage = image.url;
       }
     });
 
+    // !! Start
     let count = 0;
     spot.Reviews.forEach((review) => {
       count += review.stars;
     });
 
-    spot.avgRating = count / spot.Reviews.length;
+    spot.avgRating = (count / spot.Reviews.length).toFixed(1);
+    // !! End
+
     delete spot.Reviews;
     delete spot.SpotImages;
   });
 
   if (!allSpotsUserObj.length) {
     return res.json({
-      message: "You currently have no spots setup."
-    })
+      message: "You currently have no spots setup.",
+    });
   }
 
   return res.json({Spots: allSpotsUserObj});
@@ -272,10 +288,19 @@ router.get("/:spotId(\\d+)", async (req, res) => {
   findSpot = findSpot.toJSON();
 
   let numReviews = findSpot.Reviews.length;
-  let avgRating;
+  // let avgRating;
+  // findSpot.Reviews.forEach((review) => {
+  //   avgRating = (review.stars / numReviews);
+  // });
+
+  // !! Start
+  let count = 0;
   findSpot.Reviews.forEach((review) => {
-    avgRating = review.stars;
+    count += review.stars;
   });
+
+  let avgRating = (count / numReviews).toFixed(1);
+  // !! End
 
   delete findSpot.Reviews;
 
@@ -565,10 +590,9 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
   });
 
   if (!bookingsArr.length) {
-
     return res.json({
-      message: "Be the first to book this spot!"
-    })
+      message: "Be the first to book this spot!",
+    });
   }
 
   bookingsArr.forEach((booking) => {
@@ -651,7 +675,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
 
   // Pre-Existing Booking Conflicts
   for (let booking of spotBookingsArr) {
-
     // Existing Start Date
     const bookingStartDate = new Date(booking.startDate);
     const reservedStartDate = bookingStartDate.getTime();
