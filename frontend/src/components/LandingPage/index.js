@@ -16,7 +16,6 @@ export default function LandingPage() {
 
   return (
     <div className="spotcards-container">
-      <h1>Hello Koyfacegirl! </h1>
       <div className="spot-cards">
         {spots.map((spot) => (
             <div key={spot.id} className="spotcard">

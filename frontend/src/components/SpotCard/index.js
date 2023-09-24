@@ -5,7 +5,7 @@ export default function SpotCard({spot}) {
 
     return (
 
-        <div className="card-container">
+        <div className="card-container" title={spot.name}>
             <div>
                 <img src={`${spot.previewImage}`} alt="spot image" className="card-image"></img>
             </div>
@@ -14,7 +14,7 @@ export default function SpotCard({spot}) {
                     <div>{spot.city}, {spot.state}</div>
                     <div>{spot.avgRating}</div>
                 </div>
-                <div>{`$${spot.price}`}</div>
+                <div>{`$${spot.price} night`}</div>
             </div>
         </div>
     )
