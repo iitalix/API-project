@@ -1,0 +1,14 @@
+.spotcards-container {
+    padding: 10px;
+
+}
+
+.spot-cards {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.spotcard {
+    margin: 5px;
+}

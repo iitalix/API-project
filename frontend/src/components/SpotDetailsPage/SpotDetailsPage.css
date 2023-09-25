@@ -1,0 +1,22 @@
+/* Images */
+
+#images-container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+#side-images-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#main-image {
+
+    width: 500px
+}
+
+.side-image {
+
+    width: 250px
+}
