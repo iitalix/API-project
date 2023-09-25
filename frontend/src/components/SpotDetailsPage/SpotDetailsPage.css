@@ -3,6 +3,7 @@
 #images-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 
 }
 
@@ -13,10 +14,69 @@
 
 #main-image {
 
-    width: 500px
+    width: 480px
 }
 
 .side-image {
 
-    width: 250px
+    width: 240px
+}
+
+/* Spot Info Container */
+
+#spot-info-container {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid black;
+}
+
+#host-info {
+
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+#spot-description {
+    width: 60%;
+    padding-bottom: 15px;
+}
+
+/* Callout Box */
+
+.callout-box {
+
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 35%;
+}
+
+.callout-box-upper {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.callout-upper-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.callout-upper-right div {
+
+    padding: 2px;
+}
+
+.reviews-header > * {
+
+    font-size: 20px;
+}
+
+/* Reviews Container */
+#reviews-container {
+    display: flex;
+    flex-direction: column;
 }

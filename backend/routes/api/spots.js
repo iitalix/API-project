@@ -155,19 +155,13 @@ router.get("/", validateQueryEdit, async (req, res) => {
   });
 
   spotsList.forEach((spot) => {
-    // spot.Reviews.forEach((review) => {
-    //   spot.avgRating = review.stars;
-    // });
 
-    // !! Start
     let count = 0;
     spot.Reviews.forEach((review) => {
       count += review.stars;
     });
 
     spot.avgRating = (count / spot.Reviews.length).toFixed(1);
-
-    // !! End
 
     if (!spot.SpotImages.length) {
       spot.previewImage = "There is no preview image for this spot.";
@@ -238,14 +232,13 @@ router.get("/current", requireAuth, async (req, res) => {
       }
     });
 
-    // !! Start
+
     let count = 0;
     spot.Reviews.forEach((review) => {
       count += review.stars;
     });
 
-    spot.avgRating = (count / spot.Reviews.length).toFixed(1);
-    // !! End
+    spot.avgRating = (count / spot.Reviews.length).toFixed(1)
 
     delete spot.Reviews;
     delete spot.SpotImages;
@@ -288,19 +281,13 @@ router.get("/:spotId(\\d+)", async (req, res) => {
   findSpot = findSpot.toJSON();
 
   let numReviews = findSpot.Reviews.length;
-  // let avgRating;
-  // findSpot.Reviews.forEach((review) => {
-  //   avgRating = (review.stars / numReviews);
-  // });
 
-  // !! Start
   let count = 0;
   findSpot.Reviews.forEach((review) => {
     count += review.stars;
   });
 
   let avgRating = (count / numReviews).toFixed(1);
-  // !! End
 
   delete findSpot.Reviews;
 
@@ -497,13 +484,33 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
+
   if (!allReviews.length) {
     return res.json({
       message: "There are no reviews for this spot.",
     });
   }
 
-  return res.json({Reviews: allReviews});
+
+  const allReviewsArr = [];
+  allReviews.forEach((review) => {
+
+    allReviewsArr.push(review.toJSON());
+  })
+
+  allReviewsArr.forEach((review) => {
+
+    const badcreateDate = new Date(review.createdAt);
+    const createDate = badcreateDate.toDateString();
+
+    const badupdateDate = new Date(review.updatedAt);
+    const updateDate = badupdateDate.toDateString();
+
+    review.createdAt = createDate;
+    review.updatedAt = updateDate;
+  })
+
+   return res.json({Reviews: allReviewsArr})
 });
 
 // Create a Review for a Spot based on Spot id - done!
