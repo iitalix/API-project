@@ -14,13 +14,10 @@ export default function SpotDetailsPage() {
 
   useEffect(() => {
 
-    if (!Object.keys(spot).length) {
-      dispatch(thunkGetSpotDetails(spotId));
-      return null;
-    }
-
     dispatch(thunkGetSpotDetails(spotId))
   }, [])
+
+  if (!spot.id) return null;
 
   const fourImagesArr = spot.SpotImages.slice(1);
   return (
@@ -33,7 +30,7 @@ export default function SpotDetailsPage() {
       </div>
       <div id="images-container">
         <div>
-          <img src={spot.SpotImages[spotId].url} alt="interior room" id="main-image" />
+          <img src={spot.SpotImages[0].url} alt="interior room" id="main-image" />
         </div>
         <div id="side-image-container">
           {fourImagesArr.map((image) => (
