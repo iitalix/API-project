@@ -97,8 +97,8 @@ export default function SpotDetailsPage() {
             </div>
             <div>&middot;</div>
             <div>
-            {spot.numReviews ? 1 <div>1 review</div> : <div>{spot.numReviews} reviews</div>}
-
+            {/* {spot.numReviews ? 1 <div>1 review</div> : } */}
+            <div>{spot.numReviews} reviews</div>
             </div>
           </div>
         </div>
