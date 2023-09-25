@@ -26,6 +26,15 @@ export default function SpotDetailsPage() {
     alert("Feature coming soon!");
   }
 
+  function convertDate(date) {
+
+    let sampleDate = (date).split(" ");
+    sampleDate.splice(0,1);
+    sampleDate.splice(1,1);
+
+    return sampleDate.join(" ")
+  }
+
   const fourImagesArr = spot.SpotImages.slice(1);
   return (
     <>
@@ -87,7 +96,10 @@ export default function SpotDetailsPage() {
               {spot.avgRating}
             </div>
             <div>&middot;</div>
-            <div>{spot.numReviews} reviews</div>
+            <div>
+            {spot.numReviews ? 1 <div>1 review</div> : <div>{spot.numReviews} reviews</div>}
+
+            </div>
           </div>
         </div>
 
@@ -95,7 +107,7 @@ export default function SpotDetailsPage() {
             {reviews.map((review) => (
               <div>
                 <div>{review.User.firstName}</div>
-                <div>{review.createdAt}</div>
+                <div>{convertDate(review.createdAt)}</div>
                 <div>{review.review}</div>
               </div>
             ))}
