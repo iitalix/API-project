@@ -25,6 +25,7 @@ function App() {
         <Route exact path="/spots/:spotId">
           <SpotDetailsPage />
         </Route>
+
       </Switch>}
     </>
   );

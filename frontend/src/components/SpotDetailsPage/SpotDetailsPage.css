@@ -42,16 +42,41 @@
     padding-bottom: 15px;
 }
 
-#callout-box {
+/* Callout Box */
+
+.callout-box {
 
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    width: 25%;
+    width: 35%;
 }
 
-#callout-box-upper {
+.callout-box-upper {
     display: flex;
     justify-content: space-between;
 
+}
+
+.callout-upper-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.callout-upper-right div {
+
+    padding: 2px;
+}
+
+.reviews-header > * {
+
+    font-size: 20px;
+}
+
+/* Reviews Container */
+#reviews-container {
+    display: flex;
+    flex-direction: column;
 }

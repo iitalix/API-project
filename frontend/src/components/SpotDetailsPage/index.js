@@ -2,26 +2,28 @@
 
 import {useSelector, useDispatch} from "react-redux";
 import {useParams} from "react-router-dom";
-import {thunkGetSpotDetails} from "../../store/spots";
-import "./SpotDetailsPage.css";
 import {useEffect} from "react";
+import {thunkGetSpotDetails} from "../../store/spots";
+import { thunkGetReviews } from "../../store/reviews";
+import "./SpotDetailsPage.css";
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
   const {spotId} = useParams();
   const spot = useSelector((state) => state.spots.spotDetails);
+  const reviews = useSelector((state) => state.reviews.Reviews);
+  console.log("REVIEWS", reviews)
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
+    dispatch(thunkGetReviews(spotId));
   }, []);
 
   if (!spot.id) return null;
 
-  // TODO: NOT WORKING
   function resAlert(e) {
-
     e.preventDefault();
-    alert("Feature coming soon!")
+    alert("Feature coming soon!");
   }
 
   const fourImagesArr = spot.SpotImages.slice(1);
@@ -52,6 +54,7 @@ export default function SpotDetailsPage() {
           ))}
         </div>
       </div>
+
       <div id="spot-info-container">
         <div id="spot-description">
           <div id="host-info">
@@ -59,18 +62,43 @@ export default function SpotDetailsPage() {
           </div>
           <div>{spot.description}</div>
         </div>
-        <div id="callout-box">
 
-            <div id="callout-box-upper">
-              <div>{`$${spot.price} night`}</div>
+        <div className="callout-box">
+          <div className="callout-box-upper">
+            <div>{`$${spot.price} night`}</div>
+            <div className="callout-upper-right">
               <div>
                 <i className="fa-solid fa-star"></i>
                 {spot.avgRating}
-                <div>{spot.numReviews} reviews</div>
+              </div>
+              <div>&middot;</div>
+              <div>{spot.numReviews} reviews</div>
             </div>
-
+          </div>
+          <button onClick={resAlert}>Reserve</button>
         </div>
-          <button onclick={resAlert}>Reserve</button>
+      </div>
+
+      <div id="reviews-container">
+        <div className="callout-box-upper" id="reviews-header">
+          <div className="callout-upper-right reviews-header">
+            <div>
+              <i className="fa-solid fa-star"></i>
+              {spot.avgRating}
+            </div>
+            <div>&middot;</div>
+            <div>{spot.numReviews} reviews</div>
+          </div>
+        </div>
+
+        <div className="reviews">
+            {reviews.map((review) => (
+              <div>
+                <div>{review.User.firstName}</div>
+                <div>{review.createdAt}</div>
+                <div>{review.review}</div>
+              </div>
+            ))}
         </div>
       </div>
     </>
