@@ -44,7 +44,7 @@ const validSpots = [
     lat: 5.1,
     lng: 6.1,
     name: "Rooms For Chooms",
-    description: "Get away from the craziness and relax in this fully-furnished spot! Delamain is only a phonecall away to get you where you're going. Fast travelpoint locations right around the corner and Doc Rippers within a 5 minute walk! ",
+    description: "Get away from the craziness and relax in this fully-furnished spot! Delamain is only a phonecall away to get you where you're going. Fast travelpoint locations right around the corner and Ripper Doc within a 5 minute walk! ",
     price: 250,
   },
   {
