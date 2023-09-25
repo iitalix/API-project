@@ -497,13 +497,38 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
+
   if (!allReviews.length) {
     return res.json({
       message: "There are no reviews for this spot.",
     });
   }
 
-  return res.json({Reviews: allReviews});
+  // !! Start
+
+  const allReviewsArr = [];
+  allReviews.forEach((review) => {
+
+    allReviewsArr.push(review.toJSON());
+  })
+
+  allReviewsArr.forEach((review) => {
+
+    const badcreateDate = new Date(review.createdAt);
+    const createDate = badcreateDate.toDateString();
+
+    const badupdateDate = new Date(review.updatedAt);
+    const updateDate = badupdateDate.toDateString();
+
+    review.createdAt = createDate;
+    review.updatedAt = updateDate;
+  })
+
+  console.log("NEW REVIEWS", allReviewsArr)
+  // !! End
+
+  // return res.json({Reviews: allReviews});
+   return res.json({Reviews: allReviewsArr})
 });
 
 // Create a Review for a Spot based on Spot id - done!
