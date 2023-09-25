@@ -14,7 +14,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     dispatch(thunkGetSpots());
-  }, [dispatch]);
+  }, []);
 
   const goToSpot = (spot) => {
     push(`/spots/${spot.id}`);

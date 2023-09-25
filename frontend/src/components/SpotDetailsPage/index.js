@@ -1,39 +1,59 @@
 //frontend/src/components/SpotDetailPage/index.js
 
-import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {useParams} from 'react-router-dom'
-import { thunkGetSpotDetails } from "../../store/spots";
+import {useParams} from "react-router-dom";
+import {thunkGetSpotDetails} from "../../store/spots";
+import "./SpotDetailsPage.css"
+import { useEffect } from "react";
+
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
-  const { spotId } = useParams();
-  // key into reducer/storeshape
+  const {spotId} = useParams();
   const spot = useSelector((state) => state.spots.spotDetails);
-  const image = spot.SpotImages[0].url
 
   useEffect(() => {
-    dispatch(thunkGetSpotDetails(spotId));
-  }, [dispatch, spotId]);
 
-  console.log("SPOT::", spot)
+    if (!Object.keys(spot).length) {
+      dispatch(thunkGetSpotDetails(spotId));
+      return null;
+    }
+
+    dispatch(thunkGetSpotDetails(spotId))
+  }, [])
+
+  const fourImagesArr = spot.SpotImages.slice(1);
   return (
     <>
       <div>
         <h1>{spot.name}</h1>
-        <h2>{spot.city}, {spot.state}, {spot.country}</h2>
+        <h2>
+          {spot.city}, {spot.state}, {spot.country}
+        </h2>
       </div>
       <div id="images-container">
-        <img src={image} alt="room image"/>
+        <div>
+          <img src={spot.SpotImages[spotId].url} alt="interior room" id="main-image" />
+        </div>
+        <div id="side-image-container">
+          {fourImagesArr.map((image) => (
+            <img
+              src={image.url}
+              alt="interior room"
+              className="side-image"
+              key={image.id}
+            />
+          ))}
+        </div>
       </div>
       <div>
         <div>
-          <div>Hosted by {spot.User.firstName} {spot.User.lastName}</div>
+          <div>
+            Hosted by {spot.User.firstName} {spot.User.lastName}
+          </div>
           <div>{spot.description}</div>
         </div>
       </div>
     </>
-
-  )
-
+  );
 }

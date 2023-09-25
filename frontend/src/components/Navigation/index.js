@@ -12,7 +12,6 @@ function Navigation({isLoaded}) {
   return (
 
     <>
-
       <nav className="header">
         <div>
           <NavLink exact to="/">
@@ -29,7 +28,6 @@ function Navigation({isLoaded}) {
           </div>
         </div>
       </nav>
-
     </>
   );
 }
