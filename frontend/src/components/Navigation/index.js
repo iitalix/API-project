@@ -16,7 +16,7 @@ function Navigation({isLoaded}) {
       <nav className="header">
         <div>
           <NavLink exact to="/">
-            <img id="header-logo" src={logo} alt="logo image" id="logo"/>
+            <img src={logo} alt="logo image" id="logo"/>
           </NavLink>
         </div>
         <div>
