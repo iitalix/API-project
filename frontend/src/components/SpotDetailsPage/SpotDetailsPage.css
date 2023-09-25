@@ -3,6 +3,7 @@
 #images-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 
 }
 
@@ -13,10 +14,10 @@
 
 #main-image {
 
-    width: 500px
+    width: 480px
 }
 
 .side-image {
 
-    width: 250px
+    width: 240px
 }
