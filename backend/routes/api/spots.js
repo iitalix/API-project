@@ -469,6 +469,7 @@ router.get("/:spotId/reviews", async (req, res) => {
   }
 
   const allReviews = await Review.findAll({
+
     where: {
       spotId: req.params.spotId,
     },
@@ -482,10 +483,10 @@ router.get("/:spotId/reviews", async (req, res) => {
         attributes: ["id", "url"],
       },
     ],
-    // TODO: make sure this works
-    // order: ["createdBy", "DESC"]
+    order: [["createdAt", "DESC"]]
   });
 
+  console.log("ORDER BY::", allReviews)
 
   if (!allReviews.length) {
     return res.json({
