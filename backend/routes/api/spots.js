@@ -482,6 +482,8 @@ router.get("/:spotId/reviews", async (req, res) => {
         attributes: ["id", "url"],
       },
     ],
+    // TODO: make sure this works
+    // order: ["createdBy", "DESC"]
   });
 
 

@@ -9,6 +9,8 @@ import logo from "../../images/luxbnb-horizontal.png"
 function Navigation({isLoaded}) {
   const sessionUser = useSelector((state) => state.session.user);
 
+
+
   return (
 
     <>
