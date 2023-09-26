@@ -21,7 +21,7 @@ const validSpots = [
     lng: 2.1,
     name: "The Palace",
     description: "You can't ask for more than this. Prime location with a wonderful view. Amenities include WiFi and all available streaming services, a videogame theater, dancefloor, and a personal driver to take you to where you wanna go.",
-    price: 250,
+    price: 380,
   },
   {
     ownerId: 2,
@@ -33,7 +33,7 @@ const validSpots = [
     lng: 4.1,
     name: "Best Of The West",
     description: "Amenities include go-kart racing and free power-ups! Fully-stocked game room with every console and video game ever made as far back as the Intellivision. RTX 4090 Gaming PC, if that's your thing, too.",
-    price: 250,
+    price: 290,
   },
   {
     ownerId: 3,
@@ -57,7 +57,7 @@ const validSpots = [
     lng: 8.1,
     name: "Future Castle Style Living",
     description: "Luxurious country castle with scenic views! You're gonna love the funny looking animals and the wonderful local accents! Swing by the pub for a stiff ale, if you fancy!",
-    price: 250,
+    price: 560,
   },
   {
     ownerId: 2,
@@ -69,8 +69,22 @@ const validSpots = [
     lng: 10.1,
     name: "Crazy Place!",
     description: "Take a dip in the pool or relax in the sauna. An amazing spot with amenities too crazy to talk about here (call for details). This is a crazy place for a crazy city for only the craziest people!",
-    price: 250,
-  }
+    price: 450,
+  },
+  {
+    ownerId: 4,
+    address: "5468 Destiny Dr",
+    city: "Las Vegas",
+    state: "NV",
+    country: "USA",
+    lat: 10.1,
+    lng: 15.2,
+    name: "Show Me The Money!",
+    description: "Get Baller Status in this luxurious, spacious spot right off the strip! No need to rent a room at the Cosmo or Wynn, and much better than slumming it out in the desert!",
+    price: 350,
+  },
+
+
 ];
 
 
