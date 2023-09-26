@@ -13,7 +13,7 @@ const { Review } = require('../models');
 const validReviews = [
   {
     spotId: 1,
-    userId: 1,
+    userId: 4,
     review: "Had a wonderful visit. This place exceeded all my expectations. The bed is very comfortable and the living space is incredibly huge. I highly recommend this place!",
     stars: 5
   },
@@ -31,7 +31,7 @@ const validReviews = [
   },
   {
     spotId: 4,
-    userId: 1,
+    userId: 5,
     review: "Very nice location. It feels like you're in a spaceship sometimes with all the curves and futuristic design. There's a game room in there somewhere. You'll have to spend time trying to find it, though!",
     stars: 5
   },
@@ -49,7 +49,7 @@ const validReviews = [
   },
   {
     spotId: 2,
-    userId: 2,
+    userId: 5,
     review: "Really loved the go-karting experience! There aren't many places like this one! If you're looking for someting different, this is it!",
     stars: 5
   },
@@ -67,7 +67,7 @@ const validReviews = [
   },
   {
     spotId: 5,
-    userId: 2,
+    userId: 5,
     review: "Never seen a spot quite like this one! Totally unique, and the amenities are wonderful. After a night of partying, I slept like baby in the Cali King sized bed. You'll love it here!",
     stars: 5
   },
@@ -85,7 +85,7 @@ const validReviews = [
   },
   {
     spotId: 3,
-    userId: 3,
+    userId: 4,
     review: "Interesting place. The Delamain service and Ripper Doc's cyberware availability are a nice touch. If you want to check out the local sites, there's a nearby food court and retail shopping downstairs. Don't venture too far without a smart pistol, tho!",
     stars: 4
   },
