@@ -10,7 +10,7 @@ import "./LandingPage.css";
 export default function LandingPage() {
   const {push} = useHistory();
   const dispatch = useDispatch();
-  const spots = useSelector((state) => state.spots.data);
+  const spots = useSelector((state) => state.spots.allSpots);
 
   useEffect(() => {
     dispatch(thunkGetSpots());

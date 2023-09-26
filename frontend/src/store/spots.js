@@ -36,7 +36,7 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 
 // REDUCER
 const initialState = {
-  data: [],
+  allSpots: [],
   spotDetails: {}
 };
 
@@ -45,7 +45,7 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SPOTS:
       newState = Object.assign({}, state);
-      newState.data = action.payload;
+      newState.allSpots = action.payload;
       return newState;
     case GET_SPOT_DETAILS:
       newState = Object.assign({}, state);
