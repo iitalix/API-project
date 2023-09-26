@@ -10,9 +10,12 @@ import "./SpotDetailsPage.css";
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
   const {spotId} = useParams();
+  const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
-  console.log("REVIEWS", reviews);
+
+  console.log("SESSION USER::", sessionUser)
+  console.log("SPOT", spot)
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
@@ -45,6 +48,19 @@ export default function SpotDetailsPage() {
         </>
       ) : (<div>New</div>)
     );
+  }
+
+  function beFirstReview() {
+
+    if (!spot.numReviews.length && sessionUser.id !== spot.ownerId){
+
+      return (
+
+        <p>Be the first to post a review!</p>
+
+      )
+    }
+
   }
 
   const fourImagesArr = spot.SpotImages.slice(1);

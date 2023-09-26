@@ -9,15 +9,13 @@ import logo from "../../images/luxbnb-horizontal.png"
 function Navigation({isLoaded}) {
   const sessionUser = useSelector((state) => state.session.user);
 
-
-
   return (
 
     <>
       <nav className="header">
         <div>
           <NavLink exact to="/">
-            <img src={logo} alt="logo image" id="logo"/>
+            <img src={logo} alt="logo" id="logo"/>
           </NavLink>
         </div>
         <div>
