@@ -20,6 +20,7 @@ function Navigation({isLoaded}) {
         </div>
         <div>
           <div>
+
             {isLoaded && (
               <div>
                 <ProfileButton user={sessionUser} />

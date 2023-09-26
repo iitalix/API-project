@@ -14,8 +14,9 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-  console.log("SESSION USER::", sessionUser)
-  console.log("SPOT", spot)
+  console.log("SESSION USER::", sessionUser);
+  console.log("SPOT", spot);
+  console.log("REVIEWS", reviews)
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
@@ -38,29 +39,22 @@ export default function SpotDetailsPage() {
   }
 
   function showReviews() {
-    return (
-      spot.numReviews !== 0 ? (
-        <>
-          <div>&middot;</div>
-          <div>
-            {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
-          </div>
-        </>
-      ) : (<div>New</div>)
+    return spot.numReviews !== 0 ? (
+      <>
+        <div>&middot;</div>
+        <div>
+          {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
+        </div>
+      </>
+    ) : (
+      <div>New</div>
     );
   }
 
   function beFirstReview() {
-
-    if (!spot.numReviews.length && sessionUser.id !== spot.ownerId){
-
-      return (
-
-        <p>Be the first to post a review!</p>
-
-      )
+    if (!spot.numReviews.length && sessionUser.id !== spot.ownerId) {
+      return <p>Be the first to post a review!</p>;
     }
-
   }
 
   const fourImagesArr = spot.SpotImages.slice(1);
@@ -103,7 +97,29 @@ export default function SpotDetailsPage() {
         <div className="callout-box">
           <div className="callout-box-upper">
             <div>{`$${spot.price} night`}</div>
-            <div className="callout-upper-right">
+
+            {spot.numReviews > 0 && (
+              <div className="callout-upper-right">
+                <div>
+                  <i className="fa-solid fa-star"></i>
+                  {spot.avgRating}
+                </div>
+                {showReviews()}
+              </div>
+            )}
+          </div>
+          <button onClick={resAlert}>Reserve</button>
+        </div>
+      </div>
+
+      {!spot.numReviews && (
+        <p>Be the first to post a review!</p>
+      )}
+
+      {spot.numReviews > 0 && (
+        <div id="reviews-container">
+          <div className="callout-box-upper" id="reviews-header">
+            <div className="callout-upper-right reviews-header">
               <div>
                 <i className="fa-solid fa-star"></i>
                 {spot.avgRating}
@@ -111,31 +127,18 @@ export default function SpotDetailsPage() {
               {showReviews()}
             </div>
           </div>
-          <button onClick={resAlert}>Reserve</button>
-        </div>
-      </div>
 
-      <div id="reviews-container">
-        <div className="callout-box-upper" id="reviews-header">
-          <div className="callout-upper-right reviews-header">
-            <div>
-              <i className="fa-solid fa-star"></i>
-              {spot.avgRating}
-            </div>
-            {showReviews()}
+          <div className="reviews">
+            {reviews.map((review) => (
+              <div>
+                <div>{review.User.firstName}</div>
+                <div>{convertDate(review.createdAt)}</div>
+                <div>{review.review}</div>
+              </div>
+            ))}
           </div>
         </div>
-
-        <div className="reviews">
-          {reviews.map((review) => (
-            <div>
-              <div>{review.User.firstName}</div>
-              <div>{convertDate(review.createdAt)}</div>
-              <div>{review.review}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
     </>
   );
 }
