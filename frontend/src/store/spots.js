@@ -45,24 +45,33 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 };
 
 export const thunkCreateSpot = (spot) => async (dispatch) => {
-  const res = await csrfFetch("/api/spots/", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(spot),
-  });
 
-  // if (res.ok) {
-  //   const newSpot = await res.json();
-  //   console.log("NEW SPOT:", newSpot)
-  //   dispatch(createSpot(newSpot));
-  //   return newSpot;
-  // } else {
-  //   const errors = await res.json();
-  //   return errors;
-  // }
+  try {
+    const response = await csrfFetch("/api/spots/", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(spot),
+    });
 
-  const newSpot = await res.json();
-  console.log("NEW SPOT:", newSpot);
+    console.log("RESPONSE", response)
+
+    if (response.ok) {
+      const newSpot = await response.json();
+      console.log("NEW SPOT:", newSpot);
+      dispatch(getSpotDetails(newSpot));
+      return newSpot;
+    } else {
+      const errors = await response.json();
+      console.log("ERRORS:", errors)
+      return errors;
+    }
+
+  } catch (error) {
+
+    console.log("ERROR::", error);
+  }
+
+
 };
 
 // REDUCER
@@ -82,9 +91,9 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
       return newState;
-    // case CREATE_SPOT:
-    //   newState = Object.assign({}, state);
-    //   newState.spotDetails = action.payload;
+    case CREATE_SPOT:
+      newState = Object.assign({}, state);
+      newState.spotDetails = action.payload;
     default:
       return state;
   }
