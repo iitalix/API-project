@@ -14,6 +14,9 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
+  console.log("sessionUser::", sessionUser);
+  console.log("SPOT::", spot);
+
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
@@ -21,44 +24,45 @@ export default function SpotDetailsPage() {
 
   if (!spot.id) return null;
 
-  function resAlert(e) {
+  const resAlert = (e) => {
     e.preventDefault();
     alert("Feature coming soon!");
-  }
+  };
 
-  function convertDate(date) {
+  const convertDate = (date) => {
     let sampleDate = date.split(" ");
     sampleDate.splice(0, 1);
     sampleDate.splice(1, 1);
 
     return sampleDate.join(" ");
-  }
+  };
 
-  function showReviews() {
-    return (
-      spot.numReviews !== 0 ? (
-        <>
-          <div>&middot;</div>
-          <div>
-            {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
-          </div>
-        </>
-      ) : (<div>New</div>)
+  const showReviews = () => {
+    return spot.numReviews !== 0 ? (
+      <>
+        <div>&middot;</div>
+        <div>
+          {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
+        </div>
+      </>
+    ) : (
+      <div>New</div>
     );
-  }
+  };
 
-  function beFirstReview() {
-
-    if (!spot.numReviews.length && sessionUser.id !== spot.ownerId){
-
-      return (
-
-        <p>Be the first to post a review!</p>
-
-      )
+  const postFirstReview = () => {
+    if (sessionUser) {
+      if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
+        return (
+          <>
+            <p>Be the first to post a review!</p>
+          </>
+        );
+      }
     }
 
-  }
+    return;
+  };
 
   const fourImagesArr = spot.SpotImages.slice(1);
   return (
@@ -100,7 +104,28 @@ export default function SpotDetailsPage() {
         <div className="callout-box">
           <div className="callout-box-upper">
             <div>{`$${spot.price} night`}</div>
-            <div className="callout-upper-right">
+
+            {spot.numReviews > 0 && (
+              <div className="callout-upper-right">
+                <div>
+                  <i className="fa-solid fa-star"></i>
+                  {spot.avgRating}
+                </div>
+                {showReviews()}
+              </div>
+            )}
+          </div>
+
+          <button onClick={resAlert}>Reserve</button>
+        </div>
+      </div>
+
+      {postFirstReview()}
+
+      {spot.numReviews > 0 && (
+        <div id="reviews-container">
+          <div className="callout-box-upper" id="reviews-header">
+            <div className="callout-upper-right reviews-header">
               <div>
                 <i className="fa-solid fa-star"></i>
                 {spot.avgRating}
@@ -108,31 +133,18 @@ export default function SpotDetailsPage() {
               {showReviews()}
             </div>
           </div>
-          <button onClick={resAlert}>Reserve</button>
-        </div>
-      </div>
 
-      <div id="reviews-container">
-        <div className="callout-box-upper" id="reviews-header">
-          <div className="callout-upper-right reviews-header">
-            <div>
-              <i className="fa-solid fa-star"></i>
-              {spot.avgRating}
-            </div>
-            {showReviews()}
+          <div className="reviews">
+            {reviews?.map((review) => (
+              <div>
+                <div>{review.User.firstName}</div>
+                <div>{convertDate(review.createdAt)}</div>
+                <div>{review.review}</div>
+              </div>
+            ))}
           </div>
         </div>
-
-        <div className="reviews">
-          {reviews.map((review) => (
-            <div>
-              <div>{review.User.firstName}</div>
-              <div>{convertDate(review.createdAt)}</div>
-              <div>{review.review}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
     </>
   );
 }

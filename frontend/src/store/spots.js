@@ -1,9 +1,11 @@
 // frontend/src/store/spots.js
 
+import {csrfFetch} from "./csrf";
+
 // TYPES
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
-const CREATE_SPOT = "spots/createSpot"
+const CREATE_SPOT = "spots/createSpot";
 
 // ACTION CREATORS
 const getSpots = (spots) => {
@@ -16,16 +18,16 @@ const getSpots = (spots) => {
 const getSpotDetails = (spot) => {
   return {
     type: GET_SPOT_DETAILS,
-    payload: spot
-  }
-}
+    payload: spot,
+  };
+};
 
-const createSpot = (form) => {
+const createSpot = (newSpot) => {
   return {
     type: CREATE_SPOT,
-    payload: form
-  }
-}
+    payload: newSpot,
+  };
+};
 
 // THUNKS
 export const thunkGetSpots = () => async (dispatch) => {
@@ -40,29 +42,33 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 
   const data = await response.json();
   dispatch(getSpotDetails(data)); // gets passed to Action Creator
-}
+};
 
 export const thunkCreateSpot = (spot) => async (dispatch) => {
-  const res = await fetch('/api/spots', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await csrfFetch("/api/spots/", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
     body: JSON.stringify(spot),
   });
 
-  if (res.ok) {
-    const newSpot = await res.json();
-    dispatch(createSpot(newSpot));
-    return newSpot;
-  } else {
-    const errors = await res.json();
-    return errors;
-  }
+  // if (res.ok) {
+  //   const newSpot = await res.json();
+  //   console.log("NEW SPOT:", newSpot)
+  //   dispatch(createSpot(newSpot));
+  //   return newSpot;
+  // } else {
+  //   const errors = await res.json();
+  //   return errors;
+  // }
+
+  const newSpot = await res.json();
+  console.log("NEW SPOT:", newSpot);
 };
 
 // REDUCER
 const initialState = {
   allSpots: [],
-  spotDetails: {}
+  spotDetails: {},
 };
 
 const spotsReducer = (state = initialState, action) => {
@@ -76,9 +82,9 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
       return newState;
-    case CREATE_SPOT:
-      newState = Object.assign({}, state);
-      newState.spotDetails = action.payload;
+    // case CREATE_SPOT:
+    //   newState = Object.assign({}, state);
+    //   newState.spotDetails = action.payload;
     default:
       return state;
   }

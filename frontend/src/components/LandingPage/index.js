@@ -4,6 +4,7 @@ import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {thunkGetSpots} from "../../store/spots";
+import { thunkGetSpotDetails } from "../../store/spots";
 import SpotCard from "../SpotCard";
 import "./LandingPage.css";
 
@@ -14,6 +15,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     dispatch(thunkGetSpots());
+
   }, []);
 
   const goToSpot = (spot) => {
