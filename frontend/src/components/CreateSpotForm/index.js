@@ -20,81 +20,24 @@ export default function CreateSpotForm() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const [imgUrlOne, setImgUrlOne] = useState("");
+  const [imgUrlTwo, setImgUrlTwo] = useState("");
+  const [imgUrlThree, setImgUrlThree] = useState("");
+  const [imgUrlFour, setImgUrlFour] = useState("");
   const [validationObj, setValidationObj] = useState({});
 
-  const errorsObj = {};
-  // const handleErrors = () => {
+  const imgErrObj = {};
+  const imageUrlsObj = {
+    previewImage,
+    imgUrlOne,
+    imgUrlTwo,
+    imgUrlThree,
+    imgUrlFour,
+  };
 
-  //   if (!country) {
-  //     errorsObj.country = "Country is required"
-  //   }
-  //   if (!address) {
-  //     errorsObj.address = "Address is required"
-  //   }
-  //   if (!city) {
-  //     errorsObj.city = "City is required"
-  //   }
-  //   if (!state) {
-  //     errorsObj.state = "State is required"
-  //   }
-  //   if (description.length < 30) {
-  //     errorsObj.description = "Description needs a minimum of 30 characters"
-  //   }
-  //   if (!name) {
-  //     errorsObj.name = "Name is required"
-  //   }
-  //   if (!price) {
-  //     errorsObj.price = "Price is required"
-  //   }
-  //   if (!previewImage) {
-  //     errorsObj.previewImage = "Preview image is required"
-  //   }
-
-  //   setValidationObj(errorsObj)
-  //   return;
-  // }
-
-  // useEffect(() => {
-
-  //   if (!country) {
-  //     errorsObj.country = "Country is required";
-  //   }
-  //   if (!address) {
-  //     errorsObj.address = "Address is required";
-  //   }
-  //   if (!city) {
-  //     errorsObj.city = "City is required";
-  //   }
-  //   if (!state) {
-  //     errorsObj.state = "State is required";
-  //   }
-  //   if (description.length < 30) {
-  //     errorsObj.description = "Description needs a minimum of 30 characters";
-  //   }
-  //   if (!name) {
-  //     errorsObj.name = "Name is required";
-  //   }
-  //   if (!price) {
-  //     errorsObj.price = "Price is required";
-  //   }
-  //   if (!previewImage) {
-  //     errorsObj.previewImage = "Preview image is required";
-  //   }
-
-  //   setValidationObj(errorsObj);
-  // }, [country, address, city, state, description, name, price, previewImage]);
-
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-
-    // handleErrors();
-
-    // const errorsArr = Object.values(errorsObj);
-
-    // if (errorsArr.length > 0) {
-    //   errorsArr.map((error) => <p className="errors">{error}</p>);
-    //   return;
-    // }
+    imgErrCheck();
 
     const newSpot = {
       country,
@@ -104,11 +47,32 @@ export default function CreateSpotForm() {
       price,
       lat,
       lng,
-      previewImage,
     };
 
-    dispatch(thunkCreateSpot(newSpot));
-    push("/");
+    console.log("IMGERROBJ::", imgErrObj)
+    const createSpot = await dispatch(thunkCreateSpot(newSpot));
+    console.log("CREATED SPOT:", createSpot);
+
+    if (!createSpot.errors && Object.keys(imgErrObj).length > 0) push("/");
+
+    setValidationObj(createSpot.errors);
+    console.log("VALIDATION OBJECT", validationObj);
+  };
+
+  const imgErrCheck = () => {
+    Object.values(imageUrlsObj).map((image) => {
+      if (
+        !image.endsWith(".png") ||
+        !image.endsWith(".jpg") ||
+        !image.endsWith(".jpeg")
+      ) {
+        imgErrObj.url = "Image URL must end in .png, .jpg, or .jpeg";
+      }
+    });
+
+    if (!previewImage) {
+      imgErrObj.prevImg = "Preview image is required";
+    }
   };
 
   return (
@@ -129,9 +93,9 @@ export default function CreateSpotForm() {
           onChange={(e) => setCountry(e.target.value)}
         />
 
-        {/* {validationObj.country && (
+        {validationObj.country && (
           <p className="errors">{validationObj.country}</p>
-        )} */}
+        )}
 
         <label>Street Address</label>
         <input
@@ -141,9 +105,9 @@ export default function CreateSpotForm() {
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        {/* {validationObj.address && (
+        {validationObj.address && (
           <p className="errors">{validationObj.address}</p>
-        )} */}
+        )}
 
         <div>
           <label>City</label>
@@ -154,7 +118,7 @@ export default function CreateSpotForm() {
             onChange={(e) => setCity(e.target.value)}
           />
 
-          {/* {validationObj.city && <p className="errors">{validationObj.city}</p>} */}
+          {validationObj.city && <p className="errors">{validationObj.city}</p>}
 
           <label>State</label>
           <input
@@ -165,24 +129,24 @@ export default function CreateSpotForm() {
           />
         </div>
 
-        {/* {validationObj.state && <p className="errors">{validationObj.state}</p>} */}
+        {validationObj.state && <p className="errors">{validationObj.state}</p>}
 
         <div>
           <label>Latitude</label>
-            <input
-              type="text"
-              name="latitude"
-              value={lat}
-              onChange={(e) => setLatitude(e.target.value)}
-            />
+          <input
+            type="text"
+            name="latitude"
+            value={lat}
+            onChange={(e) => setLatitude(e.target.value)}
+          />
 
-            <label>Longitude</label>
-            <input
-              type="text"
-              name="longitude"
-              value={lng}
-              onChange={(e) => setLongitude(e.target.value)}
-            />
+          <label>Longitude</label>
+          <input
+            type="text"
+            name="longitude"
+            value={lng}
+            onChange={(e) => setLongitude(e.target.value)}
+          />
         </div>
 
         <h2>Describe your place to guests</h2>
@@ -198,9 +162,9 @@ export default function CreateSpotForm() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        {/* {validationObj.description && (
+        {validationObj.description && (
           <p className="errors">{validationObj.description}</p>
-        )} */}
+        )}
 
         <h2>Create a title for your spot</h2>
         <div>
@@ -215,7 +179,7 @@ export default function CreateSpotForm() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {/* {validationObj.name && <p className="errors">{validationObj.name}</p>} */}
+        {validationObj.name && <p className="errors">{validationObj.name}</p>}
 
         <h2>Set a base price for your spot</h2>
         <div>
@@ -234,7 +198,7 @@ export default function CreateSpotForm() {
           />
         </p>
 
-        {/* {validationObj.price && <p className="errors">{validationObj.price}</p>} */}
+        {validationObj.price && <p className="errors">{validationObj.price}</p>}
 
         <h2>Liven up your spot with photos</h2>
         <div>Submit a link to at least one photo to publish your spot.</div>
@@ -242,17 +206,53 @@ export default function CreateSpotForm() {
           type="text"
           name="preview-image"
           placeholder="Preview Image URL"
+          value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
         />
 
-        {/* {validationObj.previewImage && (
+        {validationObj.previewImage && (
           <p className="errors">{validationObj.previewImage}</p>
-        )} */}
+        )}
 
-        <input type="text" name="name" placeholder="Image URL" />
-        <input type="text" name="name" placeholder="Image URL" />
-        <input type="text" name="name" placeholder="Image URL" />
-        <input type="text" name="name" placeholder="Image URL" />
+        <input
+          type="text"
+          name="imgUrlOne"
+          value={imgUrlOne}
+          placeholder="Image URL"
+          onChange={(e) => setImgUrlOne(e.target.value)}
+        />
+
+        {imgErrObj.url && <p className="errors">{imgErrObj.url}</p>}
+
+        <input
+          type="text"
+          name="imgUrlTwo"
+          value={imgUrlTwo}
+          placeholder="Image URL"
+          onChange={(e) => setImgUrlTwo(e.target.value)}
+        />
+
+        {imgErrObj.url && <p className="errors">{imgErrObj.url}</p>}
+
+        <input
+          type="text"
+          name="imgUrlThree"
+          value={imgUrlThree}
+          placeholder="Image URL"
+          onChange={(e) => setImgUrlThree(e.target.value)}
+        />
+
+        {imgErrObj.url && <p className="errors">{imgErrObj.url}</p>}
+
+        <input
+          type="text"
+          name="imgUrlFour"
+          value={imgUrlFour}
+          placeholder="Image URL"
+          onChange={(e) => setImgUrlFour(e.target.value)}
+        />
+
+        {imgErrObj.url && <p className="errors">{imgErrObj.url}</p>}
 
         <button type="submit">Create Spot</button>
       </form>
