@@ -99,7 +99,7 @@ const validateSpotEdit = [
   handleValidationErrors,
 ];
 
-// GET all Spots - done!
+// GET all Spots
 router.get("/", validateQueryEdit, async (req, res) => {
   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} =
     req.query;
@@ -192,7 +192,7 @@ router.get("/", validateQueryEdit, async (req, res) => {
   });
 });
 
-// Get all Spots of Current User - done!
+// Get all Spots of Current User
 router.get("/current", requireAuth, async (req, res) => {
   const {user} = req;
   const allSpotsUser = await Spot.findAll({
@@ -254,7 +254,7 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({Spots: allSpotsUserObj});
 });
 
-// GET details for a Spot from an id - done!
+// GET details for a Spot from an id
 router.get("/:spotId(\\d+)", async (req, res) => {
   let findSpot = await Spot.findByPk(req.params.spotId, {
     include: [
