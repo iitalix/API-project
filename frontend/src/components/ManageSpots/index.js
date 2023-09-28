@@ -7,9 +7,9 @@ import SpotCard from "../SpotCard";
 
 export default function ManageSpots() {
   const dispatch = useDispatch();
-  const { push } = useHistory();
+  const {push} = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
-  const spots = useSelector((state) => state.spots.spotsCurrent.Spots);
+  const spots = useSelector((state) => state.spots.spotsCurrent);
   console.log("Manage Spots::", spots);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function ManageSpots() {
     return;
   };
 
-  if (!spots || !Object.keys(spots).length) return null
+
 
   return (
     <>
@@ -30,17 +30,24 @@ export default function ManageSpots() {
         <button>Create a New Spot</button>
       </div>
 
-      <div className="manage-cards-container">
-        {spots.map((spot) => (
-          <div
-            key={spot.id}
-            className="spotcard"
-            onClick={() => goToSpot(spot)}
-          >
-            <SpotCard spot={spot} />
-          </div>
-        ))}
-      </div>
+      {spots.length && (
+        <div className="manage-cards-container">
+          {spots.map((spot) => (
+            <div
+              key={spot.id}
+              className="spotcard"
+              onClick={() => goToSpot(spot)}
+            >
+              <SpotCard spot={spot} />
+
+              <div className="manage-buttons-container">
+                <button className="manage-buttons">Update</button>
+                <button className="manage-buttons">Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

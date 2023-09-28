@@ -14,16 +14,12 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-  console.log("sessionUser::", sessionUser);
-  console.log("SPOT::", spot);
-
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
   }, []);
 
   if (!spot.id) return null;
-  console.log("SPOT AFTER::", spot);
 
   const resAlert = (e) => {
     e.preventDefault();

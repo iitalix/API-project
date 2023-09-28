@@ -6,7 +6,6 @@ import {csrfFetch} from "./csrf";
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
 const GET_SPOTS_CURRENT = "spots/getSpotsCurrent"
-const CREATE_SPOT = "spots/createSpot";
 
 // ACTION CREATORS
 const getSpots = (spots) => {
@@ -38,12 +37,23 @@ export const thunkGetSpots = () => async (dispatch) => {
   dispatch(getSpots(data.Spots)); // gets passed to Action Creator
 };
 
-export const thunkGetSpotsCurrent = (userId) => async (dispatch) => {
-  const response = await fetch("/api/spots/current");
 
-  const data = await response.json();
-  console.log("CURR SPOTS::", data)
-  dispatch(getSpotsCurrent(data))
+export const thunkGetSpotsCurrent = (userId) => async (dispatch) => {
+  const response = await csrfFetch("/api/spots/current");
+
+  try {
+
+    if (response.ok) {
+
+      const data = await response.json();
+      dispatch(getSpotsCurrent(data.Spots))
+    }
+
+  } catch (error) {
+
+    return;
+  }
+
 }
 
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
@@ -99,7 +109,7 @@ export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
 const initialState = {
   allSpots: [],
   spotDetails: {},
-  spotsCurrent: {},
+  spotsCurrent: [],
 };
 
 const spotsReducer = (state = initialState, action) => {
@@ -113,12 +123,10 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
       return newState;
+
     case GET_SPOTS_CURRENT:
       newState = Object.assign({}, state);
       newState.spotsCurrent = action.payload;
-      action.payload.Spots.forEach((spot) => {
-        newState[spot.id] = spot;
-      });
       return newState
     default:
       return state;
