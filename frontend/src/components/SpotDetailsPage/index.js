@@ -23,6 +23,7 @@ export default function SpotDetailsPage() {
   }, []);
 
   if (!spot.id) return null;
+  console.log("SPOT AFTER::", spot);
 
   const resAlert = (e) => {
     e.preventDefault();
@@ -64,7 +65,8 @@ export default function SpotDetailsPage() {
     return;
   };
 
-  const fourImagesArr = spot.SpotImages.slice(1);
+  const fourImagesArr = spot.SpotImages?.slice(1);
+
   return (
     <>
       <div>
@@ -76,13 +78,13 @@ export default function SpotDetailsPage() {
       <div id="images-container">
         <div>
           <img
-            src={spot.SpotImages[0].url}
+            src={spot.SpotImages?.length && spot.SpotImages[0].url}
             alt="interior room"
             id="main-image"
           />
         </div>
         <div id="side-image-container">
-          {fourImagesArr.map((image) => (
+          {fourImagesArr?.map((image) => (
             <img
               src={image.url}
               alt="interior room"

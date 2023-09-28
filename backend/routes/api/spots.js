@@ -299,7 +299,7 @@ router.get("/:spotId(\\d+)", async (req, res) => {
   });
 });
 
-// Add an image to a Spot based on Spot's id - DONE!
+// Add an image to a Spot based on Spot's id
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const findSpot = await Spot.findByPk(req.params.spotId);
   const {user} = req;
@@ -384,7 +384,7 @@ router.put("/:spotId", requireAuth, validateSpotEdit, async (req, res) => {
   return res.json(updatedSpot);
 });
 
-// Create a Spot - done!
+// Create a Spot
 router.post("/", requireAuth, validateSpotEdit, async (req, res) => {
   const {user} = req;
   const {address, city, state, country, lat, lng, name, description, price} =
@@ -406,7 +406,7 @@ router.post("/", requireAuth, validateSpotEdit, async (req, res) => {
   return res.json(newSpot);
 });
 
-// Delete a Spot - done!
+// Delete a Spot
 router.delete("/:spotId", requireAuth, async (req, res) => {
   const deleteSpot = await Spot.findByPk(req.params.spotId, {
     include: [

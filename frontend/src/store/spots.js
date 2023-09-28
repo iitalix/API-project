@@ -6,6 +6,8 @@ import {csrfFetch} from "./csrf";
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
 const CREATE_SPOT = "spots/createSpot";
+const CREATE_SPOT_IMAGE = "spots/createSpotImages"
+
 
 // ACTION CREATORS
 const getSpots = (spots) => {
@@ -22,10 +24,10 @@ const getSpotDetails = (spot) => {
   };
 };
 
-const createSpot = (newSpot) => {
+const createSpotImages = (spotId, image) => {
   return {
     type: CREATE_SPOT,
-    payload: newSpot,
+    payload: image
   };
 };
 
@@ -55,18 +57,39 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
 
     if (response.ok) {
       const newSpot = await response.json();
-      console.log("NEW SPOT:", newSpot);
-      dispatch(getSpotDetails(newSpot));
       return newSpot;
     }
 
   } catch (response) {
 
     const data = await response.json()
-    console.log("DATA::", data);
     return data;
   }
 };
+
+export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
+
+  try {
+
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(spotImage),
+    });
+
+    console.log("RES DATA", response)
+
+    const data = await response.json()
+    console.log("IMG DATA", data)
+    return data;
+
+  } catch (error) {
+
+    const data = await error.json();
+    return data;
+  }
+
+}
 
 // REDUCER
 const initialState = {
@@ -85,9 +108,6 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
       return newState;
-    case CREATE_SPOT:
-      newState = Object.assign({}, state);
-      newState.spotDetails = action.payload;
     default:
       return state;
   }
