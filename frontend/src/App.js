@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import SpotDetailsPage from "./components/SpotDetailsPage";
 import CreateSpotForm from "./components/CreateSpotForm";
+import ManageSpots from "./components/ManageSpots";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,13 +24,19 @@ function App() {
           <CreateSpotForm />
         </Route>
 
-        <Route exact path="/">
-          <LandingPage />
+        <Route exact path="/current">
+          <ManageSpots />
         </Route>
 
         <Route exact path="/spots/:spotId">
           <SpotDetailsPage />
         </Route>
+
+        <Route exact path="/">
+          <LandingPage />
+        </Route>
+
+
 
 
       </Switch>}

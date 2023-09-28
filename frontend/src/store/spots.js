@@ -5,6 +5,7 @@ import {csrfFetch} from "./csrf";
 // TYPES
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
+const GET_SPOTS_CURRENT = "spots/getSpotsCurrent"
 const CREATE_SPOT = "spots/createSpot";
 
 // ACTION CREATORS
@@ -22,12 +23,12 @@ const getSpotDetails = (spot) => {
   };
 };
 
-const createSpotImages = (spotId, image) => {
+const getSpotsCurrent = (spots) => {
   return {
-    type: CREATE_SPOT,
-    payload: image
-  };
-};
+    type: GET_SPOTS_CURRENT,
+    payload: spots,
+  }
+}
 
 // THUNKS
 export const thunkGetSpots = () => async (dispatch) => {
@@ -36,6 +37,14 @@ export const thunkGetSpots = () => async (dispatch) => {
   const data = await response.json();
   dispatch(getSpots(data.Spots)); // gets passed to Action Creator
 };
+
+export const thunkGetSpotsCurrent = (userId) => async (dispatch) => {
+  const response = await fetch("/api/spots/current");
+
+  const data = await response.json();
+  console.log("CURR SPOTS::", data)
+  dispatch(getSpotsCurrent(data))
+}
 
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
   const response = await fetch(`/api/spots/${spotId}`);
@@ -75,10 +84,7 @@ export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
       body: JSON.stringify(spotImage),
     });
 
-    console.log("RES DATA", response)
-
     const data = await response.json()
-    console.log("IMG DATA", data)
     return data;
 
   } catch (error) {
@@ -93,6 +99,7 @@ export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
 const initialState = {
   allSpots: [],
   spotDetails: {},
+  spotsCurrent: {},
 };
 
 const spotsReducer = (state = initialState, action) => {
@@ -106,6 +113,13 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
       return newState;
+    case GET_SPOTS_CURRENT:
+      newState = Object.assign({}, state);
+      newState.spotsCurrent = action.payload;
+      action.payload.Spots.forEach((spot) => {
+        newState[spot.id] = spot;
+      });
+      return newState
     default:
       return state;
   }
