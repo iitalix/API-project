@@ -6,8 +6,6 @@ import {csrfFetch} from "./csrf";
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
 const CREATE_SPOT = "spots/createSpot";
-const CREATE_SPOT_IMAGE = "spots/createSpotImages"
-
 
 // ACTION CREATORS
 const getSpots = (spots) => {

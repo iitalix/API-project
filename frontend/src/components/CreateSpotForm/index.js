@@ -55,7 +55,7 @@ export default function CreateSpotForm() {
     const createSpot = await dispatch(thunkCreateSpot(newSpot));
     console.log("CREATE SPOT", createSpot)
 
-    addImages(createSpot);
+    await addImages(createSpot);
 
     if (!createSpot.errors && !Object.keys(imageValidationObj).length) push(`/spots/${createSpot.id}`);
 

@@ -53,6 +53,7 @@ function ProfileButton({ user }) {
           <>
             <p>Hello, {user.username}</p>
             <p>{user.email}</p>
+            <p>Manage Spots</p>
             <div>
               <button onClick={logout}>Log Out</button>
             </div>
