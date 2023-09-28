@@ -86,11 +86,12 @@ const validateSpotEdit = [
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .isLength({max: 49})
-    .withMessage("Name must be less than 50 characters."),
+    .withMessage("Name is required."),
   check("description")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .withMessage("Description is required."),
+    .isLength({min: 30})
+    .withMessage("Description needs a minimum of 30 characters."),
   check("price")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
@@ -485,8 +486,6 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
     order: [["createdAt", "DESC"]]
   });
-
-  console.log("ORDER BY::", allReviews)
 
   if (!allReviews.length) {
     return res.json({
