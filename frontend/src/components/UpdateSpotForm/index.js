@@ -1,7 +1,7 @@
 // frontend/src/components/UpdateSpotForm/index.js
 
 import {useState, useEffect} from "react";
-import {useDispatch} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
 import {thunkGetSpotDetails, thunkUpdateSpot} from "../../store/spots";
 import {thunkCreateSpotImage} from "../../store/spots";
@@ -11,6 +11,8 @@ export default function UpdateSpotForm() {
   const {push} = useHistory();
   const dispatch = useDispatch();
   const {spotId} = useParams();
+  const spotDetails = useSelector((state) => state.spots.spotDetails);
+  const spotImages = useSelector((state) => console.log("STATE", state));
 
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
@@ -38,10 +40,36 @@ export default function UpdateSpotForm() {
   };
 
   useEffect(() => {
+    dispatch(thunkGetSpotDetails(spotId))
+  }, []);
 
-    dispatch(thunkGetSpotDetails(spotId));
+  useEffect(() => {
 
-  }, [])
+    if (spotDetails) {
+        setAddress(spotDetails.address)
+        setCity(spotDetails.city)
+        setState(spotDetails.state)
+        setCountry(spotDetails.country)
+        setLatitude(spotDetails.lat)
+        setLongitude(spotDetails.lng)
+        setName(spotDetails.name)
+        setDescription(spotDetails.description)
+        setPrice(spotDetails.price)
+    }
+  }, [
+    spotDetails.address,
+    spotDetails.city,
+    spotDetails.state,
+    spotDetails.country,
+    spotDetails.lat,
+    spotDetails.lng,
+    spotDetails.name,
+    spotDetails.description,
+    spotDetails.price,
+  ]);
+
+  if (!spotDetails || !Object.keys(spotDetails).length) return null;
+  console.log("RUNNING SPOT DETAILS", spotDetails);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +90,8 @@ export default function UpdateSpotForm() {
     const createSpot = await dispatch(thunkUpdateSpot(newSpot));
     await addImages(createSpot);
 
-    if (!createSpot.errors && !Object.keys(imageValidationObj).length) push(`/spots/${createSpot.id}`);
+    if (!createSpot.errors && !Object.keys(imageValidationObj).length)
+      push(`/spots/${createSpot.id}`);
 
     setValidationObj(createSpot.errors);
   };
@@ -91,27 +120,23 @@ export default function UpdateSpotForm() {
   };
 
   const addImages = async (createSpot) => {
-
     for (let key in imageUrls) {
-
       let spotImage = {};
       if (imageUrls[key] === previewImage) {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": true
-        }
-      }
-
-      else {
+          url: imageUrls[key],
+          preview: true,
+        };
+      } else {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": false
-        }
+          url: imageUrls[key],
+          preview: false,
+        };
       }
 
-      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage))
+      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage));
     }
-  }
+  };
 
   return (
     <>

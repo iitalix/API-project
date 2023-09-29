@@ -53,7 +53,6 @@ export default function CreateSpotForm() {
     };
 
     const createSpot = await dispatch(thunkCreateSpot(newSpot));
-    console.log("CREATE SPOT", createSpot)
 
     await addImages(createSpot);
 

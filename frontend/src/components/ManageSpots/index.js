@@ -44,9 +44,7 @@ export default function ManageSpots() {
         <button>Create a New Spot</button>
       </div>
 
-      {showCreateSpotLink()}
-
-      {spots.length && (
+      {spots?.length && (
         <div className="manage-cards-container">
           {spots.map((spot) => (
             <>
@@ -55,7 +53,7 @@ export default function ManageSpots() {
                 className="spotcard"
                 onClick={() => goToSpot(spot)}
               >
-                <SpotCard spot={spot} />
+                <SpotCard key={spot.id} spot={spot} />
               </div>
 
               <div className="manage-buttons-container">

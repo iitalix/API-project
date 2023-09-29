@@ -68,7 +68,7 @@ export const thunkGetSpotsCurrent = () => async (dispatch) => {
 
 // GET SPOT DETAILS
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}`);
+  const response = await csrfFetch(`/api/spots/${spotId}`);
 
   const data = await response.json();
   dispatch(getSpotDetails(data)); // gets passed to Action Creator
