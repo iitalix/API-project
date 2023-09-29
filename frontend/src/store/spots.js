@@ -31,13 +31,6 @@ const getSpotsCurrent = (spots) => {
   }
 }
 
-// const updateSpot = (spot) => {
-//   return {
-//     type: UPDATE_SPOT,
-//     payload: spot,
-//   }
-// }
-
 /* --THUNKS-- */
 
 // GET SPOTS

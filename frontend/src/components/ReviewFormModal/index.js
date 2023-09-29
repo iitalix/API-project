@@ -16,6 +16,8 @@ export default function ReviewFormModal() {
   const [review, setReview] = useState({});
   const [errors, setErrors] = useState({});
 
+  console.log("SPOTID::", spotId)
+
   const revObj = {
     review: revText,
     stars: rating
