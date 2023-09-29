@@ -5,6 +5,8 @@ import {useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {thunkGetSpotDetails} from "../../store/spots";
 import {thunkGetReviews} from "../../store/reviews";
+import OpenModalButton from "../OpenModalButton";
+import ReviewFormModal from "../ReviewFormModal";
 import "./SpotDetailsPage.css";
 
 export default function SpotDetailsPage() {
@@ -15,7 +17,7 @@ export default function SpotDetailsPage() {
   const reviews = useSelector((state) => state.reviews.Reviews);
 
   console.log("REVIEWS", reviews);
-  console.log("CURR SPOT DETAILS", spot)
+  console.log("CURR SPOT DETAILS", spot);
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
@@ -53,7 +55,6 @@ export default function SpotDetailsPage() {
   // TODO: Add A Post A Review Button
   const postFirstReview = () => {
     if (sessionUser) {
-
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
           <>
@@ -66,9 +67,9 @@ export default function SpotDetailsPage() {
     }
   };
 
+  // TODO: Review Modal
   const postUserFirstReview = () => {
-    if ((sessionUser) && (sessionUser.id !== spot.ownerId)) {
-
+    if (sessionUser && sessionUser.id !== spot.ownerId) {
       let count = 0;
       reviews?.map((review) => {
         if (sessionUser.id === review.userId) count += 1;
@@ -77,7 +78,9 @@ export default function SpotDetailsPage() {
       if (!count) {
         return (
           <>
-            <button>Post Your Review</button>
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={<ReviewFormModal />} />
           </>
         );
       }
@@ -156,7 +159,6 @@ export default function SpotDetailsPage() {
               {showReviews()}
             </div>
           </div>
-
 
           <div className="reviews">
             {/* only visible to Session User who has not reviewed Spot */}

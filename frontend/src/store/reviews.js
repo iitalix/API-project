@@ -34,17 +34,10 @@ export const thunkGetReviews = (spotId) => async (dispatch) => {
 export const thunkCreateReview = (review) => async (dispatch) => {
   const response = await fetch('/api/spots/:spotId/reviews');
 
-  try {
+  const data = response.json();
+  console.log("THUNK REVIEW DATA::", data)
+  // dispatch(createReview(data))
 
-    const data = response.json();
-    console.log("THUNK REVIEW DATA::", data)
-    // dispatch(createReview(data))
-
-  } catch (error) {
-
-    const data = error.json();
-    return data;
-  }
 
 
 }

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import "./LoginForm.css";
+import "../LoginFormModal/LoginForm.css";
 import { thunkCreateReview } from "../../store/reviews";
 
 function ReviewFormModal() {
@@ -34,6 +34,7 @@ function ReviewFormModal() {
           <input
             type="text-area"
             value={review}
+            placeholder="Leave your review here..."
             onChange={(e) => setReview(e.target.value)}
             required
           />
