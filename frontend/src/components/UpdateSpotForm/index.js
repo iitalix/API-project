@@ -14,25 +14,22 @@ export default function UpdateSpotForm() {
   const details = useSelector((state) => state.spots.spotDetails);
   const images = useSelector((state) => state.spots.spotDetails.SpotImages);
 
-  console.log("DETAILS:", details)
-  console.log("IMAGES", images)
-
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  // const [lat, setLatitude] = useState(1.0);
-  // const [lng, setLongitude] = useState(1.0);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [validationObj, setValidationObj] = useState({});
+  // const [imageValidationObj, setImageValidationObj] = useState({});
+  // const [lat, setLatitude] = useState(1.0);
+  // const [lng, setLongitude] = useState(1.0);
   // const [previewImage, setPreviewImage] = useState("");
   // const [imgUrlOne, setImgUrlOne] = useState("");
   // const [imgUrlTwo, setImgUrlTwo] = useState("");
   // const [imgUrlThree, setImgUrlThree] = useState("");
   // const [imgUrlFour, setImgUrlFour] = useState("");
-  const [validationObj, setValidationObj] = useState({});
-  const [imageValidationObj, setImageValidationObj] = useState({});
 
   // const imageUrls = {
   //   previewImage,
@@ -44,26 +41,24 @@ export default function UpdateSpotForm() {
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
-    console.log("RUNNING GET CURR")
   }, []);
 
   useEffect(() => {
-    console.log("RUNNING SET STATE")
     if (details) {
-        setAddress(details.address)
-        setCity(details.city)
-        setState(details.state)
-        setCountry(details.country)
-        // setLatitude(details.lat)
-        // setLongitude(details.lng)
-        setName(details.name)
-        setDescription(details.description)
-        setPrice(details.price)
-        // setPreviewImage(images[0].url)
-        // setImgUrlOne(images[1].url)
-        // setImgUrlTwo(images[2].url)
-        // setImgUrlThree(images[3].url)
-        // setImgUrlFour(images[4].url)
+      setAddress(details.address);
+      setCity(details.city);
+      setState(details.state);
+      setCountry(details.country);
+      setName(details.name);
+      setDescription(details.description);
+      setPrice(details.price);
+      // setLatitude(details.lat)
+      // setLongitude(details.lng)
+      // setPreviewImage(images[0].url)
+      // setImgUrlOne(images[1].url)
+      // setImgUrlTwo(images[2].url)
+      // setImgUrlThree(images[3].url)
+      // setImgUrlFour(images[4].url)
     }
   }, [
     details.address,
@@ -93,18 +88,18 @@ export default function UpdateSpotForm() {
       city,
       state,
       country,
-      // lat,
-      // lng,
       name,
       description,
       price,
+      // lat,
+      // lng,
     };
 
     const createSpot = await dispatch(thunkUpdateSpot(spotId, newSpot));
     // await addImages(createSpot);
 
-    if (!createSpot.errors && !Object.keys(imageValidationObj).length)
-      push(`/spots/${createSpot.id}`);
+    // if (!createSpot.errors && !Object.keys(imageValidationObj).length)
+    if (!createSpot.errors) push(`/spots/${createSpot.id}`);
 
     setValidationObj(createSpot.errors);
   };
@@ -275,7 +270,7 @@ export default function UpdateSpotForm() {
         </p>
 
         {validationObj.price && <p className="errors">{validationObj.price}</p>}
-{/*
+        {/*
         <h2>Liven up your spot with photos</h2>
         <div>Submit a link to at least one photo to publish your spot.</div>
         <input

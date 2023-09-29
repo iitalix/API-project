@@ -60,8 +60,6 @@ export const thunkGetSpotsCurrent = () => async (dispatch) => {
       const data = await response.json();
       dispatch(getSpotsCurrent(data.Spots))
       console.log("SPOTS CURR DATA", data)
-
-
     }
 
   } catch (error) {
