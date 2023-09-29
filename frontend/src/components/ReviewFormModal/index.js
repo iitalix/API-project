@@ -1,22 +1,33 @@
 // frontend/src/components/ReviewFormModal/index.js
-import React, { useState } from "react";
-import * as sessionActions from "../../store/session";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import { useParams } from "react-router-dom";
+import {useModal} from "../../context/Modal";
+import {thunkCreateReview} from "../../store/reviews";
+import StarInputRatings from "../StarInputRatings";
 import "../LoginFormModal/LoginForm.css";
-import { thunkCreateReview } from "../../store/reviews";
 
-function ReviewFormModal() {
+export default function ReviewFormModal() {
   const dispatch = useDispatch();
-  const [review, setReview] = useState("");
+  const {closeModal} = useModal();
+  const {spotId} = useParams();
+  const [revText, setRevText] = useState("");
+  const [revStars, setRevStars] = useState(0);
+  const [review, setReview] = useState({});
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+
+  const revObj = {
+    review: revText,
+    stars: revStars
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setReview(revObj);
     setErrors({});
-    return dispatch(thunkCreateReview(review))
+
+    return dispatch(thunkCreateReview(spotId, review))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -35,18 +46,20 @@ function ReviewFormModal() {
             type="text-area"
             value={review}
             placeholder="Leave your review here..."
-            onChange={(e) => setReview(e.target.value)}
+            onChange={(e) => setRevText(e.target.value)}
             required
           />
         </label>
 
-        {errors.credential && (
+        <StarInputRatings
+          disabled={false}
+          onChange={onChange}
+          revStars={revStars} />
+        {/* {errors.credential && (
           <p>{errors.credential}</p>
-        )}
+        )} */}
         <button type="submit">Submit Your Review</button>
       </form>
     </>
   );
 }
-
-export default ReviewFormModal;
