@@ -24,19 +24,6 @@ export default function ManageSpots() {
     return;
   };
 
-  // TODO - NO SPOTS FOR CURRENT USER
-  const showCreateSpotLink = () => {
-    if (spots === undefined) {
-      return (
-        <>
-          <NavLink to="/spots/new">Create A New Spot</NavLink>
-        </>
-      );
-    }
-
-    return;
-  };
-
   return (
     <>
       <div className="manage-header">

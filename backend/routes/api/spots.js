@@ -457,7 +457,7 @@ const validateReviews = [
   handleValidationErrors,
 ];
 
-// Get all Reviews by a Spot's id - done!
+// Get all Reviews by a Spot's id
 router.get("/:spotId/reviews", async (req, res) => {
   const findSpot = await Spot.findByPk(req.params.spotId);
 
@@ -515,7 +515,7 @@ router.get("/:spotId/reviews", async (req, res) => {
    return res.json({Reviews: allReviewsArr})
 });
 
-// Create a Review for a Spot based on Spot id - done!
+// Create a Review for a Spot based on Spot id
 router.post(
   "/:spotId/reviews",
   requireAuth,

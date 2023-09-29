@@ -5,6 +5,8 @@ import {useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {thunkGetSpotDetails} from "../../store/spots";
 import {thunkGetReviews} from "../../store/reviews";
+import OpenModalButton from "../OpenModalButton";
+import ReviewFormModal from "../ReviewFormModal";
 import "./SpotDetailsPage.css";
 
 export default function SpotDetailsPage() {
@@ -13,6 +15,9 @@ export default function SpotDetailsPage() {
   const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
+
+  console.log("REVIEWS", reviews);
+  console.log("CURR SPOT DETAILS", spot);
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
@@ -47,6 +52,7 @@ export default function SpotDetailsPage() {
     );
   };
 
+  // TODO: Add A Post A Review Button
   const postFirstReview = () => {
     if (sessionUser) {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
@@ -56,9 +62,29 @@ export default function SpotDetailsPage() {
           </>
         );
       }
-    }
 
-    return;
+      return;
+    }
+  };
+
+  // TODO: Review Modal
+  const postUserFirstReview = () => {
+    if (sessionUser && sessionUser.id !== spot.ownerId) {
+      let count = 0;
+      reviews?.map((review) => {
+        if (sessionUser.id === review.userId) count += 1;
+      });
+
+      if (!count) {
+        return (
+          <>
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={<ReviewFormModal />} />
+          </>
+        );
+      }
+    }
   };
 
   const fourImagesArr = spot.SpotImages.slice(1);
@@ -118,8 +144,10 @@ export default function SpotDetailsPage() {
         </div>
       </div>
 
+      {/* only visible to logged-in User when Spot has no reviews */}
       {postFirstReview()}
 
+      {/* only visible when Spot has reviews */}
       {spot.numReviews > 0 && (
         <div id="reviews-container">
           <div className="callout-box-upper" id="reviews-header">
@@ -133,6 +161,8 @@ export default function SpotDetailsPage() {
           </div>
 
           <div className="reviews">
+            {/* only visible to Session User who has not reviewed Spot */}
+            {postUserFirstReview()}
             {reviews?.map((review) => (
               <div>
                 <div>{review.User.firstName}</div>
