@@ -96,7 +96,7 @@ export default function UpdateSpotForm() {
       price,
     };
 
-    const createSpot = await dispatch(thunkUpdateSpot(newSpot));
+    const createSpot = await dispatch(thunkUpdateSpot(spotId, newSpot));
     await addImages(createSpot);
 
     if (!createSpot.errors && !Object.keys(imageValidationObj).length)
