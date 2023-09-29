@@ -11,8 +11,8 @@ export default function UpdateSpotForm() {
   const {push} = useHistory();
   const dispatch = useDispatch();
   const {spotId} = useParams();
-  const spotDetails = useSelector((state) => state.spots.spotDetails);
-  const spotImages = useSelector((state) => console.log("STATE", state));
+  const details = useSelector((state) => state.spots.spotDetails);
+  const images = useSelector((state) => state.spots.spotDetails.SpotImages);
 
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
@@ -40,36 +40,45 @@ export default function UpdateSpotForm() {
   };
 
   useEffect(() => {
-    dispatch(thunkGetSpotDetails(spotId))
+    dispatch(thunkGetSpotDetails(spotId));
   }, []);
 
   useEffect(() => {
 
-    if (spotDetails) {
-        setAddress(spotDetails.address)
-        setCity(spotDetails.city)
-        setState(spotDetails.state)
-        setCountry(spotDetails.country)
-        setLatitude(spotDetails.lat)
-        setLongitude(spotDetails.lng)
-        setName(spotDetails.name)
-        setDescription(spotDetails.description)
-        setPrice(spotDetails.price)
+    if (details) {
+        setAddress(details.address)
+        setCity(details.city)
+        setState(details.state)
+        setCountry(details.country)
+        setLatitude(details.lat)
+        setLongitude(details.lng)
+        setName(details.name)
+        setDescription(details.description)
+        setPrice(details.price)
+        setPreviewImage(images[0].url)
+        setImgUrlOne(images[1].url)
+        setImgUrlTwo(images[2].url)
+        setImgUrlThree(images[3].url)
+        setImgUrlFour(images[4].url)
     }
   }, [
-    spotDetails.address,
-    spotDetails.city,
-    spotDetails.state,
-    spotDetails.country,
-    spotDetails.lat,
-    spotDetails.lng,
-    spotDetails.name,
-    spotDetails.description,
-    spotDetails.price,
+    details.address,
+    details.city,
+    details.state,
+    details.country,
+    details.lat,
+    details.lng,
+    details.name,
+    details.description,
+    details.price,
+    images[0].previewImage,
+    images[1].imgUrlOne,
+    images[2].imgUrlTwo,
+    images[3].imgUrlThree,
+    images[4].imgUrlFour
   ]);
 
-  if (!spotDetails || !Object.keys(spotDetails).length) return null;
-  console.log("RUNNING SPOT DETAILS", spotDetails);
+  if (!details || !Object.keys(details).length) return null;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -329,7 +338,7 @@ export default function UpdateSpotForm() {
           <p className="errors">{imageValidationObj.imgUrlFour}</p>
         )}
 
-        <button type="submit">Create Spot</button>
+        <button type="submit">Update Your Spot</button>
       </form>
     </>
   );
