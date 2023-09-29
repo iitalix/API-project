@@ -14,6 +14,9 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
+  console.log("REVIEWS", reviews);
+  console.log("CURR SPOT DETAILS", spot)
+
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
@@ -47,8 +50,10 @@ export default function SpotDetailsPage() {
     );
   };
 
+  // TODO: Add A Post A Review Button
   const postFirstReview = () => {
     if (sessionUser) {
+
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
           <>
@@ -56,9 +61,27 @@ export default function SpotDetailsPage() {
           </>
         );
       }
-    }
 
-    return;
+      return;
+    }
+  };
+
+  const postUserFirstReview = () => {
+    if ((sessionUser) && (sessionUser.id !== spot.ownerId)) {
+
+      let count = 0;
+      reviews?.map((review) => {
+        if (sessionUser.id === review.userId) count += 1;
+      });
+
+      if (!count) {
+        return (
+          <>
+            <button>Post Your Review</button>
+          </>
+        );
+      }
+    }
   };
 
   const fourImagesArr = spot.SpotImages.slice(1);
@@ -118,8 +141,10 @@ export default function SpotDetailsPage() {
         </div>
       </div>
 
+      {/* only visible to logged-in User when Spot has no reviews */}
       {postFirstReview()}
 
+      {/* only visible when Spot has reviews */}
       {spot.numReviews > 0 && (
         <div id="reviews-container">
           <div className="callout-box-upper" id="reviews-header">
@@ -132,7 +157,10 @@ export default function SpotDetailsPage() {
             </div>
           </div>
 
+
           <div className="reviews">
+            {/* only visible to Session User who has not reviewed Spot */}
+            {postUserFirstReview()}
             {reviews?.map((review) => (
               <div>
                 <div>{review.User.firstName}</div>
