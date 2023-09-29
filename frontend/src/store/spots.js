@@ -6,6 +6,7 @@ import {csrfFetch} from "./csrf";
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
 const GET_SPOTS_CURRENT = "spots/getSpotsCurrent"
+const UPDATE_SPOT = "spots/updateSpot"
 
 // ACTION CREATORS
 const getSpots = (spots) => {
@@ -29,7 +30,16 @@ const getSpotsCurrent = (spots) => {
   }
 }
 
-// THUNKS
+const updateSpot = (spot) => {
+  return {
+    type: UPDATE_SPOT,
+    payload: spot,
+  }
+}
+
+/* --THUNKS-- */
+
+// GET SPOTS
 export const thunkGetSpots = () => async (dispatch) => {
   const response = await fetch("/api/spots");
 
@@ -37,8 +47,8 @@ export const thunkGetSpots = () => async (dispatch) => {
   dispatch(getSpots(data.Spots)); // gets passed to Action Creator
 };
 
-
-export const thunkGetSpotsCurrent = (userId) => async (dispatch) => {
+// GET SPOTS CURRENT
+export const thunkGetSpotsCurrent = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots/current");
 
   try {
@@ -56,6 +66,7 @@ export const thunkGetSpotsCurrent = (userId) => async (dispatch) => {
 
 }
 
+// GET SPOT DETAILS
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
   const response = await fetch(`/api/spots/${spotId}`);
 
@@ -63,6 +74,7 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
   dispatch(getSpotDetails(data)); // gets passed to Action Creator
 };
 
+// CREATE SPOT
 export const thunkCreateSpot = (spot) => async (dispatch) => {
 
   try {
@@ -84,6 +96,7 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
   }
 };
 
+// CREATE SPOT IMAGE
 export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
 
   try {
@@ -105,6 +118,28 @@ export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
 
 }
 
+// UPDATE SPOT
+export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
+
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(spot),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+
+  } catch (response) {
+
+    const data = await response.json()
+    return data;
+  }
+};
+
 // REDUCER
 const initialState = {
   allSpots: [],
@@ -119,6 +154,7 @@ const spotsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.allSpots = action.payload;
       return newState;
+
     case GET_SPOT_DETAILS:
       newState = Object.assign({}, state);
       newState.spotDetails = action.payload;
@@ -127,10 +163,12 @@ const spotsReducer = (state = initialState, action) => {
     case GET_SPOTS_CURRENT:
       newState = Object.assign({}, state);
       newState.spotsCurrent = action.payload;
-      return newState
+      return newState;
+
     default:
       return state;
   }
+
 };
 
 export default spotsReducer;

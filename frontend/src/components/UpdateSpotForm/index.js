@@ -2,14 +2,15 @@
 
 import {useState, useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom";
-import {thunkCreateSpot} from "../../store/spots";
+import {useHistory, useParams} from "react-router-dom";
+import {thunkGetSpotDetails, thunkUpdateSpot} from "../../store/spots";
 import {thunkCreateSpotImage} from "../../store/spots";
 import "../CreateSpotForm/CreateSpotForm.css";
 
-export default function CreateSpotForm() {
+export default function UpdateSpotForm() {
   const {push} = useHistory();
   const dispatch = useDispatch();
+  const {spotId} = useParams();
 
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
@@ -36,6 +37,12 @@ export default function CreateSpotForm() {
     imgUrlFour,
   };
 
+  useEffect(() => {
+
+    dispatch(thunkGetSpotDetails(spotId));
+
+  }, [])
+
   const onSubmit = async (e) => {
     e.preventDefault();
     imgErrCheck();
@@ -52,7 +59,7 @@ export default function CreateSpotForm() {
       price,
     };
 
-    const createSpot = await dispatch(thunkCreateSpot(newSpot));
+    const createSpot = await dispatch(thunkUpdateSpot(newSpot));
     await addImages(createSpot);
 
     if (!createSpot.errors && !Object.keys(imageValidationObj).length) push(`/spots/${createSpot.id}`);

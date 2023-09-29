@@ -1,22 +1,21 @@
 //frontend/src/components/ManageSpot/index.js
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {NavLink, useHistory} from "react-router-dom";
+import {NavLink, useHistory, useParams} from "react-router-dom";
 import {thunkGetSpotsCurrent} from "../../store/spots";
 import SpotCard from "../SpotCard";
 
 export default function ManageSpots() {
   const dispatch = useDispatch();
   const {push} = useHistory();
-  const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((state) => state.spots.spotsCurrent);
 
   useEffect(() => {
-    dispatch(thunkGetSpotsCurrent(sessionUser.id));
+    dispatch(thunkGetSpotsCurrent());
   }, []);
 
-  const goToCreateSpotForm = () => {
-    push("/spots/new");
+  const goToUpdateSpotForm = (spot) => {
+    push(`/spots/edit/${spot.id}`);
     return;
   };
 
@@ -25,7 +24,7 @@ export default function ManageSpots() {
     return;
   };
 
-  //   if (!spots) return null;
+  // TODO - NO SPOTS FOR CURRENT USER
   const showCreateSpotLink = () => {
     if (spots === undefined) {
       return (
@@ -50,23 +49,25 @@ export default function ManageSpots() {
       {spots.length && (
         <div className="manage-cards-container">
           {spots.map((spot) => (
-            <div
-              key={spot.id}
-              className="spotcard"
-              onClick={() => goToSpot(spot)}
-            >
-              <SpotCard spot={spot} />
+            <>
+              <div
+                key={spot.id}
+                className="spotcard"
+                onClick={() => goToSpot(spot)}
+              >
+                <SpotCard spot={spot} />
+              </div>
 
               <div className="manage-buttons-container">
                 <button
-                  onClick={() => goToCreateSpotForm()}
+                  onClick={() => goToUpdateSpotForm(spot)}
                   className="manage-buttons"
                 >
                   Update
                 </button>
                 <button className="manage-buttons">Delete</button>
               </div>
-            </div>
+            </>
           ))}
         </div>
       )}
