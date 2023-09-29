@@ -34,7 +34,7 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
   const response = await fetch(`/api/spots/${spotId}/reviews`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(spot),
+    body: JSON.stringify(review),
   });
 
   const data = response.json();
