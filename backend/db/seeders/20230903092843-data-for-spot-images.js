@@ -135,7 +135,32 @@ const validSpotImages = [
     spotId: 5,
     url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155706429605429410/seedpic-24.png",
     preview: true
-  }
+  },
+  {
+    spotId: 6,
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1156104277526315068/seedpic-26.png?ex=6513c183&is=65127003&hm=7a13acc6fcdeb6cdf883d163be99805357f25ae71cc238e5e847ba95438c24a9&",
+    preview: true
+  },
+  {
+    spotId: 6,
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1156104277769601115/seedpic-27.png?ex=6513c183&is=65127003&hm=b1db35a0742f1154e58982c94213bae6136852a5d5946fb89d0ffb02b3e020be&",
+    preview: true
+  },
+  {
+    spotId: 6,
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1156104278021263441/seedpic-28.png?ex=6513c183&is=65127003&hm=3ccfe8e4eba39fde02bb960a94bb60b734c692952ce4c7d71add3f0e24ec9ccd&",
+    preview: true
+  },
+  {
+    spotId: 6,
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1156104278738468864/seedpic-29.png?ex=6513c183&is=65127003&hm=f32f16a2fd0b3afd5a715ff7ed03fd51a5405857964db0e813c53c8d375b7a5d&",
+    preview: true
+  },
+  {
+    spotId: 6,
+    url: "https://cdn.discordapp.com/attachments/1155249585913090118/1156104279078223912/seedpic-30.png?ex=6513c183&is=65127003&hm=f46cd046a8dd8e8ac418909169afd73e22c6d599087ff71198223f70d2bb1f21&",
+    preview: true
+  },
 ];
 
 module.exports = {

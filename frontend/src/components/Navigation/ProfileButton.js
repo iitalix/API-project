@@ -1,7 +1,7 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
@@ -41,6 +41,11 @@ function ProfileButton({ user }) {
     push('/');
   };
 
+  const goToManage = () => {
+    push("/current");
+    return;
+  };
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -53,6 +58,7 @@ function ProfileButton({ user }) {
           <>
             <p>Hello, {user.username}</p>
             <p>{user.email}</p>
+            <p onClick={() => goToManage()}>Manage Spots</p>
             <div>
               <button onClick={logout}>Log Out</button>
             </div>
