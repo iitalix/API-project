@@ -1,4 +1,5 @@
 // frontend/src/store/reviews.js
+import {csrfFetch} from "./csrf";
 
 /* --TYPES-- */
 const GET_REVIEWS = "reviews/getReviews";
@@ -31,15 +32,23 @@ export const thunkGetReviews = (spotId) => async (dispatch) => {
 
 // Create Review
 export const thunkCreateReview = (spotId, review) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(review),
-  });
 
-  const data = response.json();
-  console.log("THUNK REVIEW DATA::", data);
-  // dispatch(createReview(data))
+  try {
+
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(review),
+    });
+
+    const data = response.json();
+    console.log("MODAL ERROR::", data)
+
+  } catch (error) {
+
+    const data = error.json();
+    return data;
+  }
 };
 
 // REDUCER

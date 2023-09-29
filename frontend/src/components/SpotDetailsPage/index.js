@@ -80,7 +80,8 @@ export default function SpotDetailsPage() {
           <>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal />} />
+              modalComponent={<ReviewFormModal spotId={spotId}/>}
+              />
           </>
         );
       }
