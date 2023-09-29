@@ -12,13 +12,13 @@ export default function ReviewFormModal() {
   const {closeModal} = useModal();
   const {spotId} = useParams();
   const [revText, setRevText] = useState("");
-  const [revStars, setRevStars] = useState(0);
+  const [rating, setRating] = useState(0);
   const [review, setReview] = useState({});
   const [errors, setErrors] = useState({});
 
   const revObj = {
     review: revText,
-    stars: revStars
+    stars: rating
   }
 
   const handleSubmit = (e) => {
@@ -37,6 +37,11 @@ export default function ReviewFormModal() {
       });
   };
 
+  const onChange = (number) => {
+
+    setRating(parseInt(number))
+  }
+
   return (
     <>
       <h1>How was your stay?</h1>
@@ -44,7 +49,7 @@ export default function ReviewFormModal() {
         <label>
           <input
             type="text-area"
-            value={review}
+            value={revText}
             placeholder="Leave your review here..."
             onChange={(e) => setRevText(e.target.value)}
             required
@@ -54,7 +59,8 @@ export default function ReviewFormModal() {
         <StarInputRatings
           disabled={false}
           onChange={onChange}
-          revStars={revStars} />
+          rating={rating} />
+
         {/* {errors.credential && (
           <p>{errors.credential}</p>
         )} */}

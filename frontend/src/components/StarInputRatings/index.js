@@ -1,8 +1,8 @@
 import {useState} from "react";
 import "./StarInputRatings.css"
 
-export default function StarInputRatings({disabled, onChange}) {
-  let [activeStarRating, setActiveStarRating] = useState(0);
+export default function StarInputRatings({rating, disabled, onChange}) {
+  let [activeStarRating, setActiveStarRating] = useState(rating);
 
   return (
     <>
@@ -13,7 +13,7 @@ export default function StarInputRatings({disabled, onChange}) {
             if (!disabled) setActiveStarRating(1);
           }}
           onMouseLeave={() => {
-            if (!disabled) setActiveStarRating(0);
+            if (!disabled) setActiveStarRating(rating);
           }}
           onClick={() => {
             if (!disabled) onChange(1);
@@ -28,7 +28,7 @@ export default function StarInputRatings({disabled, onChange}) {
             if (!disabled) setActiveStarRating(2);
           }}
           onMouseLeave={() => {
-            if (!disabled) setActiveStarRating(0);
+            if (!disabled) setActiveStarRating(rating);
           }}
           onClick={() => {
             if (!disabled) onChange(2);
@@ -43,7 +43,7 @@ export default function StarInputRatings({disabled, onChange}) {
             if (!disabled) setActiveStarRating(3);
           }}
           onMouseLeave={() => {
-            if (!disabled) setActiveStarRating(0);
+            if (!disabled) setActiveStarRating(rating);
           }}
           onClick={() => {
             if (!disabled) onChange(3);
@@ -58,7 +58,7 @@ export default function StarInputRatings({disabled, onChange}) {
             if (!disabled) setActiveStarRating(4);
           }}
           onMouseLeave={() => {
-            if (!disabled) setActiveStarRating(0);
+            if (!disabled) setActiveStarRating(rating);
           }}
           onClick={() => {
             if (!disabled) onChange(4);
@@ -73,7 +73,7 @@ export default function StarInputRatings({disabled, onChange}) {
             if (!disabled) setActiveStarRating(5);
           }}
           onMouseLeave={() => {
-            if (!disabled) setActiveStarRating(0);
+            if (!disabled) setActiveStarRating(rating);
           }}
           onClick={() => {
             if (!disabled) onChange(5);
