@@ -15,8 +15,6 @@ export default function CreateSpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  // const [lat, setLatitude] = useState("");
-  // const [lng, setLongitude] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -27,6 +25,8 @@ export default function CreateSpotForm() {
   const [imgUrlFour, setImgUrlFour] = useState("");
   const [validationObj, setValidationObj] = useState({});
   const [imageValidationObj, setImageValidationObj] = useState({});
+  // const [lat, setLatitude] = useState("");
+  // const [lng, setLongitude] = useState("");
 
   const imageUrls = {
     previewImage,
@@ -38,74 +38,84 @@ export default function CreateSpotForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    imgErrCheck();
 
     const newSpot = {
       address,
       city,
       state,
       country,
-      // lat,
-      // lng,
       name,
       description,
       price,
+      // lat,
+      // lng,
     };
 
     const createSpot = await dispatch(thunkCreateSpot(newSpot));
 
-    await addImages(createSpot);
-
-    if (!createSpot.errors && !Object.keys(imageValidationObj).length) push(`/spots/${createSpot.id}`);
-
-    setValidationObj(createSpot.errors);
-  };
-
-  const imgErrCheck = () => {
-    const imgErrObj = {};
-
-    if (!previewImage) {
-      imgErrObj.prevImg = "Preview image is required";
+    if (!createSpot.errors && !Object.keys(imageValidationObj).length) {
+      await addImages(createSpot);
+      push(`/spots/${createSpot.id}`);
     }
 
-    for (let key in imageUrls) {
-      let ext = imageUrls[key];
+    else {
 
-      if (
-        ext &&
-        (!ext.endsWith(".png") ||
-          !ext.endsWith(".jpg") ||
-          !ext.endsWith(".jpeg"))
-      ) {
-        imgErrObj[key] = "Image URL must end in .png, .jpg, or .jpeg";
-      }
+      setValidationObj(createSpot.errors);
     }
 
-    setImageValidationObj(imgErrObj);
   };
 
   const addImages = async (createSpot) => {
-
     for (let key in imageUrls) {
-
       let spotImage = {};
       if (imageUrls[key] === previewImage) {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": true
-        }
-      }
-
-      else {
+          url: imageUrls[key],
+          preview: true,
+        };
+      } else {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": false
-        }
+          url: imageUrls[key],
+          preview: false,
+        };
       }
 
-      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage))
+      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage));
     }
-  }
+  };
+
+  const showPreviewImgError = () => {
+    if (!previewImage) {
+      return (
+        <>
+          <p className="errors">Preview image is required.</p>
+        </>
+      );
+    }
+  };
+
+  const showExtError = (url) => {
+    if (
+      !url ||
+      url.endsWith(".png") ||
+      url.endsWith(".jpg") ||
+      url.endsWith(".jpeg")
+    )
+      return;
+    else {
+      return (
+        <>
+          <p className="errors">Image URL must end in .png, .jpg, or .jpeg</p>
+        </>
+      );
+    }
+  };
+
+  const showNameError = (title) => {
+    if (!title) {
+      return <p className="errors">Name is required</p>;
+    }
+  };
 
   return (
     <>
@@ -137,7 +147,7 @@ export default function CreateSpotForm() {
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        {validationObj.address && (
+        {validationObj?.address && (
           <p className="errors">{validationObj.address}</p>
         )}
 
@@ -150,7 +160,9 @@ export default function CreateSpotForm() {
             onChange={(e) => setCity(e.target.value)}
           />
 
-          {validationObj.city && <p className="errors">{validationObj.city}</p>}
+          {validationObj?.city && (
+            <p className="errors">{validationObj.city}</p>
+          )}
 
           <label>State</label>
           <input
@@ -161,7 +173,9 @@ export default function CreateSpotForm() {
           />
         </div>
 
-        {validationObj.state && <p className="errors">{validationObj.state}</p>}
+        {validationObj?.state && (
+          <p className="errors">{validationObj.state}</p>
+        )}
 
         {/* <div>
           <label>Latitude</label>
@@ -194,7 +208,7 @@ export default function CreateSpotForm() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        {validationObj.description && (
+        {validationObj?.description && (
           <p className="errors">{validationObj.description}</p>
         )}
 
@@ -211,7 +225,8 @@ export default function CreateSpotForm() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {validationObj.name && <p className="errors">{validationObj.name}</p>}
+        {showNameError(name)}
+        {/* {validationObj?.name && <p className="errors">{validationObj.name}</p>} */}
 
         <h2>Set a base price for your spot</h2>
         <div>
@@ -230,7 +245,9 @@ export default function CreateSpotForm() {
           />
         </p>
 
-        {validationObj.price && <p className="errors">{validationObj.price}</p>}
+        {validationObj?.price && (
+          <p className="errors">{validationObj.price}</p>
+        )}
 
         <h2>Liven up your spot with photos</h2>
         <div>Submit a link to at least one photo to publish your spot.</div>
@@ -242,13 +259,12 @@ export default function CreateSpotForm() {
           onChange={(e) => setPreviewImage(e.target.value)}
         />
 
-        {imageValidationObj.prevImg && (
-          <p className="errors">{imageValidationObj.prevImg}</p>
-        )}
+        {showPreviewImgError()}
+        {showExtError(previewImage)}
 
-        {imageValidationObj.previewImage && (
+        {/* {imageValidationObj.previewImage && (
           <p className="errors">{imageValidationObj.previewImage}</p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -258,9 +274,10 @@ export default function CreateSpotForm() {
           onChange={(e) => setImgUrlOne(e.target.value)}
         />
 
-        {imageValidationObj.imgUrlOne && (
+        {showExtError(imgUrlOne)}
+        {/* {imageValidationObj?.imgUrlOne && (
           <p className="errors">{imageValidationObj.imgUrlOne}</p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -270,9 +287,11 @@ export default function CreateSpotForm() {
           onChange={(e) => setImgUrlTwo(e.target.value)}
         />
 
-        {imageValidationObj.imgUrlTwo && (
+        {showExtError(imgUrlTwo)}
+
+        {/* {imageValidationObj?.imgUrlTwo && (
           <p className="errors">{imageValidationObj.imgUrlTwo}</p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -282,9 +301,11 @@ export default function CreateSpotForm() {
           onChange={(e) => setImgUrlThree(e.target.value)}
         />
 
-        {imageValidationObj.imgUrlThree && (
+        {showExtError(imgUrlThree)}
+
+        {/* {imageValidationObj?.imgUrlThree && (
           <p className="errors">{imageValidationObj.imgUrlThree}</p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -294,9 +315,11 @@ export default function CreateSpotForm() {
           onChange={(e) => setImgUrlFour(e.target.value)}
         />
 
-        {imageValidationObj.imgUrlFour && (
+        {showExtError(imgUrlFour)}
+
+        {/* {imageValidationObj?.imgUrlFour && (
           <p className="errors">{imageValidationObj.imgUrlFour}</p>
-        )}
+        )} */}
 
         <button type="submit">Create Spot</button>
       </form>
