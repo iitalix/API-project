@@ -40,19 +40,18 @@ export default function SpotDetailsPage() {
   };
 
   const showReviews = () => {
-    return spot.numReviews !== 0 ? (
-      <>
-        <div>&middot;</div>
-        <div>
-          {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
-        </div>
-      </>
-    ) : (
-      <div>New</div>
+    return (
+      spot.numReviews !== 0 && (
+        <>
+          <div>&middot;</div>
+          <div>
+            {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
+          </div>
+        </>
+      )
     );
   };
 
-  // TODO: Add A Post A Review Button
   const postFirstReview = () => {
     if (sessionUser) {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
@@ -63,7 +62,6 @@ export default function SpotDetailsPage() {
               buttonText="Post Your Review"
               modalComponent={<ReviewFormModal spotId={spotId} />}
             />
-
           </>
         );
       }
@@ -93,7 +91,9 @@ export default function SpotDetailsPage() {
   };
 
   const mainImage = spot.SpotImages.find((image) => image.preview === true);
-  const fourImagesArr = spot.SpotImages.filter((image) => image.preview === false);
+  const fourImagesArr = spot.SpotImages.filter(
+    (image) => image.preview === false
+  );
 
   return (
     <>
@@ -105,15 +105,10 @@ export default function SpotDetailsPage() {
       </div>
       <div id="images-container">
         <div>
-          <img
-            src={mainImage.url}
-            alt="interior room"
-            id="main-image"
-          />
+          <img src={mainImage.url} alt="interior room" id="main-image" />
         </div>
         <div id="side-image-container">
-          {fourImagesArr.length > 0 && (
-
+          {fourImagesArr.length > 0 &&
             fourImagesArr.map((image) => (
               <img
                 src={image.url}
@@ -121,8 +116,7 @@ export default function SpotDetailsPage() {
                 className="side-image"
                 key={image.id}
               />
-            ))
-          )}
+            ))}
         </div>
       </div>
 
@@ -145,6 +139,13 @@ export default function SpotDetailsPage() {
                   {spot.avgRating}
                 </div>
                 {showReviews()}
+              </div>
+            )}
+
+            {spot.numReviews === 0 && (
+              <div className="callout-upper-right">
+                <i className="fa-solid fa-star"></i>
+                <div>New</div>
               </div>
             )}
           </div>
