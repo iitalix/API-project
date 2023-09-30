@@ -100,10 +100,14 @@ export default function CreateSpotForm() {
           preview: true,
         };
       } else {
-        spotImage = {
-          url: imageUrls[key],
-          preview: false,
-        };
+
+        if (imageUrls[key] !== ""){
+
+          spotImage = {
+            url: imageUrls[key],
+            preview: false,
+          };
+        }
       }
 
       await dispatch(thunkCreateSpotImage(createSpot.id, spotImage));

@@ -22,7 +22,7 @@ export default function SpotDetailsPage() {
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
-  }, []);
+  }, [reviews]);
 
   if (!spot.id) return null;
 
@@ -59,6 +59,11 @@ export default function SpotDetailsPage() {
         return (
           <>
             <p>Be the first to post a review!</p>
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={<ReviewFormModal spotId={spotId} />}
+            />
+
           </>
         );
       }
@@ -87,30 +92,8 @@ export default function SpotDetailsPage() {
     }
   };
 
-  const mainImageDiv = () => {
-    spot.SpotImages.map((image) => {
-      if (image.preview === true) {
-        return (
-          <div>
-            <img src={image.url} alt="interior room" id="main-image" />
-          </div>
-        );
-      }
-    });
-  };
-
-  const sideImagesDiv = () => {
-    if (image.preview === false) {
-      return (
-        <img
-          src={image.url}
-          alt="interior room"
-          className="side-image"
-          key={image.id}
-        />
-      );
-    }
-  };
+  const mainImage = spot.SpotImages.find((image) => image.preview === true);
+  const fourImagesArr = spot.SpotImages.filter((image) => image.preview === false);
 
   return (
     <>
@@ -121,23 +104,26 @@ export default function SpotDetailsPage() {
         </h2>
       </div>
       <div id="images-container">
-        {/* <div>
+        <div>
           <img
-            src={spot.SpotImages.length && spot.SpotImages[0].url}
+            src={mainImage.url}
             alt="interior room"
             id="main-image"
           />
         </div>
         <div id="side-image-container">
-          {fourImagesArr.map((image) => (
-            <img
-              src={image.url}
-              alt="interior room"
-              className="side-image"
-              key={image.id}
-            />
-          ))}
-        </div> */}
+          {fourImagesArr.length > 0 && (
+
+            fourImagesArr.map((image) => (
+              <img
+                src={image.url}
+                alt="interior room"
+                className="side-image"
+                key={image.id}
+              />
+            ))
+          )}
+        </div>
       </div>
 
       <div id="spot-info-container">
@@ -169,6 +155,7 @@ export default function SpotDetailsPage() {
 
       {/* only visible to logged-in User when Spot has no reviews */}
       {postFirstReview()}
+      {/* {postUserFirstReview()} */}
 
       {/* only visible when Spot has reviews */}
       {spot.numReviews > 0 && (
