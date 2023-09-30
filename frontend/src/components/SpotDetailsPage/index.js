@@ -16,7 +16,6 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-  console.log("REVIEWS", reviews);
   console.log("CURR SPOT DETAILS", spot);
 
   useEffect(() => {
@@ -67,7 +66,6 @@ export default function SpotDetailsPage() {
     }
   };
 
-  // TODO: Review Modal
   const postUserFirstReview = () => {
     if (sessionUser && sessionUser.id !== spot.ownerId) {
       let count = 0;

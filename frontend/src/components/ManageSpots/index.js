@@ -1,9 +1,11 @@
 //frontend/src/components/ManageSpot/index.js
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {NavLink, useHistory, useParams} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {thunkGetSpotsCurrent} from "../../store/spots";
 import SpotCard from "../SpotCard";
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from "../DeleteSpotModal";
 
 export default function ManageSpots() {
   const dispatch = useDispatch();
@@ -12,7 +14,7 @@ export default function ManageSpots() {
 
   useEffect(() => {
     dispatch(thunkGetSpotsCurrent());
-  }, []);
+  }, [spots]);
 
   const goToUpdateSpotForm = (spot) => {
     push(`/spots/edit/${spot.id}`);
@@ -50,7 +52,10 @@ export default function ManageSpots() {
                 >
                   Update
                 </button>
-                <button className="manage-buttons">Delete</button>
+                <OpenModalButton
+                  buttonText="Delete"
+                  modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                />
               </div>
             </>
           ))}

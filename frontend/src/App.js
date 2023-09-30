@@ -9,6 +9,7 @@ import CreateSpotForm from "./components/CreateSpotForm";
 import ManageSpots from "./components/ManageSpots";
 import UpdateSpotForm from "./components/UpdateSpotForm";
 import ReviewFormModal from "./components/ReviewFormModal";
+import DeleteSpotModal from "./components/DeleteSpotModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ function App() {
 
           <Route exact path="/spots/edit/:spotId">
             <UpdateSpotForm />
+          </Route>
+
+          <Route exact path="/spots/delete/:spotId">
+            <DeleteSpotModal />
           </Route>
 
           <Route exact path="/spots/:spotId">

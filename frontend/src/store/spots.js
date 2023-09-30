@@ -5,9 +5,8 @@ import {csrfFetch} from "./csrf";
 // TYPES
 const GET_SPOTS = "spots/getSpots";
 const GET_SPOT_DETAILS = "spots/getSpot";
-const GET_SPOTS_CURRENT = "spots/getSpotsCurrent"
-const GET_SPOT_IMAGES = "spots/getSpotImages"
-const UPDATE_SPOT = "spots/updateSpot"
+const GET_SPOTS_CURRENT = "spots/getSpotsCurrent";
+const DELETE_SPOT = "spots/deleteSpot";
 
 // ACTION CREATORS
 const getSpots = (spots) => {
@@ -28,8 +27,8 @@ const getSpotsCurrent = (spots) => {
   return {
     type: GET_SPOTS_CURRENT,
     payload: spots,
-  }
-}
+  };
+};
 
 /* --THUNKS-- */
 
@@ -44,27 +43,19 @@ export const thunkGetSpots = () => async (dispatch) => {
 // GET SPOTS CURRENT
 export const thunkGetSpotsCurrent = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots/current");
-  console.log("SPOTS CURR RESPONSE", response)
+  console.log("SPOTS CURR RESPONSE", response);
 
   try {
-
     if (response.ok) {
-
       const data = await response.json();
-      dispatch(getSpotsCurrent(data.Spots))
-      console.log("SPOTS CURR DATA", data)
+      dispatch(getSpotsCurrent(data.Spots));
+      console.log("SPOTS CURR DATA", data);
     }
-
   } catch (error) {
-    //!! Start
-    const data = await response.json()
+    const data = await response.json();
     return data;
-
-    // !! End
-    // return;
   }
-
-}
+};
 
 // GET SPOT DETAILS
 export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
@@ -75,8 +66,7 @@ export const thunkGetSpotDetails = (spotId) => async (dispatch) => {
 };
 
 // CREATE SPOT
-export const thunkCreateSpot = (spot) => async (dispatch) => {
-
+export const thunkCreateSpot = (spot) => async () => {
   try {
     const response = await csrfFetch("/api/spots/", {
       method: "POST",
@@ -88,39 +78,31 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
       const newSpot = await response.json();
       return newSpot;
     }
-
   } catch (response) {
-
-    const data = await response.json()
+    const data = await response.json();
     return data;
   }
 };
 
 // CREATE SPOT IMAGE
-export const thunkCreateSpotImage = (spotId, spotImage) => async (dispatch) => {
-
+export const thunkCreateSpotImage = (spotId, spotImage) => async () => {
   try {
-
     const response = await csrfFetch(`/api/spots/${spotId}/images`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(spotImage),
     });
 
-    const data = await response.json()
+    const data = await response.json();
     return data;
-
   } catch (error) {
-
     const data = await error.json();
     return data;
   }
-
-}
+};
 
 // UPDATE SPOT
-export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
-
+export const thunkUpdateSpot = (spotId, spot) => async () => {
   try {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
       method: "PUT",
@@ -132,14 +114,22 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
       const data = await response.json();
       return data;
     }
-
   } catch (response) {
-
-    const data = await response.json()
-    console.log("BAD REQUEST DATA", data)
+    const data = await response.json();
     return data;
   }
 };
+
+// DELETE SPOT
+export const thunkDeleteSpot = (spotId) => async (dispatch) => {
+
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE"
+  });
+  const data = await response.json();
+
+  console.log("DEL THUNK DATA::", data)
+}
 
 // REDUCER
 const initialState = {
@@ -152,7 +142,6 @@ const spotsReducer = (state = initialState, action) => {
   let newState;
 
   switch (action.type) {
-
     case GET_SPOTS:
       newState = Object.assign({}, state);
       newState.allSpots = action.payload;
@@ -171,7 +160,6 @@ const spotsReducer = (state = initialState, action) => {
     default:
       return state;
   }
-
 };
 
 export default spotsReducer;
