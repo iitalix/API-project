@@ -61,6 +61,7 @@ export default function CreateSpotForm() {
     setValidationObj(createSpot.errors);
   };
 
+  // Image Error-Checking
   const imgErrCheck = () => {
     const imgErrObj = {};
 
@@ -71,19 +72,23 @@ export default function CreateSpotForm() {
     for (let key in imageUrls) {
       let ext = imageUrls[key];
 
-      if (
-        ext &&
-        (!ext.endsWith(".png") ||
-          !ext.endsWith(".jpg") ||
-          !ext.endsWith(".jpeg"))
-      ) {
+      if (ext.endsWith(".png") || ext.endsWith(".jpg") || ext.endsWith(".jpeg")) {
+
+        ext = imageUrls[key];
+      }
+
+      else if (ext) {
+
         imgErrObj[key] = "Image URL must end in .png, .jpg, or .jpeg";
       }
+
     }
 
+    console.log("Image Errors::", imgErrObj)
     setImageValidationObj(imgErrObj);
   };
 
+  // Add Images to New Spot
   const addImages = async (createSpot) => {
 
     for (let key in imageUrls) {
@@ -105,6 +110,12 @@ export default function CreateSpotForm() {
 
       await dispatch(thunkCreateSpotImage(createSpot.id, spotImage))
     }
+  }
+
+  // Price Must Be Decimal Error
+  const showDecimalPriceErr = (value) = {
+
+
   }
 
   return (
