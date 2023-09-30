@@ -112,12 +112,6 @@ export default function CreateSpotForm() {
     }
   }
 
-  // Price Must Be Decimal Error
-  const showDecimalPriceErr = (value) = {
-
-
-  }
-
   return (
     <>
       <h1>Create a new Spot</h1>
