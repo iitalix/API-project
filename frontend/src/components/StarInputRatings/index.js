@@ -81,6 +81,8 @@ export default function StarInputRatings({rating, disabled, onChange}) {
         >
           <i className="fa-solid fa-star"></i>
         </div>
+
+        <div>Stars</div>
       </div>
     </>
   );

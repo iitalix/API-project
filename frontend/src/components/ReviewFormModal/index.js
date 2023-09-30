@@ -1,7 +1,6 @@
 // frontend/src/components/ReviewFormModal/index.js
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {useParams} from "react-router-dom";
 import {useModal} from "../../context/Modal";
 import {thunkCreateReview} from "../../store/reviews";
 import StarInputRatings from "../StarInputRatings";
@@ -12,10 +11,7 @@ export default function ReviewFormModal({spotId}) {
   const {closeModal} = useModal();
   const [revText, setRevText] = useState("");
   const [rating, setRating] = useState(0);
-  const [review, setReview] = useState({});
   const [errors, setErrors] = useState({});
-
-  console.log("MODAL ERRORS", errors)
 
   const handleSubmit = (e) => {
     const revObj = {
@@ -31,10 +27,15 @@ export default function ReviewFormModal({spotId}) {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
+
         if (data && data.errors) {
-          setErrors(data.message);
+          setErrors(data.errors);
         }
       });
+  };
+
+  const disableSubmit = () => {
+    if (revText.length < 10 || rating === 0) return true;
   };
 
   const onChange = (number) => {
@@ -42,8 +43,10 @@ export default function ReviewFormModal({spotId}) {
   };
 
   return (
-    <>
+    <div className="review-modal-container">
       <h1>How was your stay?</h1>
+      {errors.review && <p>{errors.review}</p>}
+      {errors.stars && <p>{errors.stars}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           <input
@@ -60,13 +63,8 @@ export default function ReviewFormModal({spotId}) {
           rating={rating}
         />
 
-        {/* {errors.credential && (
-          <p>{errors.credential}</p>
-        )} */}
-
-        {/* {errors.message && <p>{errors.message}</p>} */}
-        <button type="submit">Submit Your Review</button>
+        <button type="submit" disabled={disableSubmit()}>Submit Your Review</button>
       </form>
-    </>
+    </div>
   );
 }

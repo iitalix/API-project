@@ -33,22 +33,14 @@ export const thunkGetReviews = (spotId) => async (dispatch) => {
 // Create Review
 export const thunkCreateReview = (spotId, review) => async (dispatch) => {
 
-  try {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(review),
+  });
 
-    const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(review),
-    });
-
-    const data = response.json();
-    console.log("MODAL ERROR::", data)
-
-  } catch (error) {
-
-    const data = error.json();
-    return data;
-  }
+  const data = response.json();
+  return data;
 };
 
 // REDUCER

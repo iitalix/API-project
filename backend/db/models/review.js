@@ -34,12 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
 
-        len: [20, 500],
+        len: [10, 500],
 
         thirtyMin(value) {
 
-          if (value.length < 20) {
-            throw new Error('Review must be 20 characters or more.')
+          if (value.length < 10) {
+            throw new Error('Review must be 10 characters or more.')
           }
         }
       }
