@@ -24,7 +24,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="spotcards-container">
+    <div className="spotcards-container parent-container">
       <div className="spot-cards">
         {spots.map((spot) => (
           <div

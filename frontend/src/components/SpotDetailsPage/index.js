@@ -8,8 +8,7 @@ import {thunkGetReviews} from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import ReviewFormModal from "../ReviewFormModal";
 import DeleteReviewModal from "../DeleteReviewModal";
-import "./SpotDetailsPage.css";
-import "../../index.css"
+import "../../index.css";
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
@@ -97,7 +96,7 @@ export default function SpotDetailsPage() {
   );
 
   return (
-    <>
+    <div className="parent-container">
       <div>
         <h1>{spot.name}</h1>
         <h2>
@@ -151,7 +150,7 @@ export default function SpotDetailsPage() {
             )}
           </div>
 
-          <button onClick={resAlert}>Reserve</button>
+          <button onClick={resAlert} className="action-button reserve-button">Reserve</button>
         </div>
       </div>
 
@@ -197,6 +196,6 @@ export default function SpotDetailsPage() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -116,7 +116,7 @@ export default function CreateSpotForm() {
   };
 
   return (
-    <>
+    <div className="parent-container">
       <h1>Create a new Spot</h1>
       <h2>Where's your place located?</h2>
       <div>
@@ -308,6 +308,6 @@ export default function CreateSpotForm() {
 
         <button type="submit">Create Spot</button>
       </form>
-    </>
+    </div>
   );
 }
