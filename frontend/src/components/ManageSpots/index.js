@@ -6,6 +6,7 @@ import {thunkGetSpotsCurrent} from "../../store/spots";
 import SpotCard from "../SpotCard";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
+import "../../index.css"
 
 export default function ManageSpots() {
   const dispatch = useDispatch();

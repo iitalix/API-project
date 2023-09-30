@@ -4,6 +4,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import {useSelector} from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import "../../index.css"
 import logo from "../../images/luxbnb-horizontal.png";
 
 function Navigation({isLoaded}) {
@@ -17,7 +18,7 @@ function Navigation({isLoaded}) {
   };
 
   return (
-    <>
+    <div className="nav-container">
       <nav className="header">
         <div className="logo-container">
           <NavLink exact to="/">
@@ -43,7 +44,7 @@ function Navigation({isLoaded}) {
           </div>
         </div>
       </nav>
-    </>
+    </div>
   );
 }
 

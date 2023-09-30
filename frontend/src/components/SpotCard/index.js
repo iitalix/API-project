@@ -1,5 +1,6 @@
 import React from "react";
 import "./SpotCard.css";
+import "../../index.css"
 
 export default function SpotCard({spot}) {
   return (

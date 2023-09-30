@@ -3,9 +3,10 @@
 import {useState, useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
-import "./CreateSpotForm.css";
 import {thunkCreateSpot} from "../../store/spots";
 import {thunkCreateSpotImage} from "../../store/spots";
+import "./CreateSpotForm.css";
+import "../../index.css"
 
 export default function CreateSpotForm() {
   const {push} = useHistory();

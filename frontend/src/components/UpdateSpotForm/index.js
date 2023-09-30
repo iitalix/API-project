@@ -6,6 +6,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {thunkGetSpotDetails, thunkUpdateSpot} from "../../store/spots";
 import {thunkCreateSpotImage} from "../../store/spots";
 import "../CreateSpotForm/CreateSpotForm.css";
+import "../../index.css"
 
 export default function UpdateSpotForm() {
   const {push} = useHistory();

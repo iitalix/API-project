@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
 import { thunkDeleteReview } from "../../store/reviews";
 import "../LoginFormModal/LoginForm.css";
+import "../../index.css"
 
 export default function DeleteReviewModal({reviewId}) {
   const dispatch = useDispatch();

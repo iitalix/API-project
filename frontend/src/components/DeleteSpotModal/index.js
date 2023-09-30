@@ -2,8 +2,9 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
-import "../LoginFormModal/LoginForm.css";
 import { thunkDeleteSpot } from "../../store/spots";
+import "../LoginFormModal/LoginForm.css";
+import "../../index.css"
 
 export default function DeleteSpotModal({spotId}) {
   const dispatch = useDispatch();

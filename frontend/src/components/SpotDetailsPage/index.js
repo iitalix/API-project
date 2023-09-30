@@ -9,6 +9,7 @@ import OpenModalButton from "../OpenModalButton";
 import ReviewFormModal from "../ReviewFormModal";
 import DeleteReviewModal from "../DeleteReviewModal";
 import "./SpotDetailsPage.css";
+import "../../index.css"
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
@@ -104,7 +105,7 @@ export default function SpotDetailsPage() {
         </h2>
       </div>
       <div id="images-container">
-        <div>
+        <div className="main-image-container">
           <img src={mainImage.url} alt="interior room" id="main-image" />
         </div>
         <div id="side-image-container">

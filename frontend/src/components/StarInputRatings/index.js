@@ -1,5 +1,6 @@
 import {useState} from "react";
 import "./StarInputRatings.css"
+import "../../index.css"
 
 export default function StarInputRatings({rating, disabled, onChange}) {
   let [activeStarRating, setActiveStarRating] = useState(rating);

@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 import {thunkGetSpots} from "../../store/spots";
 import SpotCard from "../SpotCard";
 import "./LandingPage.css";
+import "../../index.css"
 
 export default function LandingPage() {
   const {push} = useHistory();
