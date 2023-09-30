@@ -17,10 +17,12 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
+  console.log("SPOT IMAGES", spot);
+
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
-  }, [reviews]);
+  }, []);
 
   if (!spot.id) return null;
 
@@ -85,7 +87,30 @@ export default function SpotDetailsPage() {
     }
   };
 
-  const fourImagesArr = spot.SpotImages.slice(1);
+  const mainImageDiv = () => {
+    spot.SpotImages.map((image) => {
+      if (image.preview === true) {
+        return (
+          <div>
+            <img src={image.url} alt="interior room" id="main-image" />
+          </div>
+        );
+      }
+    });
+  };
+
+  const sideImagesDiv = () => {
+    if (image.preview === false) {
+      return (
+        <img
+          src={image.url}
+          alt="interior room"
+          className="side-image"
+          key={image.id}
+        />
+      );
+    }
+  };
 
   return (
     <>
@@ -96,7 +121,7 @@ export default function SpotDetailsPage() {
         </h2>
       </div>
       <div id="images-container">
-        <div>
+        {/* <div>
           <img
             src={spot.SpotImages.length && spot.SpotImages[0].url}
             alt="interior room"
@@ -112,7 +137,7 @@ export default function SpotDetailsPage() {
               key={image.id}
             />
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div id="spot-info-container">
@@ -179,7 +204,6 @@ export default function SpotDetailsPage() {
                   </>
                 )}
               </div>
-
             ))}
           </div>
         </div>
