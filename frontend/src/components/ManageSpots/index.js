@@ -16,6 +16,12 @@ export default function ManageSpots() {
     dispatch(thunkGetSpotsCurrent());
   }, [spots]);
 
+  const goToCreateSpotForm = () => {
+
+    push("/spots/new");
+    return;
+  };
+
   const goToUpdateSpotForm = (spot) => {
     push(`/spots/edit/${spot.id}`);
     return;
@@ -30,7 +36,7 @@ export default function ManageSpots() {
     <>
       <div className="manage-header">
         <h1>Manage Your Spots</h1>
-        <button>Create a New Spot</button>
+        <button onClick={() => goToCreateSpotForm()}>Create a New Spot</button>
       </div>
 
       {spots?.length && (

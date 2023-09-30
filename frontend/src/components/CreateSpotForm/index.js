@@ -56,7 +56,8 @@ export default function CreateSpotForm() {
 
     await addImages(createSpot);
 
-    if (!createSpot.errors && !Object.keys(imageValidationObj).length) push(`/spots/${createSpot.id}`);
+    if (!createSpot.errors && !Object.keys(imageValidationObj).length)
+      push(`/spots/${createSpot.id}`);
 
     setValidationObj(createSpot.errors);
   };
@@ -72,19 +73,18 @@ export default function CreateSpotForm() {
     for (let key in imageUrls) {
       let ext = imageUrls[key];
 
-      if (ext.endsWith(".png") || ext.endsWith(".jpg") || ext.endsWith(".jpeg")) {
-
+      if (
+        ext.endsWith(".png") ||
+        ext.endsWith(".jpg") ||
+        ext.endsWith(".jpeg")
+      ) {
         ext = imageUrls[key];
-      }
-
-      else if (ext) {
-
+      } else if (ext) {
         imgErrObj[key] = "Image URL must end in .png, .jpg, or .jpeg";
       }
-
     }
 
-    console.log("Image Errors::", imgErrObj)
+    console.log("Image Errors::", imgErrObj);
     setImageValidationObj(imgErrObj);
   };
 
@@ -92,25 +92,23 @@ export default function CreateSpotForm() {
   const addImages = async (createSpot) => {
 
     for (let key in imageUrls) {
-
       let spotImage = {};
+
       if (imageUrls[key] === previewImage) {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": true
-        }
-      }
-
-      else {
+          url: imageUrls[key],
+          preview: true,
+        };
+      } else {
         spotImage = {
-          "url": imageUrls[key],
-          "preview": false
-        }
+          url: imageUrls[key],
+          preview: false,
+        };
       }
 
-      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage))
+      await dispatch(thunkCreateSpotImage(createSpot.id, spotImage));
     }
-  }
+  };
 
   return (
     <>
