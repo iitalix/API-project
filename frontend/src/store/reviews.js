@@ -4,6 +4,7 @@ import {csrfFetch} from "./csrf";
 /* --TYPES-- */
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEW = "reviews/createReview";
+const DELETE_REVIEW = "reviews/deleteReview";
 
 /* --ACTION CREATORS-- */
 const getReviews = (reviews) => {
@@ -19,6 +20,7 @@ const createReview = (review) => {
     payload: review,
   };
 };
+
 
 /* --THUNKS-- */
 
@@ -37,6 +39,17 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(review),
+  });
+
+  const data = response.json();
+  return data;
+};
+
+// Delete Review
+export const thunkDeleteReview = (reviewId) => async () => {
+
+  const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
   });
 
   const data = response.json();

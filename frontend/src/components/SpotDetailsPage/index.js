@@ -7,6 +7,7 @@ import {thunkGetSpotDetails} from "../../store/spots";
 import {thunkGetReviews} from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import ReviewFormModal from "../ReviewFormModal";
+import DeleteReviewModal from "../DeleteReviewModal";
 import "./SpotDetailsPage.css";
 
 export default function SpotDetailsPage() {
@@ -16,12 +17,10 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-  console.log("CURR SPOT DETAILS", spot);
-
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
-  }, []);
+  }, [reviews]);
 
   if (!spot.id) return null;
 
@@ -78,8 +77,8 @@ export default function SpotDetailsPage() {
           <>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal spotId={spotId}/>}
-              />
+              modalComponent={<ReviewFormModal spotId={spotId} />}
+            />
           </>
         );
       }
@@ -164,10 +163,23 @@ export default function SpotDetailsPage() {
             {postUserFirstReview()}
             {reviews?.map((review) => (
               <div>
-                <div>{review.User.firstName}</div>
-                <div>{convertDate(review.createdAt)}</div>
-                <div>{review.review}</div>
+                <div>
+                  <div>{review.User.firstName}</div>
+                  <div>{convertDate(review.createdAt)}</div>
+                  <div>{review.review}</div>
+                </div>
+                {sessionUser && sessionUser.id === review.userId && (
+                  <>
+                    <OpenModalButton
+                      buttonText="Delete"
+                      modalComponent={
+                        <DeleteReviewModal reviewId={review.id} />
+                      }
+                    />
+                  </>
+                )}
               </div>
+
             ))}
           </div>
         </div>

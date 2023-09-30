@@ -15,8 +15,8 @@ export default function CreateSpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [lat, setLatitude] = useState("");
-  const [lng, setLongitude] = useState("");
+  // const [lat, setLatitude] = useState("");
+  // const [lng, setLongitude] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -45,8 +45,8 @@ export default function CreateSpotForm() {
       city,
       state,
       country,
-      lat,
-      lng,
+      // lat,
+      // lng,
       name,
       description,
       price,
@@ -163,7 +163,7 @@ export default function CreateSpotForm() {
 
         {validationObj.state && <p className="errors">{validationObj.state}</p>}
 
-        <div>
+        {/* <div>
           <label>Latitude</label>
           <input
             type="text"
@@ -179,7 +179,7 @@ export default function CreateSpotForm() {
             value={lng}
             onChange={(e) => setLongitude(e.target.value)}
           />
-        </div>
+        </div> */}
 
         <h2>Describe your place to guests</h2>
         <div>
