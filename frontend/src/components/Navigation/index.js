@@ -19,7 +19,7 @@ function Navigation({isLoaded}) {
   return (
     <>
       <nav className="header">
-        <div>
+        <div className="logo-container">
           <NavLink exact to="/">
             <img src={logo} alt="logo" id="logo" />
           </NavLink>
