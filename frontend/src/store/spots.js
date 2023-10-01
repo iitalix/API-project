@@ -133,6 +133,7 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
 
   const data = await response.json();
   dispatch(deleteSpot(spotId));
+  return data;
 }
 
 // REDUCER

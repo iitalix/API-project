@@ -5,6 +5,7 @@ import {csrfFetch} from "./csrf";
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEW = "reviews/createReview";
 const DELETE_REVIEW = "reviews/deleteReview";
+const CLEAR_REVIEWS = "reviews/clearReviews";
 
 /* --ACTION CREATORS-- */
 const getReviews = (reviews) => {
@@ -20,6 +21,19 @@ const createReview = (review) => {
     payload: review,
   };
 };
+
+const deleteReview = (reviewId) => {
+  return {
+    type: DELETE_REVIEW,
+    payload: reviewId
+  }
+}
+
+const clearReviews = () => {
+  return {
+    type: CLEAR_REVIEWS,
+  }
+}
 
 
 /* --THUNKS-- */
@@ -41,20 +55,29 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
     body: JSON.stringify(review),
   });
 
-  const data = response.json();
+  const data = response;
+  console.log("THUNK REV DATA", data)
+
   return data;
 };
 
 // Delete Review
-export const thunkDeleteReview = (reviewId) => async () => {
+export const thunkDeleteReview = (reviewId) => async (dispatch) => {
 
   const response = await csrfFetch(`/api/reviews/${reviewId}`, {
     method: "DELETE",
   });
 
   const data = response.json();
+  dispatch(deleteReview(reviewId));
   return data;
 };
+
+// Clear Reviews
+export const thunkClearReviews = () => async (dispatch) => {
+
+  dispatch(clearReviews());
+}
 
 // REDUCER
 const initialState = {
@@ -69,8 +92,16 @@ const reviewsReducer = (state = initialState, action) => {
       newState.Reviews = action.payload;
       return newState;
 
-    case CREATE_REVIEW:
+    case DELETE_REVIEW:
       newState = Object.assign({}, state);
+      const filteredReviews = newState.Reviews.filter((review) => review.id !== action.payload);
+      newState.Reviews = filteredReviews;
+      return newState;
+
+    case CLEAR_REVIEWS:
+      newState = Object.assign({}, state);
+      newState.Reviews = [];
+      return newState;
 
     default:
       return state;
