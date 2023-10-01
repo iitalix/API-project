@@ -56,8 +56,6 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
   });
 
   const data = response;
-  console.log("THUNK REV DATA", data)
-
   return data;
 };
 
