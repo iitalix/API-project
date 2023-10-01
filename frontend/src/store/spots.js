@@ -50,13 +50,11 @@ export const thunkGetSpots = () => async (dispatch) => {
 // GET SPOTS CURRENT
 export const thunkGetSpotsCurrent = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots/current");
-  console.log("SPOTS CURR RESPONSE", response);
 
   try {
     if (response.ok) {
       const data = await response.json();
       dispatch(getSpotsCurrent(data.Spots));
-      console.log("SPOTS CURR DATA", data);
     }
   } catch (error) {
     const data = await response.json();
@@ -135,7 +133,6 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
 
   const data = await response.json();
   dispatch(deleteSpot(spotId));
-  console.log("DEL THUNK DATA::", data)
 }
 
 // REDUCER
