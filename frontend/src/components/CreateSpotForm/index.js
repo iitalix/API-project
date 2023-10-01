@@ -85,7 +85,6 @@ export default function CreateSpotForm() {
       }
     }
 
-    console.log("Image Errors::", imgErrObj);
     setImageValidationObj(imgErrObj);
   };
 
