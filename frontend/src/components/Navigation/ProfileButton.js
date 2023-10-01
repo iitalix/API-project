@@ -6,7 +6,6 @@ import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import "./Navigation.css"
 import "../../index.css"
 
 function ProfileButton({user}) {
@@ -65,9 +64,9 @@ function ProfileButton({user}) {
           <div className="profile-container">
             <p>Hello, {user.username}</p>
             <p>{user.email}</p>
-            <p onClick={() => goToManage()}>Manage Spots</p>
+            <p id="manage-link" onClick={() => goToManage()}>Manage Spots</p>
             <div>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={logout} id="logout-button">Log Out</button>
             </div>
           </div>
         ) : (

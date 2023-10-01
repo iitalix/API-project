@@ -11,6 +11,11 @@
   border: none;
 }
 
+.errors {
+
+    color: red;
+}
+
 /* Images */
 
 #images-container {
@@ -148,4 +153,93 @@
     margin: 5px;
     margin-top:10px;
     box-shadow: 3px 3px 3px grey;
+}
+
+/* Navigation */
+
+.nav-container {
+
+    padding: 20px;
+}
+
+input {
+
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.hidden {
+    display: none
+}
+
+/* Header */
+
+#logo {
+
+    width: 100px;
+}
+
+/* Profile Button */
+
+#create-spot-profile {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+#logout-button {
+    padding: 8px 15px;
+    border-radius: 15px;
+    color: white;
+    background-color: grey;
+}
+#manage-link {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 6px;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid lightgray;
+}
+
+.profile-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    border-radius: 20px;
+    height: 35px;
+    width: 70px;
+    box-shadow: 3px 3px 3px grey;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+ }
+
+.profile-dropdown {
+
+    border: 1px solid black;
+    border-radius: 15px;
+    min-height: 90px;
+    position: absolute;
+    top: 80px;
+    right: 65px;
+    z-index: 3;
+    background-color: ghostwhite;
+    box-shadow: 3px 3px 3px grey;
+}
+
+.profile-menu-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }

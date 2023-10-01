@@ -20,11 +20,6 @@ input {
 
 /* Header */
 
-.logo-container {
-
-    height: 75px;
-}
-
 #logo {
 
     width: 100px;
@@ -32,12 +27,6 @@ input {
 
 /* Profile Button */
 
-.profile-button-container {
-
-    position: static;
-    height: 20px;
-
-}
 .profile-button {
     display: flex;
     flex-direction: row;
@@ -54,8 +43,7 @@ input {
 
     border: 1px solid black;
     border-radius: 15px;
-    height: 90px;
-    width: 120px;
+    min-height: 90px;
     position: absolute;
     top: 80px;
     right: 65px;
@@ -65,13 +53,13 @@ input {
 }
 
 .profile-container {
-    margin-left: 10px;
-    position: absolute;
+   padding: 16px;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 20px;
     border-bottom: 2px solid lightgray;
 }

@@ -34,6 +34,9 @@ function LoginFormModal() {
   return (
     <div className="modal-container">
       <h1>Log In</h1>
+      <div>
+        {errors.credential && <p className="errors">{errors.credential}</p>}
+      </div>
       <form onSubmit={handleSubmit}>
         <label>
           <input
@@ -44,6 +47,7 @@ function LoginFormModal() {
             className="modal-input"
           />
         </label>
+
         <label>
           <input
             type="password"
@@ -53,7 +57,7 @@ function LoginFormModal() {
             className="modal-input"
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+
         <button
           type="submit"
           className="login-button"

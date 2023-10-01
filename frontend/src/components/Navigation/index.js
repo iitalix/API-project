@@ -3,7 +3,6 @@ import React from "react";
 import {NavLink, useHistory} from "react-router-dom";
 import {useSelector} from "react-redux";
 import ProfileButton from "./ProfileButton";
-import "./Navigation.css";
 import "../../index.css"
 import logo from "../../images/luxbnb-horizontal.png";
 
@@ -28,10 +27,10 @@ function Navigation({isLoaded}) {
         <div>
           <div>
             {isLoaded && (
-              <>
+              <div className="profile-menu-container">
                 <div>
                   {sessionUser && (
-                    <button onClick={() => goToCreateSpotForm()}>
+                    <button id="create-spot-profile" onClick={() => goToCreateSpotForm()}>
                       Create a New Spot
                     </button>
                   )}
@@ -39,7 +38,7 @@ function Navigation({isLoaded}) {
                 <div>
                   <ProfileButton user={sessionUser} />
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
