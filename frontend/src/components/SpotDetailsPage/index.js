@@ -16,8 +16,8 @@ export default function SpotDetailsPage() {
   const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
-  console.log("STATEREVS", reviews)
-  // const [reviews, setReviews] = useState([]);
+
+
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
@@ -25,9 +25,9 @@ export default function SpotDetailsPage() {
   }, []);
 
   useEffect(() => {
-    // setReviews(stateReviews);
+
     dispatch(thunkGetReviews(spotId))
-    console.log("USE EFFECT 2::")
+
   }, [reviews?.length])
 
   if (!spot.id) return null;

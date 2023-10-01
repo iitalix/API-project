@@ -69,7 +69,7 @@ const validSpotImages = [
   {
     spotId: 3,
     url: "https://cdn.discordapp.com/attachments/1155249585913090118/1155705993771102208/seedpic-13.png",
-    preview: true
+    preview: false
   },
   {
     spotId: 3,
