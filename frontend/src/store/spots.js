@@ -74,12 +74,11 @@ export const thunkCreateSpot = (spot) => async () => {
       body: JSON.stringify(spot),
     });
 
-    if (response.ok) {
-      const newSpot = await response.json();
-      return newSpot;
-    }
-  } catch (response) {
-    const data = await response.json();
+    const newSpot = await response.json();
+    return newSpot;
+
+  } catch (error) {
+    const data = await error.json();
     return data;
   }
 };

@@ -301,3 +301,9 @@ nav {
 #text-description {
     padding: 75px;
 }
+
+#star-new {
+  display: flex;
+  flex-direction: row;
+
+}

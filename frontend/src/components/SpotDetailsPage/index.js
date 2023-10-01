@@ -60,8 +60,9 @@ export default function SpotDetailsPage() {
             <p>Be the first to post a review!</p>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal spotId={spotId}
-              className="action-button" />}
+              modalComponent={
+                <ReviewFormModal spotId={spotId} className="action-button" />
+              }
             />
           </>
         );
@@ -83,8 +84,9 @@ export default function SpotDetailsPage() {
           <>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal spotId={spotId}
-              className="action-button" />}
+              modalComponent={
+                <ReviewFormModal spotId={spotId} className="action-button" />
+              }
             />
           </>
         );
@@ -152,13 +154,22 @@ export default function SpotDetailsPage() {
             )}
           </div>
 
-          <button onClick={resAlert} className="action-button reserve-button">Reserve</button>
+          <button onClick={resAlert} className="action-button reserve-button">
+            Reserve
+          </button>
         </div>
       </div>
 
       {/* only visible to logged-in User when Spot has no reviews */}
       {postFirstReview()}
       {/* {postUserFirstReview()} */}
+
+      {spot.numReviews === 0 && (
+        <div id="star-new">
+          <i className="fa-solid fa-star"></i>
+          <div>New</div>
+        </div>
+      )}
 
       {/* only visible when Spot has reviews */}
       {spot.numReviews > 0 && (
@@ -179,9 +190,15 @@ export default function SpotDetailsPage() {
             {reviews?.map((review) => (
               <div>
                 <div>
-                  <div className="review-info" id="revname">{review.User.firstName}</div>
-                  <div className="review-info" id="revdate">{convertDate(review.createdAt)}</div>
-                  <div className="review-info" id="review-text">{review.review}</div>
+                  <div className="review-info" id="revname">
+                    {review.User.firstName}
+                  </div>
+                  <div className="review-info" id="revdate">
+                    {convertDate(review.createdAt)}
+                  </div>
+                  <div className="review-info" id="review-text">
+                    {review.review}
+                  </div>
                 </div>
                 {sessionUser && sessionUser.id === review.userId && (
                   <>

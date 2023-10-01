@@ -144,8 +144,8 @@ export default function CreateSpotForm() {
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {validationObj.address && (
-            <p className="errors">{validationObj.address}</p>
+          {validationObj?.address && (
+            <p className="errors">{validationObj?.address}</p>
           )}
 
           <div id="citystate">
@@ -158,8 +158,8 @@ export default function CreateSpotForm() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              {validationObj.city && (
-                <p className="errors">{validationObj.city}</p>
+              {validationObj?.city && (
+                <p className="errors">{validationObj?.city}</p>
               )}
             </div>
 
@@ -173,8 +173,8 @@ export default function CreateSpotForm() {
                 onChange={(e) => setState(e.target.value)}
               />
 
-              {validationObj.state && (
-                <p className="errors">{validationObj.state}</p>
+              {validationObj?.state && (
+                <p className="errors">{validationObj?.state}</p>
               )}
             </div>
           </div>
@@ -211,8 +211,8 @@ export default function CreateSpotForm() {
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          {validationObj.description && (
-            <p className="errors">{validationObj.description}</p>
+          {validationObj?.description && (
+            <p className="errors">{validationObj?.description}</p>
           )}
 
           <h2>Create a title for your spot</h2>
@@ -228,7 +228,7 @@ export default function CreateSpotForm() {
             onChange={(e) => setName(e.target.value)}
           />
 
-          {validationObj.name && <p className="errors">{validationObj.name}</p>}
+          {validationObj?.name && <p className="errors">{validationObj?.name}</p>}
 
           <h2>Set a base price for your spot</h2>
           <div>
@@ -247,8 +247,8 @@ export default function CreateSpotForm() {
             />
           </p>
 
-          {validationObj.price && (
-            <p className="errors">{validationObj.price}</p>
+          {validationObj?.price && (
+            <p className="errors">{validationObj?.price}</p>
           )}
 
           <h2>Liven up your spot with photos</h2>
@@ -261,12 +261,12 @@ export default function CreateSpotForm() {
             onChange={(e) => setPreviewImage(e.target.value)}
           />
 
-          {imageValidationObj.prevImg && (
-            <p className="errors">{imageValidationObj.prevImg}</p>
+          {imageValidationObj?.prevImg && (
+            <p className="errors">{imageValidationObj?.prevImg}</p>
           )}
 
-          {imageValidationObj.previewImage && (
-            <p className="errors">{imageValidationObj.previewImage}</p>
+          {imageValidationObj?.previewImage && (
+            <p className="errors">{imageValidationObj?.previewImage}</p>
           )}
 
           <input
@@ -277,8 +277,8 @@ export default function CreateSpotForm() {
             onChange={(e) => setImgUrlOne(e.target.value)}
           />
 
-          {imageValidationObj.imgUrlOne && (
-            <p className="errors">{imageValidationObj.imgUrlOne}</p>
+          {imageValidationObj?.imgUrlOne && (
+            <p className="errors">{imageValidationObj?.imgUrlOne}</p>
           )}
 
           <input
@@ -289,8 +289,8 @@ export default function CreateSpotForm() {
             onChange={(e) => setImgUrlTwo(e.target.value)}
           />
 
-          {imageValidationObj.imgUrlTwo && (
-            <p className="errors">{imageValidationObj.imgUrlTwo}</p>
+          {imageValidationObj?.imgUrlTwo && (
+            <p className="errors">{imageValidationObj?.imgUrlTwo}</p>
           )}
 
           <input
@@ -301,8 +301,8 @@ export default function CreateSpotForm() {
             onChange={(e) => setImgUrlThree(e.target.value)}
           />
 
-          {imageValidationObj.imgUrlThree && (
-            <p className="errors">{imageValidationObj.imgUrlThree}</p>
+          {imageValidationObj?.imgUrlThree && (
+            <p className="errors">{imageValidationObj?.imgUrlThree}</p>
           )}
 
           <input
@@ -314,7 +314,7 @@ export default function CreateSpotForm() {
           />
 
           {imageValidationObj.imgUrlFour && (
-            <p className="errors">{imageValidationObj.imgUrlFour}</p>
+            <p className="errors">{imageValidationObj?.imgUrlFour}</p>
           )}
 
           <div id="create-submit">
