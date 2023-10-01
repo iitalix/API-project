@@ -60,7 +60,8 @@ export default function SpotDetailsPage() {
             <p>Be the first to post a review!</p>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal spotId={spotId} />}
+              modalComponent={<ReviewFormModal spotId={spotId}
+              className="action-button" />}
             />
           </>
         );
@@ -82,7 +83,8 @@ export default function SpotDetailsPage() {
           <>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal spotId={spotId} />}
+              modalComponent={<ReviewFormModal spotId={spotId}
+              className="action-button" />}
             />
           </>
         );
@@ -177,9 +179,9 @@ export default function SpotDetailsPage() {
             {reviews?.map((review) => (
               <div>
                 <div>
-                  <div>{review.User.firstName}</div>
-                  <div>{convertDate(review.createdAt)}</div>
-                  <div>{review.review}</div>
+                  <div className="review-info" id="revname">{review.User.firstName}</div>
+                  <div className="review-info" id="revdate">{convertDate(review.createdAt)}</div>
+                  <div className="review-info" id="review-text">{review.review}</div>
                 </div>
                 {sessionUser && sessionUser.id === review.userId && (
                   <>
