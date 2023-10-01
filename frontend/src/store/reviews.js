@@ -55,9 +55,9 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
     body: JSON.stringify(review),
   });
 
-  const data = await response.json();
+  const data = response;
   console.log("THUNK REV DATA", data)
-  dispatch(createReview(data));
+
   return data;
 };
 
@@ -90,12 +90,6 @@ const reviewsReducer = (state = initialState, action) => {
     case GET_REVIEWS:
       newState = Object.assign({}, state);
       newState.Reviews = action.payload;
-      return newState;
-
-    case CREATE_REVIEW:
-      newState = Object.assign({}, state);
-      newState.Reviews.push(action.payload);
-      console.log("NEW REV STATE", newState);
       return newState;
 
     case DELETE_REVIEW:

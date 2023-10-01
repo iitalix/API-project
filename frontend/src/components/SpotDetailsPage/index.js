@@ -28,7 +28,7 @@ export default function SpotDetailsPage() {
     // setReviews(stateReviews);
     dispatch(thunkGetReviews(spotId))
     console.log("USE EFFECT 2::")
-  }, [reviews.length])
+  }, [reviews?.length])
 
   if (!spot.id) return null;
 
