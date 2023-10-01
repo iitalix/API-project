@@ -62,7 +62,7 @@ export default function SpotDetailsPage() {
     if (sessionUser) {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
-          <>
+          <div id="post-your-review">
             <OpenModalButton
               buttonText="Post Your Review"
               modalComponent={
@@ -70,7 +70,7 @@ export default function SpotDetailsPage() {
               }
             />
             <p>Be the first to post a review!</p>
-          </>
+          </div>
         );
       }
 
@@ -207,7 +207,7 @@ export default function SpotDetailsPage() {
                   </div>
                 </div>
                 {sessionUser && sessionUser.id === review.userId && (
-                  <div>
+                  <div id="delete-review">
                     <OpenModalButton
                       buttonText="Delete"
                       modalComponent={

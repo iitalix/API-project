@@ -46,7 +46,7 @@ export default function ReviewFormModal({spotId}) {
     setRating(parseInt(number));
   };
 
-  const ulClassName = (disableSubmit ? "action-button" : " ");
+  const ulClassName = (disableSubmit ? " " : "action-button");
 
   return (
     <div className="review-modal-container">

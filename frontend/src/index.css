@@ -58,10 +58,19 @@ body {
   margin-bottom: 10px;
 }
 
+#post-your-review {
+  margin-top: 15px;
+}
+
 #spot-description {
   width: 60%;
   padding-bottom: 15px;
+  padding-right: 10px;
   margin-bottom: 20px;
+}
+
+#delete-review {
+  margin-bottom: 30px;
 }
 
 /* Callout Box */
@@ -288,6 +297,11 @@ nav {
   padding-top: 10px;
 }
 
+#subhead {
+  font-size: 25px;
+  font-weight: bolder;
+}
+
 #create {
   padding: 15px;
 }
@@ -308,7 +322,7 @@ nav {
 #star-new {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 #post-review-button {
@@ -410,4 +424,55 @@ nav {
 #turn-red {
   background-color: #ff4545;
   color: white;
+}
+
+/* Manage Spots */
+
+.manage-cards-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.manage-buttons-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.manage-buttons {
+  padding: 5px;
+  margin-right: 15px;
+  margin-left: 12px;
+  margin-bottom: 20px;
+
+  color: white;
+  background-color: red;
+  box-shadow: 3px 3px 3px grey;
+}
+
+/* Delete Review Modal */
+.delete-review-modal-container, #delete-spot-modal-container,
+#confirm-buttons {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#delete-spot-modal-container
+
+.delete-review-modal-container > div, #delete-spot-modal-container > div {
+  margin-bottom: 20px;
+  padding: 0 30px;
+}
+
+#delete-review-modal-button, #delete-spot-modal-button {
+  padding: 10px 100px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 2px solid black;
+}
+
+#keep-review, #keep-spot {
+  padding: 10px 100px;
+  border: 2px solid black;
 }
