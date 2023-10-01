@@ -3,7 +3,6 @@ import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
 import { thunkDeleteSpot } from "../../store/spots";
-import "../LoginFormModal/LoginForm.css";
 import "../../index.css"
 
 export default function DeleteSpotModal({spotId}) {
@@ -28,10 +27,10 @@ export default function DeleteSpotModal({spotId}) {
   };
 
   return (
-    <div className="delete-spot-modal-container">
+    <div id="delete-spot-modal-container">
       <h1>Confirm Delete</h1>
       <div>Are you sure you want to remove this spot from the listings?</div>
-      <button onClick={handleSubmit}>Yes (Delete Spot)</button>
+      <button className="action-button" onClick={handleSubmit}>Yes (Delete Spot)</button>
       <button onClick={closeModal}>No (Keep Spot)</button>
     </div>
   );

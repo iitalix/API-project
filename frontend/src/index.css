@@ -19,7 +19,6 @@ body {
 }
 
 /* Images */
-
 #images-container {
   display: flex;
   flex-direction: row;
@@ -45,7 +44,6 @@ body {
 }
 
 /* Spot Info Container */
-
 #spot-info-container {
   display: flex;
   flex-direction: row;
@@ -67,7 +65,6 @@ body {
 }
 
 /* Callout Box */
-
 .reserve-button {
   height: 40px;
   width: 325px;
@@ -163,7 +160,6 @@ body {
 }
 
 /* Navigation */
-
 .nav-container {
   padding: 20px;
 }
@@ -178,13 +174,11 @@ body {
 }
 
 /* Header */
-
 #logo {
   width: 100px;
 }
 
 /* Profile Button */
-
 #create-spot-profile {
   padding: 5px;
   margin-right: 10px;
@@ -248,7 +242,6 @@ nav {
 }
 
 /* Forms - Create Spot */
-
 #citystate {
   display: flex;
   flex-direction: row;
@@ -312,7 +305,6 @@ nav {
 }
 
 /* Spot Details Page */
-
 #star-new {
   display: flex;
   flex-direction: row;
@@ -375,4 +367,47 @@ nav {
 .stars-container {
   display: flex;
   flex-direction: row;
+}
+
+/* Delete Modal */
+#delete-spot-modal-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Signup Form Modal */
+.signup-form-modal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-form label {
+  padding: 5px 20px;
+}
+
+.signup-form input {
+  height: 2em;
+  width: 25em;
+  background-color: aliceblue;
+  border: 2px solid black;
+}
+
+#signup-button {
+  margin-top: 5px;
+  height: 3em;
+  width: 25em;
+  border: 1px solid black;
+  box-shadow: 3px 3px 3px grey;
+}
+
+#turn-red {
+  background-color: #ff4545;
+  color: white;
 }

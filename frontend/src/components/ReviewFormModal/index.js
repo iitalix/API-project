@@ -4,7 +4,6 @@ import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
 import {thunkCreateReview} from "../../store/reviews";
 import StarInputRatings from "../StarInputRatings";
-import "../LoginFormModal/LoginForm.css";
 import "../../index.css";
 
 export default function ReviewFormModal({spotId}) {
