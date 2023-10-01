@@ -1,4 +1,7 @@
 /* TODO Add site wide styles */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 .parent-container {
   padding: 20px;
@@ -12,8 +15,7 @@
 }
 
 .errors {
-
-    color: red;
+  color: red;
 }
 
 /* Images */
@@ -25,15 +27,15 @@
   border-radius: 50px;
 }
 
-#side-images-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 #main-image {
   width: 480px;
   border-radius: 10px;
   margin-right: 5px;
+}
+
+#side-images-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .side-image {
@@ -114,132 +116,188 @@
 }
 
 .review-info {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #review-text {
-
-    width: 90%;
-    margin-bottom: 40px;
+  width: 90%;
+  margin-bottom: 40px;
 }
 
 #revdate {
-    color: rgb(80, 80, 80);
+  color: rgb(80, 80, 80);
 }
 
 #revname {
-
-    font-size: 18px;
+  font-size: 18px;
 }
 
 /* Log In Modal */
 .modal-container {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-input {
-    height: 30px;
-    width: 300px;
-    margin: 5px;
-    border: 2px solid black;
+  height: 30px;
+  width: 300px;
+  margin: 5px;
+  border: 2px solid black;
 }
 
-.demo-button, .login-button {
-    height: 30px;
-    width: 325px;
-    margin: 5px;
-    margin-top:10px;
-    box-shadow: 3px 3px 3px grey;
+.demo-button,
+.login-button {
+  height: 30px;
+  width: 325px;
+  margin: 5px;
+  margin-top: 10px;
+  box-shadow: 3px 3px 3px grey;
 }
 
 /* Navigation */
 
 .nav-container {
-
-    padding: 20px;
+  padding: 20px;
 }
 
-input {
-
-    margin-left: 10px;
-    margin-right: 10px;
+.modal-input {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .hidden {
-    display: none
+  display: none;
 }
 
 /* Header */
 
 #logo {
-
-    width: 100px;
+  width: 100px;
 }
 
 /* Profile Button */
 
 #create-spot-profile {
-    padding: 5px;
-    margin-right: 10px;
+  padding: 5px;
+  margin-right: 10px;
 }
 
 #logout-button {
-    padding: 8px 15px;
-    border-radius: 15px;
-    color: white;
-    background-color: grey;
+  padding: 8px 15px;
+  border-radius: 15px;
+  color: white;
+  background-color: grey;
 }
 #manage-link {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 6px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 6px;
 }
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid lightgray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid lightgray;
 }
 
 .profile-button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    border: 1px solid black;
-    border-radius: 20px;
-    height: 35px;
-    width: 70px;
-    box-shadow: 3px 3px 3px grey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 1px solid black;
+  border-radius: 20px;
+  height: 35px;
+  width: 70px;
+  box-shadow: 3px 3px 3px grey;
 }
 
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
- }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
 
 .profile-dropdown {
-
-    border: 1px solid black;
-    border-radius: 15px;
-    min-height: 90px;
-    position: absolute;
-    top: 80px;
-    right: 65px;
-    z-index: 3;
-    background-color: ghostwhite;
-    box-shadow: 3px 3px 3px grey;
+  border: 1px solid black;
+  border-radius: 15px;
+  min-height: 90px;
+  position: absolute;
+  top: 80px;
+  right: 65px;
+  z-index: 3;
+  background-color: ghostwhite;
+  box-shadow: 3px 3px 3px grey;
 }
 
 .profile-menu-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* Forms - Create Spot */
+
+#citystate {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#city {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+}
+
+#guests {
+  margin-bottom: 20px;
+}
+
+#state {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+}
+
+.parent-form-container {
+  padding: 0px 235px;
+}
+
+.spot-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.spot-form input {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.spot-form-container label {
+  margin-bottom: 5px;
+}
+
+.spot-form-container h2 {
+  border-top: 2px solid black;
+  padding-top: 10px;
+}
+
+#create {
+    padding: 15px;
+}
+
+#create-submit {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    border-top: 2px solid black;
+    padding-top: 15px;
+}
+
+#text-description {
+    padding: 75px;
 }
