@@ -521,7 +521,8 @@ router.post(
   requireAuth,
   validateReviews,
   async (req, res) => {
-    const findSpot = await Spot.findByPk(req.params.spotId);
+    const spotId = Number(req.params.spotId);
+    const findSpot = await Spot.findByPk(spotId);
 
     // If Spot does not exist
     if (!findSpot) {
@@ -538,7 +539,7 @@ router.post(
     const findExistReview = await Review.findOne({
       where: {
         userId: user.id,
-        spotId: req.params.spotId,
+        spotId,
       },
     });
 
@@ -551,7 +552,7 @@ router.post(
     }
 
     const newReview = await Review.create({
-      spotId: req.params.spotId,
+      spotId,
       userId: user.id,
       review,
       stars,

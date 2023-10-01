@@ -2,7 +2,7 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
-import {thunkCreateReview} from "../../store/reviews";
+import {thunkCreateReview, thunkClearReviews} from "../../store/reviews";
 import StarInputRatings from "../StarInputRatings";
 import "../../index.css";
 
@@ -12,6 +12,7 @@ export default function ReviewFormModal({spotId}) {
   const [revText, setRevText] = useState("");
   const [rating, setRating] = useState(0);
   const [errors, setErrors] = useState({});
+
 
   const handleSubmit = (e) => {
     const revObj = {
@@ -24,7 +25,10 @@ export default function ReviewFormModal({spotId}) {
     setErrors({});
 
     return dispatch(thunkCreateReview(spotId, revObj))
-      .then(closeModal)
+      .then(() => {
+        dispatch(thunkClearReviews())
+        return closeModal();
+      })
       .catch(async (res) => {
         const data = await res.json();
 
