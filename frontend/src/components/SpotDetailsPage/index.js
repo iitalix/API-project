@@ -57,13 +57,13 @@ export default function SpotDetailsPage() {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
           <>
-            <p>Be the first to post a review!</p>
             <OpenModalButton
               buttonText="Post Your Review"
               modalComponent={
                 <ReviewFormModal spotId={spotId} className="action-button" />
               }
             />
+            <p>Be the first to post a review!</p>
           </>
         );
       }
@@ -81,14 +81,15 @@ export default function SpotDetailsPage() {
 
       if (!count) {
         return (
-          <>
+          <div>
             <OpenModalButton
               buttonText="Post Your Review"
               modalComponent={
                 <ReviewFormModal spotId={spotId} className="action-button" />
               }
+              id="post-review-button"
             />
-          </>
+          </div>
         );
       }
     }
@@ -160,16 +161,15 @@ export default function SpotDetailsPage() {
         </div>
       </div>
 
-      {/* only visible to logged-in User when Spot has no reviews */}
-      {postFirstReview()}
-      {/* {postUserFirstReview()} */}
-
       {spot.numReviews === 0 && (
         <div id="star-new">
           <i className="fa-solid fa-star"></i>
           <div>New</div>
         </div>
       )}
+
+      {/* only visible to logged-in User when Spot has no reviews */}
+      {postFirstReview()}
 
       {/* only visible when Spot has reviews */}
       {spot.numReviews > 0 && (

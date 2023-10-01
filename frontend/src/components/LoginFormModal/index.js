@@ -31,13 +31,18 @@ function LoginFormModal() {
       });
   };
 
+  const disableSubmit = () => {
+
+     if (credential.length < 4 || password.length < 6) return true;
+  }
+
   return (
     <div className="modal-container">
       <h1>Log In</h1>
       <div>
         {errors.credential && <p className="errors">{errors.credential}</p>}
       </div>
-      <form onSubmit={handleSubmit}>
+      <form className="login-form-modal" onSubmit={handleSubmit}>
         <label>
           <input
             type="text"
@@ -61,7 +66,7 @@ function LoginFormModal() {
         <button
           type="submit"
           className="login-button"
-          disabled={credential.length < 4 || password.length < 6}
+          disabled={disableSubmit()}
         >
           Log In
         </button>

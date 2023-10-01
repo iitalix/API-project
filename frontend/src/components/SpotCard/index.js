@@ -19,7 +19,7 @@ export default function SpotCard({spot}) {
           </div>
 
           {spot.avgRating === "NaN" && (
-            <div className="callout-upper-right">
+            <div id="star-new">
               <i className="fa-solid fa-star"></i>
               <div>New</div>
             </div>

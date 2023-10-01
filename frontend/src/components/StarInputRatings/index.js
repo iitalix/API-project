@@ -6,8 +6,8 @@ export default function StarInputRatings({rating, disabled, onChange}) {
   let [activeStarRating, setActiveStarRating] = useState(rating);
 
   return (
-    <>
-      <div className="star-input-contaienr">
+    <div className="star-container">
+      <div className="star-input-container">
         <div
           className={activeStarRating >= 1 ? "filled" : "empty"}
           onMouseEnter={() => {
@@ -85,6 +85,6 @@ export default function StarInputRatings({rating, disabled, onChange}) {
 
         <div>Stars</div>
       </div>
-    </>
+    </div>
   );
 }

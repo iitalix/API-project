@@ -5,8 +5,7 @@ import {useModal} from "../../context/Modal";
 import {thunkCreateReview} from "../../store/reviews";
 import StarInputRatings from "../StarInputRatings";
 import "../LoginFormModal/LoginForm.css";
-import "../../index.css"
-
+import "../../index.css";
 
 export default function ReviewFormModal({spotId}) {
   const dispatch = useDispatch();
@@ -44,28 +43,36 @@ export default function ReviewFormModal({spotId}) {
     setRating(parseInt(number));
   };
 
+  const ulClassName = (disableSubmit ? "action-button" : " ");
+
   return (
     <div className="review-modal-container">
+
       <h1>How was your stay?</h1>
       {errors.review && <p>{errors.review}</p>}
       {errors.stars && <p>{errors.stars}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="review-form-container">
         <label>
-          <input
-            type="text-area"
+          <textarea
+            type="text"
+            id="review-text-area"
             value={revText}
             placeholder="Leave your review here..."
             onChange={(e) => setRevText(e.target.value)}
           />
         </label>
 
-        <StarInputRatings
-          disabled={false}
-          onChange={onChange}
-          rating={rating}
-        />
+        <div className="stars-container">
+          <StarInputRatings
+            disabled={false}
+            onChange={onChange}
+            rating={rating}
+          />
+        </div>
 
-        <button type="submit" disabled={disableSubmit()}>Submit Your Review</button>
+        <button type="submit" className={ulClassName} id="review-submit" disabled={disableSubmit()}>
+          Submit Your Review
+        </button>
       </form>
     </div>
   );

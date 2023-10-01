@@ -40,6 +40,8 @@ export default function CreateSpotForm() {
     e.preventDefault();
     imgErrCheck();
 
+    if (Object.keys(imageValidationObj).length) return;
+
     const newSpot = {
       address,
       city,
@@ -56,8 +58,7 @@ export default function CreateSpotForm() {
 
     await addImages(createSpot);
 
-    if (!createSpot.errors && !Object.keys(imageValidationObj).length)
-      push(`/spots/${createSpot.id}`);
+    if (!createSpot.errors) push(`/spots/${createSpot.id}`);
 
     setValidationObj(createSpot.errors);
   };
@@ -67,7 +68,7 @@ export default function CreateSpotForm() {
     const imgErrObj = {};
 
     if (!previewImage) {
-      imgErrObj.prevImg = "Preview image is required";
+      imgErrObj.previewImage = "Preview image is required";
     }
 
     for (let key in imageUrls) {
@@ -99,7 +100,9 @@ export default function CreateSpotForm() {
           preview: true,
         };
       } else {
+
         if (imageUrls[key] !== "") {
+
           spotImage = {
             url: imageUrls[key],
             preview: false,
@@ -163,6 +166,8 @@ export default function CreateSpotForm() {
               )}
             </div>
 
+            <p>,</p>
+
             <div id="state">
               <label>State</label>
               <input
@@ -202,8 +207,8 @@ export default function CreateSpotForm() {
             Mention the best features of your space, any special amentities like
             fast wifi or parking, and what you love about the neighborhood.
           </div>
-          <input
-            type="text-area"
+          <textarea
+            type="text"
             name="description"
             placeholder="Please write at least 30 characters"
             id="text-description"
@@ -260,10 +265,6 @@ export default function CreateSpotForm() {
             value={previewImage}
             onChange={(e) => setPreviewImage(e.target.value)}
           />
-
-          {imageValidationObj?.prevImg && (
-            <p className="errors">{imageValidationObj?.prevImg}</p>
-          )}
 
           {imageValidationObj?.previewImage && (
             <p className="errors">{imageValidationObj?.previewImage}</p>

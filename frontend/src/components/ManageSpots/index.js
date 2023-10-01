@@ -15,7 +15,7 @@ export default function ManageSpots() {
 
   useEffect(() => {
     dispatch(thunkGetSpotsCurrent());
-  }, [spots]);
+  }, []);
 
   const goToCreateSpotForm = () => {
 

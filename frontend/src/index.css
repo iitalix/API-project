@@ -130,6 +130,7 @@ body {
 
 #revname {
   font-size: 18px;
+  margin-top: 15px;
 }
 
 /* Log In Modal */
@@ -144,6 +145,12 @@ body {
   width: 300px;
   margin: 5px;
   border: 2px solid black;
+}
+
+.login-form-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .demo-button,
@@ -246,12 +253,13 @@ nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 #city {
   display: flex;
   flex-direction: column;
-  width: 75%;
+  width: 72%;
 }
 
 #guests {
@@ -288,22 +296,83 @@ nav {
 }
 
 #create {
-    padding: 15px;
+  padding: 15px;
 }
 
 #create-submit {
-    display: flex;
-    justify-content: center;
-    border-top: 2px solid black;
-    padding-top: 15px;
+  display: flex;
+  justify-content: center;
+  border-top: 2px solid black;
+  padding-top: 15px;
 }
 
 #text-description {
-    padding: 75px;
+  margin-top: 20px;
+  min-height: 150px;
 }
+
+/* Spot Details Page */
 
 #star-new {
   display: flex;
   flex-direction: row;
+  margin-bottom: 20px;
+}
 
+#post-review-button {
+  color: white;
+  box-shadow: 3px 3px 3px grey;
+  margin-bottom: 20px;
+}
+
+/* Review Form */
+
+.review-modal-container {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-form-container {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#review-text-area {
+
+  min-height: 100px;
+  min-width: 350px;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+#review-submit {
+
+  margin-top: 20px;
+  box-shadow: 3px 3px 3px grey;
+  padding: 10px 115px;
+  border-radius: 10px;
+}
+
+.star-input-container {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.star-input-container div {
+
+  padding: 2px;
+}
+
+.stars-container {
+  display: flex;
+  flex-direction: row;
 }

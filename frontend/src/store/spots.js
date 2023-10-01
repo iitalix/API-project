@@ -30,6 +30,13 @@ const getSpotsCurrent = (spots) => {
   };
 };
 
+const deleteSpot = (spotId) => {
+  return {
+    type: DELETE_SPOT,
+    payload: spotId
+  }
+}
+
 /* --THUNKS-- */
 
 // GET SPOTS
@@ -125,8 +132,9 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "DELETE"
   });
-  const data = await response.json();
 
+  const data = await response.json();
+  dispatch(deleteSpot(spotId));
   console.log("DEL THUNK DATA::", data)
 }
 
@@ -154,6 +162,12 @@ const spotsReducer = (state = initialState, action) => {
     case GET_SPOTS_CURRENT:
       newState = Object.assign({}, state);
       newState.spotsCurrent = action.payload;
+      return newState;
+
+    case DELETE_SPOT:
+      newState = Object.assign({}, state);
+      const filteredSpots = newState.spotsCurrent.filter((spot) => spot.id !== action.payload);
+      newState.spotsCurrent = filteredSpots;
       return newState;
 
     default:
