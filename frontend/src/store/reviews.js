@@ -1,8 +1,10 @@
 // frontend/src/store/reviews.js
+import {csrfFetch} from "./csrf";
 
 /* --TYPES-- */
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEW = "reviews/createReview";
+const DELETE_REVIEW = "reviews/deleteReview";
 
 /* --ACTION CREATORS-- */
 const getReviews = (reviews) => {
@@ -19,6 +21,7 @@ const createReview = (review) => {
   };
 };
 
+
 /* --THUNKS-- */
 
 // Get Reviews
@@ -31,15 +34,26 @@ export const thunkGetReviews = (spotId) => async (dispatch) => {
 
 // Create Review
 export const thunkCreateReview = (spotId, review) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`, {
+
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(review),
   });
 
   const data = response.json();
-  console.log("THUNK REVIEW DATA::", data);
-  // dispatch(createReview(data))
+  return data;
+};
+
+// Delete Review
+export const thunkDeleteReview = (reviewId) => async () => {
+
+  const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+
+  const data = response.json();
+  return data;
 };
 
 // REDUCER

@@ -7,7 +7,8 @@ import {thunkGetSpotDetails} from "../../store/spots";
 import {thunkGetReviews} from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import ReviewFormModal from "../ReviewFormModal";
-import "./SpotDetailsPage.css";
+import DeleteReviewModal from "../DeleteReviewModal";
+import "../../index.css";
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
@@ -16,13 +17,12 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-  console.log("REVIEWS", reviews);
-  console.log("CURR SPOT DETAILS", spot);
+  console.log("SPOT IMAGES", spot);
 
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
-  }, []);
+  }, [reviews]);
 
   if (!spot.id) return null;
 
@@ -40,24 +40,29 @@ export default function SpotDetailsPage() {
   };
 
   const showReviews = () => {
-    return spot.numReviews !== 0 ? (
-      <>
-        <div>&middot;</div>
-        <div>
-          {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
-        </div>
-      </>
-    ) : (
-      <div>New</div>
+    return (
+      spot.numReviews !== 0 && (
+        <>
+          <div>&middot;</div>
+          <div>
+            {spot.numReviews} {spot.numReviews > 1 ? "reviews" : "review"}
+          </div>
+        </>
+      )
     );
   };
 
-  // TODO: Add A Post A Review Button
   const postFirstReview = () => {
     if (sessionUser) {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
           <>
+            <OpenModalButton
+              buttonText="Post Your Review"
+              modalComponent={
+                <ReviewFormModal spotId={spotId} className="action-button" />
+              }
+            />
             <p>Be the first to post a review!</p>
           </>
         );
@@ -67,7 +72,6 @@ export default function SpotDetailsPage() {
     }
   };
 
-  // TODO: Review Modal
   const postUserFirstReview = () => {
     if (sessionUser && sessionUser.id !== spot.ownerId) {
       let count = 0;
@@ -77,20 +81,27 @@ export default function SpotDetailsPage() {
 
       if (!count) {
         return (
-          <>
+          <div>
             <OpenModalButton
               buttonText="Post Your Review"
-              modalComponent={<ReviewFormModal />} />
-          </>
+              modalComponent={
+                <ReviewFormModal spotId={spotId} className="action-button" />
+              }
+              id="post-review-button"
+            />
+          </div>
         );
       }
     }
   };
 
-  const fourImagesArr = spot.SpotImages.slice(1);
+  const mainImage = spot.SpotImages.find((image) => image.preview === true);
+  const fourImagesArr = spot.SpotImages.filter(
+    (image) => image.preview === false
+  );
 
   return (
-    <>
+    <div className="parent-container">
       <div>
         <h1>{spot.name}</h1>
         <h2>
@@ -98,22 +109,19 @@ export default function SpotDetailsPage() {
         </h2>
       </div>
       <div id="images-container">
-        <div>
-          <img
-            src={spot.SpotImages.length && spot.SpotImages[0].url}
-            alt="interior room"
-            id="main-image"
-          />
+        <div className="main-image-container">
+          <img src={mainImage.url} alt="interior room" id="main-image" />
         </div>
         <div id="side-image-container">
-          {fourImagesArr.map((image) => (
-            <img
-              src={image.url}
-              alt="interior room"
-              className="side-image"
-              key={image.id}
-            />
-          ))}
+          {fourImagesArr.length > 0 &&
+            fourImagesArr.map((image) => (
+              <img
+                src={image.url}
+                alt="interior room"
+                className="side-image"
+                key={image.id}
+              />
+            ))}
         </div>
       </div>
 
@@ -138,11 +146,27 @@ export default function SpotDetailsPage() {
                 {showReviews()}
               </div>
             )}
+
+            {spot.numReviews === 0 && (
+              <div className="callout-upper-right">
+                <i className="fa-solid fa-star"></i>
+                <div>New</div>
+              </div>
+            )}
           </div>
 
-          <button onClick={resAlert}>Reserve</button>
+          <button onClick={resAlert} className="action-button reserve-button">
+            Reserve
+          </button>
         </div>
       </div>
+
+      {spot.numReviews === 0 && (
+        <div id="star-new">
+          <i className="fa-solid fa-star"></i>
+          <div>New</div>
+        </div>
+      )}
 
       {/* only visible to logged-in User when Spot has no reviews */}
       {postFirstReview()}
@@ -165,14 +189,32 @@ export default function SpotDetailsPage() {
             {postUserFirstReview()}
             {reviews?.map((review) => (
               <div>
-                <div>{review.User.firstName}</div>
-                <div>{convertDate(review.createdAt)}</div>
-                <div>{review.review}</div>
+                <div>
+                  <div className="review-info" id="revname">
+                    {review.User.firstName}
+                  </div>
+                  <div className="review-info" id="revdate">
+                    {convertDate(review.createdAt)}
+                  </div>
+                  <div className="review-info" id="review-text">
+                    {review.review}
+                  </div>
+                </div>
+                {sessionUser && sessionUser.id === review.userId && (
+                  <>
+                    <OpenModalButton
+                      buttonText="Delete"
+                      modalComponent={
+                        <DeleteReviewModal reviewId={review.id} />
+                      }
+                    />
+                  </>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

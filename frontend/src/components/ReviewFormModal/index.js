@@ -1,73 +1,78 @@
 // frontend/src/components/ReviewFormModal/index.js
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import { useParams } from "react-router-dom";
 import {useModal} from "../../context/Modal";
 import {thunkCreateReview} from "../../store/reviews";
 import StarInputRatings from "../StarInputRatings";
-import "../LoginFormModal/LoginForm.css";
+import "../../index.css";
 
-export default function ReviewFormModal() {
+export default function ReviewFormModal({spotId}) {
   const dispatch = useDispatch();
   const {closeModal} = useModal();
-  const {spotId} = useParams();
   const [revText, setRevText] = useState("");
   const [rating, setRating] = useState(0);
-  const [review, setReview] = useState({});
   const [errors, setErrors] = useState({});
 
-  console.log("SPOTID::", spotId)
-
-  const revObj = {
-    review: revText,
-    stars: rating
-  }
-
   const handleSubmit = (e) => {
+    const revObj = {
+      review: revText,
+      stars: rating,
+    };
+
     e.preventDefault();
 
-    setReview(revObj);
     setErrors({});
 
-    return dispatch(thunkCreateReview(spotId, review))
+    return dispatch(thunkCreateReview(spotId, revObj))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
+
         if (data && data.errors) {
           setErrors(data.errors);
         }
       });
   };
 
-  const onChange = (number) => {
+  const disableSubmit = () => {
+    if (revText.length < 10 || rating === 0) return true;
+  };
 
-    setRating(parseInt(number))
-  }
+  const onChange = (number) => {
+    setRating(parseInt(number));
+  };
+
+  const ulClassName = (disableSubmit ? "action-button" : " ");
 
   return (
-    <>
+    <div className="review-modal-container">
+
       <h1>How was your stay?</h1>
-      <form onSubmit={handleSubmit}>
+      {errors.review && <p>{errors.review}</p>}
+      {errors.stars && <p>{errors.stars}</p>}
+      <form onSubmit={handleSubmit} className="review-form-container">
         <label>
-          <input
-            type="text-area"
+          <textarea
+            type="text"
+            id="review-text-area"
             value={revText}
             placeholder="Leave your review here..."
             onChange={(e) => setRevText(e.target.value)}
-            required
           />
         </label>
 
-        <StarInputRatings
-          disabled={false}
-          onChange={onChange}
-          rating={rating} />
+        <div className="stars-container">
+          <StarInputRatings
+            disabled={false}
+            onChange={onChange}
+            rating={rating}
+          />
+        </div>
 
-        {/* {errors.credential && (
-          <p>{errors.credential}</p>
-        )} */}
-        <button type="submit">Submit Your Review</button>
+        <button type="submit" className={ulClassName} id="review-submit" disabled={disableSubmit()}>
+          Submit Your Review
+        </button>
       </form>
-    </>
+    </div>
   );
 }

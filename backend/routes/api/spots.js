@@ -83,9 +83,7 @@ const validateSpotEdit = [
     .isDecimal({force_decimal: true})
     .withMessage("Longitude is not valid."),
   check("name")
-    .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .isLength({max: 49})
     .withMessage("Name is required."),
   check("description")
     .optional({value: "undefined"})
@@ -95,7 +93,9 @@ const validateSpotEdit = [
   check("price")
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
-    .withMessage("Price per day is required."),
+    .withMessage("Price per day is required.")
+    .isDecimal({force_decimal: true})
+    .withMessage("Price per day is required and must be a decimal."),
   handleValidationErrors,
 ];
 

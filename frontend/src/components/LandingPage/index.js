@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 import {thunkGetSpots} from "../../store/spots";
 import SpotCard from "../SpotCard";
 import "./LandingPage.css";
+import "../../index.css"
 
 export default function LandingPage() {
   const {push} = useHistory();
@@ -23,7 +24,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="spotcards-container">
+    <div className="spotcards-container parent-container">
       <div className="spot-cards">
         {spots.map((spot) => (
           <div

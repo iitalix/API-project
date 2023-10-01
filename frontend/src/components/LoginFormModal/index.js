@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import * as sessionActions from "../../store/session";
 import {useDispatch} from "react-redux";
 import {useModal} from "../../context/Modal";
-import "./LoginForm.css";
+import "../../index.css"
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -30,40 +30,50 @@ function LoginFormModal() {
       });
   };
 
+  const disableSubmit = () => {
+
+     if (credential.length < 4 || password.length < 6) return true;
+  }
+
   return (
-    <>
+    <div className="modal-container">
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <div>
+        {errors.credential && <p className="errors">{errors.credential}</p>}
+      </div>
+      <form className="login-form-modal" onSubmit={handleSubmit}>
         <label>
-          Username or Email
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
+            placeholder="Username or Email"
+            className="modal-input"
           />
         </label>
+
         <label>
-          Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            placeholder="Password"
+            className="modal-input"
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+
         <button
           type="submit"
-          disabled={credential.length < 4 || password.length < 6}
+          className="login-button"
+          disabled={disableSubmit()}
         >
           Log In
         </button>
-        <button onClick={(e) => handleSubmit(e, "demoUser")}>
+        <button className="demo-button" onClick={(e) => handleSubmit(e, "demoUser")}>
           Log in as Demo User
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
