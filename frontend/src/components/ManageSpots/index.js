@@ -42,7 +42,7 @@ export default function ManageSpots() {
       {spots?.length > 0 && (
         <div className="manage-cards-container">
           {spots.map((spot) => (
-            <div className="card-update-delete">
+            <div key="button-container" className="card-update-delete">
               <div
                 key={spot.id}
                 className="spotcard"
