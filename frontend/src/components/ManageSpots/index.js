@@ -36,7 +36,7 @@ export default function ManageSpots() {
     <div className="parent-container">
       <div className="manage-header">
         <h1>Manage Your Spots</h1>
-        <button className="manage-buttons" Click={() => goToCreateSpotForm()}>Create a New Spot</button>
+        <button className="manage-buttons" onClick={() => goToCreateSpotForm()}>Create a New Spot</button>
       </div>
 
       {spots?.length && (

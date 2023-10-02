@@ -40,7 +40,7 @@ const clearReviews = () => {
 
 // Get Reviews
 export const thunkGetReviews = (spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`);
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
   const data = await response.json();
   dispatch(getReviews(data.Reviews));

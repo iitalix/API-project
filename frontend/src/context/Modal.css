@@ -25,3 +25,11 @@
   width: 400px;
   border-radius: 10px;
 }
+
+#delete-review-from-review-section-button {
+  border: 5px solid black;
+}
+
+.errors {
+  color: red;
+}

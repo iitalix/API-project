@@ -476,3 +476,7 @@ nav {
   padding: 10px 100px;
   border: 2px solid black;
 }
+
+#delete-review-from-review-section-button {
+  border: 5px solid black;
+}
