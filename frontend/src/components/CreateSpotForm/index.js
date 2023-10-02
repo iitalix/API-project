@@ -38,9 +38,8 @@ export default function CreateSpotForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    imgErrCheck();
 
-    if (Object.keys(imageValidationObj).length) return;
+    imgErrCheck();
 
     const newSpot = {
       address,
@@ -67,8 +66,8 @@ export default function CreateSpotForm() {
   const imgErrCheck = () => {
     const imgErrObj = {};
 
-    if (!previewImage) {
-      imgErrObj.previewImage = "Preview image is required";
+    if (!previewImage || previewImage === "") {
+      imgErrObj.previewImage = "Preview image is required. DO NOT SUBMIT.";
     }
 
     for (let key in imageUrls) {
@@ -99,9 +98,7 @@ export default function CreateSpotForm() {
           preview: true,
         };
       } else {
-
         if (imageUrls[key] !== "") {
-
           spotImage = {
             url: imageUrls[key],
             preview: false,
@@ -114,10 +111,15 @@ export default function CreateSpotForm() {
   };
 
   // Clears errors before setting new value
+  // const handleChange = (e, setter) => {
+
+  //   setPreviewImage(e.target.value);
+  //   setImageValidationObj({})
+  // }
+
   const handleChange = (e, setter) => {
 
-    if (Object.keys(imageValidationObj)?.length > 0) setImageValidationObj({});
-    if (Object.keys(validationObj)?.length > 0) setValidationObj({});
+    setImageValidationObj({});
     setter(e.target.value)
   }
 
@@ -138,7 +140,7 @@ export default function CreateSpotForm() {
             name="country"
             placeholder="Country"
             value={country}
-            onChange={(e) => handleChange(e, setCountry)}
+            onChange={(e) => setCountry(e.target.value)}
           />
 
           {validationObj?.country && (
@@ -151,7 +153,7 @@ export default function CreateSpotForm() {
             name="address"
             placeholder="Address"
             value={address}
-            onChange={(e) => handleChange(e, setAddress)}
+            onChange={(e) => setAddress(e.target.value)}
           />
 
           {validationObj?.address && (
@@ -166,7 +168,7 @@ export default function CreateSpotForm() {
                 name="city"
                 placeholder="City"
                 value={city}
-                onChange={(e) => handleChange(e, setCity)}
+                onChange={(e) => setCity(e.target.value)}
               />
               {validationObj?.city && (
                 <p className="errors">{validationObj?.city}</p>
@@ -182,7 +184,7 @@ export default function CreateSpotForm() {
                 name="state"
                 placeholder="State"
                 value={state}
-                onChange={(e) => handleChange(e, setState)}
+                onChange={(e) => setState(e.target.value)}
               />
 
               {validationObj?.state && (
@@ -220,7 +222,7 @@ export default function CreateSpotForm() {
             placeholder="Please write at least 30 characters"
             id="text-description"
             value={description}
-            onChange={(e) => handleChange(e, setDescription)}
+            onChange={(e) => setDescription(e.target.value)}
           />
 
           {validationObj?.description && (
@@ -237,10 +239,12 @@ export default function CreateSpotForm() {
             name="name"
             placeholder="Name of your spot"
             value={name}
-            onChange={(e) => handleChange(e, setName)}
+            onChange={(e) => setName(e.target.value)}
           />
 
-          {validationObj?.name && <p className="errors">{validationObj?.name}</p>}
+          {validationObj?.name && (
+            <p className="errors">{validationObj?.name}</p>
+          )}
 
           <h2>Set a base price for your spot</h2>
           <div>
@@ -255,7 +259,7 @@ export default function CreateSpotForm() {
               name="price"
               placeholder="Price per night (USD)"
               value={price}
-              onChange={(e) => handleChange(e, setPrice)}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </p>
 
@@ -282,7 +286,7 @@ export default function CreateSpotForm() {
             name="imgUrlOne"
             value={imgUrlOne}
             placeholder="Image URL"
-            onChange={(e) => handleChange(e, setImgUrlOne)}
+            onChange={(e) => setImgUrlOne(e.target.value)}
           />
 
           {imageValidationObj?.imgUrlOne && (
@@ -294,7 +298,7 @@ export default function CreateSpotForm() {
             name="imgUrlTwo"
             value={imgUrlTwo}
             placeholder="Image URL"
-            onChange={(e) => handleChange(e, setImgUrlTwo)}
+            onChange={(e) => setImgUrlTwo(e.target.value)}
           />
 
           {imageValidationObj?.imgUrlTwo && (
@@ -306,7 +310,7 @@ export default function CreateSpotForm() {
             name="imgUrlThree"
             value={imgUrlThree}
             placeholder="Image URL"
-            onChange={(e) => handleChange(e, setImgUrlThree)}
+            onChange={(e) => setImgUrlThree(e.target.value)}
           />
 
           {imageValidationObj?.imgUrlThree && (
@@ -318,7 +322,7 @@ export default function CreateSpotForm() {
             name="imgUrlFour"
             value={imgUrlFour}
             placeholder="Image URL"
-            onChange={(e) => handleChange(e, setImgUrlFour)}
+            onChange={(e) => setImgUrlFour(e.target.value)}
           />
 
           {imageValidationObj.imgUrlFour && (
@@ -326,9 +330,10 @@ export default function CreateSpotForm() {
           )}
 
           <div id="create-submit">
-            <button type="submit" className="action-button" id="create">Create Spot</button>
+            <button type="submit" className="action-button" id="create">
+              Create Spot
+            </button>
           </div>
-
         </form>
       </div>
     </div>

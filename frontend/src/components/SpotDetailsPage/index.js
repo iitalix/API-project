@@ -133,7 +133,7 @@ export default function SpotDetailsPage() {
           <div id="host-info">
             Hosted by {spot.User.firstName} {spot.User.lastName}
           </div>
-          <div>{spot.description}</div>
+          <div id="spot-description-text">{spot.description}</div>
         </div>
 
         <div className="callout-box">

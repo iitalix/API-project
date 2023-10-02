@@ -69,6 +69,12 @@ body {
   margin-bottom: 20px;
 }
 
+#spot-description-text {
+
+  padding-right: 15px;
+  word-wrap: break-word;
+}
+
 #delete-review {
   margin-bottom: 30px;
 }
