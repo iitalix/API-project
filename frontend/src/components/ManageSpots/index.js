@@ -39,7 +39,7 @@ export default function ManageSpots() {
         <button className="manage-buttons" onClick={() => goToCreateSpotForm()}>Create a New Spot</button>
       </div>
 
-      {spots?.length && (
+      {spots?.length > 0 && (
         <div className="manage-cards-container">
           {spots.map((spot) => (
             <div className="card-update-delete">
