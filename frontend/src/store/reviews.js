@@ -40,7 +40,7 @@ const clearReviews = () => {
 
 // Get Reviews
 export const thunkGetReviews = (spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`);
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
   const data = await response.json();
   dispatch(getReviews(data.Reviews));
@@ -56,6 +56,7 @@ export const thunkCreateReview = (spotId, review) => async (dispatch) => {
   });
 
   const data = response;
+  dispatch(createReview(data))
   return data;
 };
 
@@ -94,6 +95,11 @@ const reviewsReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       const filteredReviews = newState.Reviews.filter((review) => review.id !== action.payload);
       newState.Reviews = filteredReviews;
+      return newState;
+
+    case CREATE_REVIEW:
+      newState = Object.assign({}, state);
+      newState.Reviews.push(action.payload);
       return newState;
 
     case CLEAR_REVIEWS:

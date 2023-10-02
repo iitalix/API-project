@@ -94,8 +94,8 @@ const validateSpotEdit = [
     .optional({value: "undefined"})
     .exists({checkFalsy: true})
     .withMessage("Price per day is required.")
-    .isDecimal({force_decimal: true})
-    .withMessage("Price per day is required and must be a decimal."),
+    .isInt({min: 1})
+    .withMessage("Price per day is required and cannot be a decimal."),
   handleValidationErrors,
 ];
 

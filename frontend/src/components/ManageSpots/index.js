@@ -6,7 +6,7 @@ import {thunkGetSpotsCurrent} from "../../store/spots";
 import SpotCard from "../SpotCard";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "../DeleteSpotModal";
-import "../../index.css"
+import "../../index.css";
 
 export default function ManageSpots() {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ export default function ManageSpots() {
   }, []);
 
   const goToCreateSpotForm = () => {
-
     push("/spots/new");
     return;
   };
@@ -37,13 +36,13 @@ export default function ManageSpots() {
     <div className="parent-container">
       <div className="manage-header">
         <h1>Manage Your Spots</h1>
-        <button onClick={() => goToCreateSpotForm()}>Create a New Spot</button>
+        <button className="manage-buttons" onClick={() => goToCreateSpotForm()}>Create a New Spot</button>
       </div>
 
-      {spots?.length && (
+      {spots?.length > 0 && (
         <div className="manage-cards-container">
           {spots.map((spot) => (
-            <>
+            <div className="card-update-delete">
               <div
                 key={spot.id}
                 className="spotcard"
@@ -59,12 +58,14 @@ export default function ManageSpots() {
                 >
                   Update
                 </button>
-                <OpenModalButton
-                  buttonText="Delete"
-                  modalComponent={<DeleteSpotModal spotId={spot.id} />}
-                />
+                <div id="manage-modal-button">
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                  />
+                </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       )}

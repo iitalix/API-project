@@ -9,6 +9,7 @@ import OpenModalButton from "../OpenModalButton";
 import ReviewFormModal from "../ReviewFormModal";
 import DeleteReviewModal from "../DeleteReviewModal";
 import "../../index.css";
+import "../../context/Modal.css"
 
 export default function SpotDetailsPage() {
   const dispatch = useDispatch();
@@ -17,18 +18,14 @@ export default function SpotDetailsPage() {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.reviews.Reviews);
 
-
-
   useEffect(() => {
     dispatch(thunkGetSpotDetails(spotId));
     dispatch(thunkGetReviews(spotId));
   }, []);
 
   useEffect(() => {
-
-    dispatch(thunkGetReviews(spotId))
-
-  }, [reviews?.length])
+    dispatch(thunkGetReviews(spotId));
+  }, [reviews?.length]);
 
   if (!spot.id) return null;
 
@@ -62,7 +59,7 @@ export default function SpotDetailsPage() {
     if (sessionUser) {
       if (spot.numReviews === 0 && sessionUser.id !== spot.ownerId) {
         return (
-          <>
+          <div id="post-your-review">
             <OpenModalButton
               buttonText="Post Your Review"
               modalComponent={
@@ -70,7 +67,7 @@ export default function SpotDetailsPage() {
               }
             />
             <p>Be the first to post a review!</p>
-          </>
+          </div>
         );
       }
 
@@ -207,8 +204,9 @@ export default function SpotDetailsPage() {
                   </div>
                 </div>
                 {sessionUser && sessionUser.id === review.userId && (
-                  <div>
+                  <div id="delete-review">
                     <OpenModalButton
+                      id="delete-review-from-review-section-button"
                       buttonText="Delete"
                       modalComponent={
                         <DeleteReviewModal reviewId={review.id} />

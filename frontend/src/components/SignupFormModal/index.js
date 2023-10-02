@@ -74,7 +74,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="errors">{errors.email}</p>}
         <label>
           <input
             type="text"
@@ -84,7 +84,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className="errors">{errors.username}</p>}
         <label>
           <input
             type="text"
@@ -94,7 +94,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className="errors">{errors.firstName}</p>}
         <label>
 
           <input
@@ -105,7 +105,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="errors">{errors.lastName}</p>}
         <label>
           <input
             type="Password"
@@ -115,7 +115,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="errors">{errors.password}</p>}
         <label>
           <input
             type="password"

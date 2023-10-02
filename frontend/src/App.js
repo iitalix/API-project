@@ -10,6 +10,7 @@ import ManageSpots from "./components/ManageSpots";
 import UpdateSpotForm from "./components/UpdateSpotForm";
 import ReviewFormModal from "./components/ReviewFormModal";
 import DeleteSpotModal from "./components/DeleteSpotModal";
+import "./index.css"
 
 function App() {
   const dispatch = useDispatch();
