@@ -157,6 +157,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 32px;
 }
 
 .demo-button,
@@ -360,6 +361,7 @@ nav {
 #review-submit {
 
   margin-top: 20px;
+  margin-bottom: 32px;
   box-shadow: 3px 3px 3px grey;
   padding: 10px 115px;
   border-radius: 10px;
@@ -414,7 +416,8 @@ nav {
 }
 
 #signup-button {
-  margin-top: 5px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   height: 3em;
   width: 25em;
   border: 1px solid black;
@@ -475,6 +478,7 @@ nav {
 #keep-review, #keep-spot {
   padding: 10px 100px;
   border: 2px solid black;
+  margin-bottom: 16px;
 }
 
 #delete-review-from-review-section-button {
