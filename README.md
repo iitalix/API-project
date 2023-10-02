@@ -1,3 +1,15 @@
+# Mod 5 Project
+
+<img width="1060" alt="luxbnb" src="https://github.com/iitalix/API-project/assets/115580381/4aa6fadb-865a-4f03-abe4-40a36f1dc867">
+
+This is my Airbnb clone, "luxbnb," Front-End project built on the previous API Back-end project. The main technologies used are React/Redux, and Sequelize/PostGreSQL.
+
+The application can be accessed at the following link: https://lan-airbnb.onrender.com
+
+Click on the profile button in the top-right corner and choose "Sign In" from the menu, then simply select "Login as Demo User." You may also create an account, if you wish, using the Sign-Up feature.
+
+Additional information on the Back-End can be found below, as well as in the project Wiki page.
+
 # Mod 4 Project
 
 ## Database Schema Design
