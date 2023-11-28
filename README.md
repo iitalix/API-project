@@ -1,8 +1,8 @@
-# Mod 5 Project
+# Luxbnb
 
 <img width="1060" alt="luxbnb" src="https://github.com/iitalix/API-project/assets/115580381/4aa6fadb-865a-4f03-abe4-40a36f1dc867">
 
-This is my Airbnb clone, "luxbnb," Front-End project built on the previous API Back-end project. The main technologies used are React/Redux, and Sequelize/PostGreSQL.
+Luxbnb is an Airbnb-inspired website. The main technologies used are React/Redux, and Sequelize/PostGreSQL.
 
 The application can be accessed at the following link: https://lan-airbnb.onrender.com
 
@@ -10,32 +10,13 @@ Click on the profile button in the top-right corner and choose "Sign In" from th
 
 Additional information on the Back-End can be found below, as well as in the project Wiki page.
 
-# Mod 4 Project
+# Express API
 
 ## Database Schema Design
 
 ![db-schema]
 
 [db-schema]: ./images/airbnb_dbdiagram.png
-
-<!--!!START SILENT -->
-# AirBnB Clone
-<!--!!END -->
-<!--!!ADD -->
-<!-- # `<name of application here>` -->
-<!--!!END_ADD -->
-
-## Database Schema Design
-
-<!--!!START SILENT -->
-![airbnb-database-schema]
-
-[airbnb-database-schema]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-schema.png
-[airbnb-db-diagram-info]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-diagram-info.txt
-<!--!!END -->
-<!--!!ADD -->
-<!-- `<insert database schema design here>` -->
-<!--!!END_ADD -->
 
 ## API Documentation
 
